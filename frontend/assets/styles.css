@@ -1148,6 +1148,21 @@ button.heatmap-cell { cursor: pointer; }
 .chat-input { display:flex; gap:10px; align-items:center; margin:0 0 14px; flex-shrink:0; }
 .chat-input input { flex:1; }
 
+.page-emoji,
+.kpi-emoji,
+.heading-emoji,
+.module-emoji,
+.nav-emoji {
+  display: inline-block;
+  margin-right: 8px;
+  line-height: 1;
+}
+.nav-emoji { margin-right: 6px; font-size: 13px; }
+.kpi-emoji { margin-right: 6px; font-size: 15px; }
+.heading-emoji { margin-right: 7px; font-size: 16px; }
+.module-emoji { margin-right: 8px; font-size: 18px; }
+.page-emoji { margin-right: 10px; font-size: 24px; }
+
 .overview-hero {
   padding: 28px 30px;
   border-radius: var(--radius);
@@ -1155,6 +1170,69 @@ button.heatmap-cell { cursor: pointer; }
   color: var(--color-on-primary);
   border: 1px solid rgba(255,255,255,.08);
   box-shadow: var(--shadow-sm);
+}
+.overview-hero-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(200px, 360px);
+  gap: 24px;
+  align-items: center;
+}
+.overview-hero-visual img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: var(--shadow-md);
+}
+.welcome-art-wrap {
+  flex: none;
+  margin-left: auto;
+}
+.welcome-art {
+  width: 88px;
+  height: 88px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+.card.span-2 > .card-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.reco-banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--tone-sky-soft);
+  border: 1px solid #bae6fd;
+}
+.reco-banner img {
+  width: 120px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex: none;
+  border: 1px solid var(--line);
+}
+.reco-banner p { margin: 0; font-size: 13px; }
+.empty-visual {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 24px 16px;
+  text-align: center;
+}
+.empty-visual img {
+  width: min(220px, 100%);
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid var(--line);
 }
 .overview-hero h1 {
   margin: 0 0 10px;
@@ -1324,6 +1402,12 @@ body.app-ready .main-enter {
   .span-2, .span-3 { grid-column: auto; }
   .reco-card { flex-direction:column; }
   .reco-thumb { width:100%; min-height:110px; }
+  .overview-hero-split { grid-template-columns: 1fr; }
+  .overview-hero-visual { order: -1; }
+  .reco-banner { flex-direction: column; align-items: flex-start; }
+  .reco-banner img { width: 100%; height: auto; max-height: 160px; }
+  .welcome-art-wrap { display: none; }
+  .card.span-2 > .card-title { flex-wrap: wrap; }
   .resource-detail-layout { grid-template-columns: 1fr; }
   .resource-detail-toc {
     position: static;

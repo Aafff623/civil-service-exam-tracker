@@ -73,7 +73,11 @@ function renderRecommendations(items) {
     if (!container) return;
 
     if (!items.length) {
-        container.innerHTML = '<p class="muted">暂无推荐，请先完成一些练习</p>';
+        container.innerHTML = `
+            <div class="empty-visual">
+                <p class="muted">暂无推荐 📭 先去题库完成几道练习吧</p>
+                <a class="btn primary" href="qa.html">✍️ 开始练习</a>
+            </div>`;
         return;
     }
 
