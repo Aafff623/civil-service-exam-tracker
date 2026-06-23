@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>学习进度跟踪与统计分析｜公务员考试学习跟踪系统</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <a class="logo" href="overview.html" aria-label="返回总览">
+        <span class="logo-mark">公</span>
+        <span class="logo-text"><strong>公考学习系统</strong><span>学习跟踪原型</span></span>
+      </a>
+      <nav class="nav"><a class="" href="index.html"><span class="nav-icon">⌂</span><span>首页</span></a>
+<a class="" href="resources.html"><span class="nav-icon">▣</span><span>考试与资源</span></a>
+<a class="" href="plan.html"><span class="nav-icon">☑</span><span>学习计划</span></a>
+<a class="" href="recommendations.html"><span class="nav-icon">✦</span><span>学习推荐</span></a>
+<a class="active" href="statistics.html"><span class="nav-icon">◫</span><span>学习统计</span></a>
+<a class="" href="qa.html"><span class="nav-icon">?</span><span>题库与答疑</span></a></nav>
+      <div class="sidebar-footer">蓝白风格 · 简洁实用 · 前端静态原型<br/>适合小学期课程设计展示</div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="breadcrumb">公务员考试学习跟踪系统 / 方案 A</div>
+          <h1 class="page-title"><span class="title-badge">5</span>学习进度跟踪与统计分析</h1>
+          <div class="muted" style="margin-top:8px; font-size:14px;">记录学习进度，提供学习时长、科目完成度、正确率趋势和打卡统计。</div>
+        </div>
+        <div class="top-actions">
+          <label class="search"><span>⌕</span><input placeholder="搜索任务、资料、题目" /></label>
+          <button class="icon-btn" title="通知">🔔</button>
+          <div class="avatar"><span>张</span><span>张同学</span></div>
+        </div>
+      </header>
+      
+<section class="grid grid-5">
+  <div class="kpi"><div class="kpi-label">总学习时长</div><div class="kpi-value">186.5<small>h</small></div><div class="kpi-sub"><span class="up">+12.5h</span> 较上周</div></div>
+  <div class="kpi"><div class="kpi-label">完成任务数</div><div class="kpi-value">128</div><div class="kpi-sub">完成率 70%</div></div>
+  <div class="kpi"><div class="kpi-label">做题正确率</div><div class="kpi-value">63<small>%</small></div><div class="kpi-sub"><span class="up">+6%</span> 较上周</div></div>
+  <div class="kpi"><div class="kpi-label">模考平均分</div><div class="kpi-value">118<small>分</small></div><div class="kpi-sub"><span class="up">+8分</span> 较上周</div></div>
+  <div class="kpi"><div class="kpi-label">连续打卡</div><div class="kpi-value">23<small>天</small></div><div class="kpi-sub">最长连续 23 天</div></div>
+</section>
+<section class="grid grid-2" style="margin-top:18px;">
+  <div class="card"><div class="card-title"><h2>学习时长趋势</h2><small>本周 vs 上周</small></div><div class="mini-chart"><svg viewBox="0 0 520 210" width="100%" height="210" role="img" aria-label="学习时长趋势图">
+      <defs><linearGradient id="gline" x1="0" x2="1"><stop stop-color="#0b66ff"/><stop offset="1" stop-color="#5aa8ff"/></linearGradient></defs>
+      <g stroke="#e5edf9" stroke-width="1"><line x1="40" y1="30" x2="500" y2="30"/><line x1="40" y1="70" x2="500" y2="70"/><line x1="40" y1="110" x2="500" y2="110"/><line x1="40" y1="150" x2="500" y2="150"/></g>
+      <g fill="#7a8aa6" font-size="11"><text x="8" y="34">8h</text><text x="8" y="74">6h</text><text x="8" y="114">4h</text><text x="8" y="154">2h</text><text x="58" y="195">05-13</text><text x="128" y="195">05-14</text><text x="198" y="195">05-15</text><text x="268" y="195">05-16</text><text x="338" y="195">05-17</text><text x="408" y="195">05-18</text></g>
+      <path d="M60 142 L132 132 L204 92 L276 124 L348 78 L420 102 L492 54" fill="none" stroke="url(#gline)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M60 155 L132 145 L204 122 L276 136 L348 116 L420 128 L492 94" fill="none" stroke="#9ec5ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <g fill="#0b66ff"><circle cx="60" cy="142" r="5"/><circle cx="132" cy="132" r="5"/><circle cx="204" cy="92" r="5"/><circle cx="276" cy="124" r="5"/><circle cx="348" cy="78" r="5"/><circle cx="420" cy="102" r="5"/><circle cx="492" cy="54" r="5"/></g>
+    </svg></div></div>
+  <div class="card"><div class="card-title"><h2>科目完成度</h2><small>按学习任务统计</small></div><div class="bar-list"><div class="bar-row"><span>言语理解</span><div class="progress"><span style="width:85%"></span></div><strong>85%</strong></div><div class="bar-row"><span>数量关系</span><div class="progress"><span style="width:60%"></span></div><strong>60%</strong></div><div class="bar-row"><span>资料分析</span><div class="progress"><span style="width:55%"></span></div><strong>55%</strong></div><div class="bar-row"><span>判断推理</span><div class="progress"><span style="width:65%"></span></div><strong>65%</strong></div><div class="bar-row"><span>常识判断</span><div class="progress"><span style="width:75%"></span></div><strong>75%</strong></div><div class="bar-row"><span>申论</span><div class="progress"><span style="width:70%"></span></div><strong>70%</strong></div></div></div>
+</section>
+<section class="grid grid-2" style="margin-top:18px;">
+  <div class="card"><div class="card-title"><h2>正确率趋势</h2><small>近 7 次练习</small></div><div class="mini-chart"><svg viewBox="0 0 520 210" width="100%" height="210" role="img" aria-label="学习时长趋势图">
+      <defs><linearGradient id="gline" x1="0" x2="1"><stop stop-color="#0b66ff"/><stop offset="1" stop-color="#5aa8ff"/></linearGradient></defs>
+      <g stroke="#e5edf9" stroke-width="1"><line x1="40" y1="30" x2="500" y2="30"/><line x1="40" y1="70" x2="500" y2="70"/><line x1="40" y1="110" x2="500" y2="110"/><line x1="40" y1="150" x2="500" y2="150"/></g>
+      <g fill="#7a8aa6" font-size="11"><text x="8" y="34">8h</text><text x="8" y="74">6h</text><text x="8" y="114">4h</text><text x="8" y="154">2h</text><text x="58" y="195">05-13</text><text x="128" y="195">05-14</text><text x="198" y="195">05-15</text><text x="268" y="195">05-16</text><text x="338" y="195">05-17</text><text x="408" y="195">05-18</text></g>
+      <path d="M60 142 L132 132 L204 92 L276 124 L348 78 L420 102 L492 54" fill="none" stroke="url(#gline)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M60 155 L132 145 L204 122 L276 136 L348 116 L420 128 L492 94" fill="none" stroke="#9ec5ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <g fill="#0b66ff"><circle cx="60" cy="142" r="5"/><circle cx="132" cy="132" r="5"/><circle cx="204" cy="92" r="5"/><circle cx="276" cy="124" r="5"/><circle cx="348" cy="78" r="5"/><circle cx="420" cy="102" r="5"/><circle cx="492" cy="54" r="5"/></g>
+    </svg></div></div>
+  <div class="card"><div class="card-title"><h2>打卡日历</h2><small>2024 年 5 月</small></div><div class="calendar"><div class="week">一</div><div class="week">二</div><div class="week">三</div><div class="week">四</div><div class="week">五</div><div class="week">六</div><div class="week">日</div><div class="checked">1</div><div class="checked">2</div><div class="checked">3</div><div class="">4</div><div class="checked">5</div><div class="checked">6</div><div class="">7</div><div class="checked">8</div><div class="checked">9</div><div class="checked">10</div><div class="">11</div><div class="checked">12</div><div class="checked">13</div><div class="checked">14</div><div class="">15</div><div class="checked">16</div><div class="checked">17</div><div class="">18</div><div class="checked">19</div><div class="checked">20</div><div class="checked">21</div><div class="">22</div><div class="checked">23</div><div class="checked">24</div><div class="">25</div><div class="checked">26</div><div class="checked">27</div><div class="">28</div><div class="">29</div><div class="">30</div><div class="">31</div></div></div>
+</section>
+
+      <p class="footer-note">本页面为静态前端原型，文案与数据均为演示数据，可后续接入后端 API。</p>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

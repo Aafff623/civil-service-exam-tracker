@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>智能学习计划生成｜公务员考试学习跟踪系统</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <a class="logo" href="overview.html" aria-label="返回总览">
+        <span class="logo-mark">公</span>
+        <span class="logo-text"><strong>公考学习系统</strong><span>学习跟踪原型</span></span>
+      </a>
+      <nav class="nav"><a class="" href="index.html"><span class="nav-icon">⌂</span><span>首页</span></a>
+<a class="" href="resources.html"><span class="nav-icon">▣</span><span>考试与资源</span></a>
+<a class="active" href="plan.html"><span class="nav-icon">☑</span><span>学习计划</span></a>
+<a class="" href="recommendations.html"><span class="nav-icon">✦</span><span>学习推荐</span></a>
+<a class="" href="statistics.html"><span class="nav-icon">◫</span><span>学习统计</span></a>
+<a class="" href="qa.html"><span class="nav-icon">?</span><span>题库与答疑</span></a></nav>
+      <div class="sidebar-footer">蓝白风格 · 简洁实用 · 前端静态原型<br/>适合小学期课程设计展示</div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="breadcrumb">公务员考试学习跟踪系统 / 方案 A</div>
+          <h1 class="page-title"><span class="title-badge">3</span>智能学习计划生成</h1>
+          <div class="muted" style="margin-top:8px; font-size:14px;">根据学习目标、每日学习时间、知识水平和科目难度生成个性化计划。</div>
+        </div>
+        <div class="top-actions">
+          <label class="search"><span>⌕</span><input placeholder="搜索任务、资料、题目" /></label>
+          <button class="icon-btn" title="通知">🔔</button>
+          <div class="avatar"><span>张</span><span>张同学</span></div>
+        </div>
+      </header>
+      
+<section class="card"><div class="stepper"><div class="step active"><span>1</span>输入信息</div><div class="step"><span>2</span>评估分析</div><div class="step"><span>3</span>生成计划</div></div></section>
+<section class="grid grid-3" style="margin-top:18px;">
+  <div class="card">
+    <div class="card-title"><h2>输入学习目标</h2></div>
+    <div class="form-grid">
+      <div class="field"><label>考试目标</label><select class="select"><option>2025 年国家公务员考试</option></select></div>
+      <div class="field"><label>预计考试时间</label><input class="input" value="2025-11-30" /></div>
+      <div class="field"><label>每日可学习时间</label><select class="select"><option>3 小时</option><option>4 小时</option></select></div>
+      <div class="field"><label>开始日期</label><input class="input" value="2024-05-20" /></div>
+      <div class="field"><label>期望分数</label><input class="input" value="130 分以上" /></div>
+      <button class="btn primary" data-demo-action="plan">开始评估</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><h2>知识水平测试结果</h2><span class="tag">雷达图</span></div>
+    <div class="radar-wrap"><svg viewBox="0 0 300 260" width="100%" height="260" role="img" aria-label="知识水平雷达图">
+      <g transform="translate(150 125)">
+        <polygon points="0,-92 80,-46 80,46 0,92 -80,46 -80,-46" fill="none" stroke="#dbe7fb"/>
+        <polygon points="0,-68 59,-34 59,34 0,68 -59,34 -59,-34" fill="none" stroke="#dbe7fb"/>
+        <polygon points="0,-44 38,-22 38,22 0,44 -38,22 -38,-22" fill="none" stroke="#dbe7fb"/>
+        <g stroke="#dbe7fb"><line x1="0" y1="0" x2="0" y2="-92"/><line x1="0" y1="0" x2="80" y2="-46"/><line x1="0" y1="0" x2="80" y2="46"/><line x1="0" y1="0" x2="0" y2="92"/><line x1="0" y1="0" x2="-80" y2="46"/><line x1="0" y1="0" x2="-80" y2="-46"/></g>
+        <polygon points="0,-72 50,-28 66,38 0,58 -54,31 -50,-29" fill="rgba(11,102,255,.22)" stroke="#0b66ff" stroke-width="3"/>
+        <polygon points="0,-56 44,-26 46,27 0,50 -45,26 -42,-24" fill="rgba(148,163,184,.18)" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5 4"/>
+      </g>
+      <g fill="#52637d" font-size="12" font-weight="700"><text x="127" y="18">言语理解</text><text x="237" y="86">数量关系</text><text x="237" y="177">资料分析</text><text x="126" y="246">判断推理</text><text x="7" y="177">常识判断</text><text x="34" y="86">申论</text></g>
+    </svg></div>
+  </div>
+  <div class="card">
+    <div class="card-title"><h2>科目重要性 & 难易度</h2></div>
+    <table class="table"><thead><tr><th>科目</th><th>重要性</th><th>难易度</th></tr></thead><tbody>
+      <tr><td>言语理解</td><td class="star">★★★★★</td><td>较易</td></tr><tr><td>数量关系</td><td class="star">★★★★☆</td><td>较难</td></tr><tr><td>资料分析</td><td class="star">★★★★★</td><td>较难</td></tr><tr><td>判断推理</td><td class="star">★★★★☆</td><td>中等</td></tr><tr><td>常识判断</td><td class="star">★★★☆☆</td><td>较易</td></tr><tr><td>申论</td><td class="star">★★★★★</td><td>较难</td></tr>
+    </tbody></table>
+  </div>
+</section>
+<section class="card" style="margin-top:18px;" data-demo-result="plan">
+  <div class="card-title"><h2>生成结果预览</h2><span class="tag green">已生成</span></div>
+  <p>已为你生成个性化学习计划，覆盖 <strong>26 周</strong>，包含 <strong>182 个学习任务</strong>。</p>
+  <div class="grid grid-3">
+    <div class="card soft"><h3>基础夯实阶段</h3><p class="muted">第 1-8 周：梳理知识点、建立错题本。</p></div>
+    <div class="card soft"><h3>强化提升阶段</h3><p class="muted">第 9-20 周：专项突破、提高做题速度。</p></div>
+    <div class="card soft"><h3>冲刺模考阶段</h3><p class="muted">第 21-26 周：套卷训练、查漏补缺。</p></div>
+  </div>
+  <div style="margin-top:16px;"><button class="btn ghost">查看周计划</button> <button class="btn primary">查看日计划</button></div>
+</section>
+<section class="card" style="margin-top:18px;"><div class="card-title"><h2>本周学习安排</h2><small>示例</small></div><table class="table"><thead><tr><th>日期</th><th>上午</th><th>下午</th><th>晚上</th></tr></thead><tbody><tr><td>周一</td><td>言语理解 45min</td><td>数量关系 45min</td><td>错题复盘 30min</td></tr><tr><td>周二</td><td>资料分析 60min</td><td>申论素材 40min</td><td>每日一练 20min</td></tr><tr><td>周三</td><td>判断推理 45min</td><td>数量关系 45min</td><td>答疑复盘 30min</td></tr></tbody></table></section>
+
+      <p class="footer-note">本页面为静态前端原型，文案与数据均为演示数据，可后续接入后端 API。</p>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

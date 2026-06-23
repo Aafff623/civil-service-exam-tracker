@@ -9,11 +9,11 @@
 <body>
   <div class="app">
     <aside class="sidebar">
-      <a class="logo" href="dashboard.html" aria-label="返回总览">
+      <a class="logo" href="overview.html" aria-label="返回总览">
         <span class="logo-mark">公</span>
         <span class="logo-text"><strong>公考学习系统</strong><span>学习跟踪原型</span></span>
       </a>
-      <nav class="nav"><a class="" href="dashboard.html"><span class="nav-icon">⌂</span><span>首页</span></a>
+      <nav class="nav"><a class="" href="index.html"><span class="nav-icon">⌂</span><span>首页</span></a>
 <a class="active" href="resources.html"><span class="nav-icon">▣</span><span>考试与资源</span></a>
 <a class="" href="plan.html"><span class="nav-icon">☑</span><span>学习计划</span></a>
 <a class="" href="recommendations.html"><span class="nav-icon">✦</span><span>学习推荐</span></a>
@@ -31,7 +31,7 @@
         <div class="top-actions">
           <label class="search"><span>⌕</span><input placeholder="搜索任务、资料、题目" /></label>
           <button class="icon-btn" title="通知">🔔</button>
-          <button class="btn ghost" id="logout-btn" title="退出登录">退出</button>
+          <div class="avatar"><span>张</span><span>张同学</span></div>
         </div>
       </header>
       
@@ -40,8 +40,13 @@
   <div class="filter-row"><label class="search" style="width:360px;"><span>⌕</span><input placeholder="搜索资料名称、关键词" /></label><span class="filter-label">资料类型</span><span class="tag">全部</span><span class="tag gray">课程</span><span class="tag gray">讲义</span><span class="tag gray">题库</span><span class="tag gray">电子书</span><button class="btn ghost small">最新发布</button></div>
   <div class="filter-row"><span class="filter-label">科目</span><span class="tag">全部</span><span class="tag gray">行测</span><span class="tag gray">申论</span><span class="tag gray">面试</span><span class="tag gray">公基</span><span class="filter-label">难度</span><span class="tag">全部</span><span class="tag gray">基础</span><span class="tag gray">提高</span><span class="tag gray">冲刺</span></div>
 </section>
-<section class="grid grid-3" id="resource-list" style="margin-top:18px;">
-  <p class="muted">加载中...</p>
+<section class="grid grid-3" style="margin-top:18px;">
+  <article class="resource-card"><div class="resource-icon icon-blue">行测</div><div><div class="resource-title">行测高频考点精讲</div><div class="resource-meta"><span>讲义 · 基础</span><span>32.5MB</span><span>2024-05-12</span></div></div><div class="resource-meta"><span>👁 2.1k</span><span>☆ 收藏</span></div></article>
+  <article class="resource-card"><div class="resource-icon icon-green">申论</div><div><div class="resource-title">申论热点素材汇编</div><div class="resource-meta"><span>资料 · 提高</span><span>18.7MB</span><span>2024-05-10</span></div></div><div class="resource-meta"><span>👁 1.6k</span><span>☆ 收藏</span></div></article>
+  <article class="resource-card"><div class="resource-icon icon-purple">真题</div><div><div class="resource-title">2020-2024 国考真题</div><div class="resource-meta"><span>题库 · 冲刺</span><span>85.4MB</span><span>2024-05-08</span></div></div><div class="resource-meta"><span>👁 3.8k</span><span>☆ 收藏</span></div></article>
+  <article class="resource-card"><div class="resource-icon icon-orange">公基</div><div><div class="resource-title">公共基础知识精讲</div><div class="resource-meta"><span>课程 · 基础</span><span>42.3MB</span><span>2024-05-06</span></div></div><div class="resource-meta"><span>👁 1.2k</span><span>☆ 收藏</span></div></article>
+  <article class="resource-card"><div class="resource-icon icon-pink">行测</div><div><div class="resource-title">资料分析专项突破</div><div class="resource-meta"><span>课程 · 提高</span><span>28.9MB</span><span>2024-05-05</span></div></div><div class="resource-meta"><span>👁 2.4k</span><span>☆ 收藏</span></div></article>
+  <article class="resource-card"><div class="resource-icon icon-cyan">申论</div><div><div class="resource-title">申论范文 100 篇</div><div class="resource-meta"><span>电子书 · 提高</span><span>12.6MB</span><span>2024-05-03</span></div></div><div class="resource-meta"><span>👁 1.0k</span><span>☆ 收藏</span></div></article>
 </section>
 <section class="grid grid-2" style="margin-top:18px;">
   <div class="card"><div class="card-title"><h2>考试公告</h2><a class="link">查看更多</a></div><div class="plain-list"><div class="list-item"><span class="tag red">置顶</span><div class="task-text"><strong>2025 年国家公务员考试公告发布</strong><span>报名时间、考试科目、职位表下载入口</span></div></div><div class="list-item"><span class="tag">更新</span><div class="task-text"><strong>各地公务员考试信息汇总</strong><span>持续更新省考、事业单位、选调生信息</span></div></div></div></div>
@@ -52,7 +57,5 @@
     </main>
   </div>
   <script src="assets/app.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/app.js"></script>
 </body>
 </html>
