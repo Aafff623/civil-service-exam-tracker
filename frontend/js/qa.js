@@ -201,7 +201,7 @@ function renderQuestion() {
         </div>
         ${renderResourceLink(q) ? `<p style="margin:0 0 14px;">${renderResourceLink(q)}</p>` : ''}
         <div class="question-card" id="question-card">
-            <p><strong>${escapeHtml(q.content)}</strong></p>
+            <p class="question-stem">${escapeHtml(q.content)}</p>
             ${multiHint}
             ${optionsHtml}
         </div>
@@ -303,7 +303,7 @@ async function submitCurrentAnswer() {
     resultBox.innerHTML = `
         <div class="grid grid-2">
             <div class="analysis-box">
-                <strong>答题结果</strong><br/>
+                <span class="analysis-label">答题结果</span>
                 ${data.is_correct
                     ? '<span class="tag green">回答正确</span>'
                     : `<span class="tag red">回答错误</span> 你的答案：${escapeHtml(selectedAnswer)}`
@@ -311,11 +311,11 @@ async function submitCurrentAnswer() {
                 <br/>正确答案：<span class="tag green">${escapeHtml(normalizedCorrect || data.correct_answer)}</span>
             </div>
             <div class="analysis-box">
-                <strong>答题技巧</strong><br/>${escapeHtml(data.tips || '暂无技巧')}
+                <span class="analysis-label">答题技巧</span>${escapeHtml(data.tips || '暂无技巧')}
             </div>
         </div>
         <div class="analysis-box" style="margin-top:14px;">
-            <strong>题目解析</strong><br/>${escapeHtml(data.explanation || '暂无解析')}
+            <span class="analysis-label">题目解析</span>${escapeHtml(data.explanation || '暂无解析')}
         </div>
         ${resourceNote}
     `;
@@ -347,7 +347,7 @@ async function loadAnswerHistory() {
         <div class="list-item">
             <span class="tag ${item.is_correct ? 'green' : 'red'}">${item.is_correct ? '正确' : '错误'}</span>
             <div class="task-text">
-                <strong>${escapeHtml((item.content || '').slice(0, 48))}${(item.content || '').length > 48 ? '…' : ''}</strong>
+                <span class="list-title">${escapeHtml((item.content || '').slice(0, 48))}${(item.content || '').length > 48 ? '…' : ''}</span>
                 <span>${escapeHtml(item.subject_name || '')}</span>
             </div>
             <span class="muted" style="font-size:12px; white-space:nowrap;">${escapeHtml(item.selected_answer)} → ${escapeHtml(item.correct_answer)}</span>
