@@ -1,14 +1,10 @@
 from flask import Blueprint, jsonify, request
 from routes.auth import login_required
+from db import get_db
+from models import serialize_row
 
 bp = Blueprint('resources', __name__, url_prefix='/api/resources')
 
-def get_db():
-    from flask import current_app
-    import sqlite3
-    conn = sqlite3.connect(current_app.config['DATABASE'])
-    conn.row_factory = sqlite3.Row
-    return conn
 
 @bp.route('/', methods=['GET'])
 @login_required
@@ -29,11 +25,11 @@ def list_resources():
     params = []
 
     if subject_id is not None:
-        query += " AND r.subject_id = ?"
+        query += " AND r.subject_id = %s"
         params.append(subject_id)
 
     if resource_type:
-        query += " AND r.type = ?"
+        query += " AND r.type = %s"
         params.append(resource_type)
 
     query += " ORDER BY r.created_at DESC"
@@ -42,20 +38,10 @@ def list_resources():
     rows = cursor.fetchall()
     conn.close()
 
-    items = []
-    for row in rows:
-        items.append({
-            "id": row['id'],
-            "title": row['title'],
-            "type": row['type'],
-            "subject_id": row['subject_id'],
-            "subject_name": row['subject_name'],
-            "content": row['content'],
-            "url": row['url'],
-            "created_at": row['created_at']
-        })
+    items = [serialize_row(row) for row in rows]
 
     return jsonify({"success": True, "data": {"items": items}, "message": ""}), 200
+
 
 @bp.route('/<int:resource_id>', methods=['GET'])
 @login_required
@@ -67,7 +53,7 @@ def get_resource(resource_id):
                r.subject_id, s.name as subject_name
         FROM resources r
         LEFT JOIN subjects s ON r.subject_id = s.id
-        WHERE r.id = ?
+        WHERE r.id = %s
     """, (resource_id,))
     row = cursor.fetchone()
     conn.close()
@@ -77,15 +63,6 @@ def get_resource(resource_id):
 
     return jsonify({
         "success": True,
-        "data": {
-            "id": row['id'],
-            "title": row['title'],
-            "type": row['type'],
-            "subject_id": row['subject_id'],
-            "subject_name": row['subject_name'],
-            "content": row['content'],
-            "url": row['url'],
-            "created_at": row['created_at']
-        },
+        "data": serialize_row(row),
         "message": ""
     }), 200

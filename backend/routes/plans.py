@@ -1,17 +1,10 @@
 from datetime import date, datetime, timedelta
 from flask import Blueprint, jsonify, request, session
 from routes.auth import login_required
-from models import serialize_row
+from db import get_db
+from models import serialize_row, as_date_str
 
 bp = Blueprint('plans', __name__, url_prefix='/api/plans')
-
-
-def get_db():
-    from flask import current_app
-    import sqlite3
-    conn = sqlite3.connect(current_app.config['DATABASE'])
-    conn.row_factory = sqlite3.Row
-    return conn
 
 
 def parse_date(value, field_name):
@@ -27,7 +20,7 @@ def get_user_goal(cursor, user_id):
     cursor.execute("""
         SELECT id, user_id, exam_type, start_date, exam_date, daily_minutes,
                created_at, updated_at
-        FROM goals WHERE user_id = ?
+        FROM goals WHERE user_id = %s
         ORDER BY updated_at DESC LIMIT 1
     """, (user_id,))
     return cursor.fetchone()
@@ -37,7 +30,7 @@ def get_active_plan(cursor, user_id):
     cursor.execute("""
         SELECT id, user_id, start_date, end_date, status, created_at
         FROM plans
-        WHERE user_id = ? AND status = 'active'
+        WHERE user_id = %s AND status = 'active'
         ORDER BY created_at DESC LIMIT 1
     """, (user_id,))
     return cursor.fetchone()
@@ -58,7 +51,7 @@ def fetch_leaf_subjects(cursor):
 def fetch_weak_points_map(cursor, user_id):
     cursor.execute("""
         SELECT subject_id, accuracy, total_answers
-        FROM weak_points WHERE user_id = ?
+        FROM weak_points WHERE user_id = %s
     """, (user_id,))
     return {row['subject_id']: row for row in cursor.fetchall()}
 
@@ -184,7 +177,7 @@ def persist_goal(cursor, user_id, payload):
     if existing is None:
         cursor.execute("""
             INSERT INTO goals (user_id, exam_type, start_date, exam_date, daily_minutes)
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s)
         """, (
             user_id,
             payload['exam_type'],
@@ -195,9 +188,9 @@ def persist_goal(cursor, user_id, payload):
     else:
         cursor.execute("""
             UPDATE goals
-            SET exam_type = ?, start_date = ?, exam_date = ?, daily_minutes = ?,
+            SET exam_type = %s, start_date = %s, exam_date = %s, daily_minutes = %s,
                 updated_at = CURRENT_TIMESTAMP
-            WHERE id = ?
+            WHERE id = %s
         """, (
             payload['exam_type'],
             payload['start_date'].isoformat(),
@@ -252,11 +245,11 @@ def get_plan():
     cursor.execute("""
         SELECT COUNT(*) as total,
                SUM(CASE WHEN is_completed = 1 THEN 1 ELSE 0 END) as completed
-        FROM plan_items WHERE plan_id = ?
+        FROM plan_items WHERE plan_id = %s
     """, (plan['id'],))
     stats = cursor.fetchone()
-    total_days = (datetime.strptime(plan['end_date'], '%Y-%m-%d').date()
-                  - datetime.strptime(plan['start_date'], '%Y-%m-%d').date()).days + 1
+    total_days = (datetime.strptime(as_date_str(plan['end_date']), '%Y-%m-%d').date()
+                  - datetime.strptime(as_date_str(plan['start_date']), '%Y-%m-%d').date()).days + 1
 
     conn.close()
 
@@ -299,8 +292,8 @@ def generate_plan():
         conn.close()
         return jsonify({"success": False, "message": "Please set a learning goal first"}), 400
 
-    start_date = datetime.strptime(goal['start_date'], '%Y-%m-%d').date()
-    exam_date = datetime.strptime(goal['exam_date'], '%Y-%m-%d').date()
+    start_date = datetime.strptime(as_date_str(goal['start_date']), '%Y-%m-%d').date()
+    exam_date = datetime.strptime(as_date_str(goal['exam_date']), '%Y-%m-%d').date()
     daily_minutes = goal['daily_minutes']
 
     subjects = fetch_leaf_subjects(cursor)
@@ -313,24 +306,24 @@ def generate_plan():
 
     old_plan = get_active_plan(cursor, user_id)
     if old_plan:
-        cursor.execute("DELETE FROM plan_items WHERE plan_id = ?", (old_plan['id'],))
-        cursor.execute("DELETE FROM plans WHERE id = ?", (old_plan['id'],))
+        cursor.execute("DELETE FROM plan_items WHERE plan_id = %s", (old_plan['id'],))
+        cursor.execute("DELETE FROM plans WHERE id = %s", (old_plan['id'],))
 
     cursor.execute("""
         INSERT INTO plans (user_id, start_date, end_date, status)
-        VALUES (?, ?, ?, 'active')
+        VALUES (%s, %s, %s, 'active')
     """, (user_id, start_date.isoformat(), exam_date.isoformat()))
     plan_id = cursor.lastrowid
 
     for item in plan_items:
         cursor.execute("""
             INSERT INTO plan_items (plan_id, subject_id, item_date, content, suggested_minutes)
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s)
         """, (plan_id, item['subject_id'], item['item_date'], item['content'], item['suggested_minutes']))
 
     conn.commit()
 
-    cursor.execute("SELECT COUNT(*) as total FROM plan_items WHERE plan_id = ?", (plan_id,))
+    cursor.execute("SELECT COUNT(*) as total FROM plan_items WHERE plan_id = %s", (plan_id,))
     total = cursor.fetchone()['total']
     total_days = (exam_date - start_date).days + 1
 
@@ -371,18 +364,18 @@ def list_plan_items():
                s.name as subject_name
         FROM plan_items pi
         JOIN subjects s ON pi.subject_id = s.id
-        WHERE pi.plan_id = ?
+        WHERE pi.plan_id = %s
     """
     params = [plan['id']]
 
     if item_date:
-        query += " AND pi.item_date = ?"
+        query += " AND pi.item_date = %s"
         params.append(item_date)
     elif date_from and date_to:
-        query += " AND pi.item_date BETWEEN ? AND ?"
+        query += " AND pi.item_date BETWEEN %s AND %s"
         params.extend([date_from, date_to])
     elif date_from:
-        query += " AND pi.item_date >= ?"
+        query += " AND pi.item_date >= %s"
         params.append(date_from)
 
     query += " ORDER BY pi.item_date, pi.id"
@@ -421,7 +414,7 @@ def update_plan_item(item_id):
 
     cursor.execute("""
         SELECT id FROM plan_items
-        WHERE id = ? AND plan_id = ?
+        WHERE id = %s AND plan_id = %s
     """, (item_id, plan['id']))
     item = cursor.fetchone()
 
@@ -430,24 +423,24 @@ def update_plan_item(item_id):
         return jsonify({"success": False, "message": "Plan item not found"}), 404
 
     cursor.execute("""
-        UPDATE plan_items SET is_completed = ? WHERE id = ?
+        UPDATE plan_items SET is_completed = %s WHERE id = %s
     """, (is_completed, item_id))
 
     item_date = None
-    cursor.execute("SELECT item_date FROM plan_items WHERE id = ?", (item_id,))
+    cursor.execute("SELECT item_date FROM plan_items WHERE id = %s", (item_id,))
     row = cursor.fetchone()
     if row:
-        item_date = row['item_date']
+        item_date = as_date_str(row['item_date'])
 
     if is_completed and item_date:
         cursor.execute("""
             SELECT id, study_minutes, completed_items
             FROM progress
-            WHERE user_id = ? AND record_date = ?
+            WHERE user_id = %s AND record_date = %s
         """, (user_id, item_date))
         progress = cursor.fetchone()
         cursor.execute("""
-            SELECT suggested_minutes FROM plan_items WHERE id = ?
+            SELECT suggested_minutes FROM plan_items WHERE id = %s
         """, (item_id,))
         minutes_row = cursor.fetchone()
         add_minutes = minutes_row['suggested_minutes'] if minutes_row else 0
@@ -455,25 +448,25 @@ def update_plan_item(item_id):
         if progress is None:
             cursor.execute("""
                 INSERT INTO progress (user_id, record_date, study_minutes, completed_items)
-                VALUES (?, ?, ?, 1)
+                VALUES (%s, %s, %s, 1)
             """, (user_id, item_date, add_minutes))
         else:
             cursor.execute("""
                 UPDATE progress
-                SET study_minutes = study_minutes + ?,
+                SET study_minutes = study_minutes + %s,
                     completed_items = completed_items + 1
-                WHERE id = ?
+                WHERE id = %s
             """, (add_minutes, progress['id']))
     elif not is_completed and item_date:
         cursor.execute("""
             SELECT id, study_minutes, completed_items
             FROM progress
-            WHERE user_id = ? AND record_date = ?
+            WHERE user_id = %s AND record_date = %s
         """, (user_id, item_date))
         progress = cursor.fetchone()
         if progress and progress['completed_items'] > 0:
             cursor.execute("""
-                SELECT suggested_minutes FROM plan_items WHERE id = ?
+                SELECT suggested_minutes FROM plan_items WHERE id = %s
             """, (item_id,))
             minutes_row = cursor.fetchone()
             sub_minutes = minutes_row['suggested_minutes'] if minutes_row else 0
@@ -481,8 +474,8 @@ def update_plan_item(item_id):
             new_completed = max(0, progress['completed_items'] - 1)
             cursor.execute("""
                 UPDATE progress
-                SET study_minutes = ?, completed_items = ?
-                WHERE id = ?
+                SET study_minutes = %s, completed_items = %s
+                WHERE id = %s
             """, (new_minutes, new_completed, progress['id']))
 
     conn.commit()
@@ -517,8 +510,8 @@ def list_plan_subjects():
     items = [{
         "id": row['id'],
         "name": row['name'],
-        "weight": row['weight'],
-        "difficulty": row['difficulty'],
+        "weight": float(row['weight']),
+        "difficulty": float(row['difficulty']),
         "importance_stars": stars(row['weight']),
         "difficulty_label": difficulty_label(float(row['difficulty']))
     } for row in rows]

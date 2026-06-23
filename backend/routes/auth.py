@@ -1,16 +1,12 @@
 from flask import Blueprint, jsonify, request, session
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
+import pymysql
+from db import get_db
 from models import serialize_row
 
 bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
-def get_db():
-    from flask import current_app
-    import sqlite3
-    conn = sqlite3.connect(current_app.config['DATABASE'])
-    conn.row_factory = sqlite3.Row
-    return conn
 
 def login_required(f):
     @wraps(f)
@@ -19,6 +15,7 @@ def login_required(f):
             return jsonify({"success": False, "message": "Not authenticated"}), 401
         return f(*args, **kwargs)
     return decorated_function
+
 
 @bp.route('/register', methods=['POST'])
 def register():
@@ -38,7 +35,7 @@ def register():
         conn = get_db()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO users (username, password_hash) VALUES (?, ?)",
+            "INSERT INTO users (username, password_hash) VALUES (%s, %s)",
             (username, password_hash)
         )
         user_id = cursor.lastrowid
@@ -50,8 +47,9 @@ def register():
             "data": {"id": user_id, "username": username},
             "message": "User created"
         }), 201
-    except Exception as e:
+    except pymysql.err.IntegrityError:
         return jsonify({"success": False, "message": "Username already exists"}), 400
+
 
 @bp.route('/login', methods=['POST'])
 def login():
@@ -64,7 +62,7 @@ def login():
 
     conn = get_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, username, password_hash FROM users WHERE username = ?", (username,))
+    cursor.execute("SELECT id, username, password_hash FROM users WHERE username = %s", (username,))
     row = cursor.fetchone()
     conn.close()
 
@@ -80,10 +78,12 @@ def login():
         "message": "Login successful"
     }), 200
 
+
 @bp.route('/logout', methods=['POST'])
 def logout():
     session.clear()
     return jsonify({"success": True, "data": None, "message": "Logout successful"}), 200
+
 
 @bp.route('/me', methods=['GET'])
 def me():
@@ -93,7 +93,7 @@ def me():
 
     conn = get_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, username, created_at FROM users WHERE id = ?", (user_id,))
+    cursor.execute("SELECT id, username, role, created_at FROM users WHERE id = %s", (user_id,))
     row = cursor.fetchone()
     conn.close()
 

@@ -2,16 +2,10 @@ import json
 from datetime import date
 from flask import Blueprint, jsonify, request, session
 from routes.auth import login_required
+from db import get_db
+from models import serialize_value
 
 bp = Blueprint('answers', __name__, url_prefix='/api/answers')
-
-
-def get_db():
-    from flask import current_app
-    import sqlite3
-    conn = sqlite3.connect(current_app.config['DATABASE'])
-    conn.row_factory = sqlite3.Row
-    return conn
 
 
 @bp.route('/', methods=['POST'])
@@ -30,7 +24,7 @@ def submit_answer():
 
     cursor.execute("""
         SELECT id, subject_id, type, content, options, correct_answer, explanation, tips
-        FROM questions WHERE id = ?
+        FROM questions WHERE id = %s
     """, (question_id,))
     question = cursor.fetchone()
 
@@ -43,22 +37,21 @@ def submit_answer():
 
     cursor.execute("""
         INSERT INTO answers (user_id, question_id, selected_answer, is_correct)
-        VALUES (?, ?, ?, ?)
+        VALUES (%s, %s, %s, %s)
     """, (user_id, question_id, selected_answer, is_correct))
     conn.commit()
 
-    # Update weak_points statistics
     subject_id = question['subject_id']
     cursor.execute("""
         SELECT id, accuracy, total_answers FROM weak_points
-        WHERE user_id = ? AND subject_id = ?
+        WHERE user_id = %s AND subject_id = %s
     """, (user_id, subject_id))
     weak = cursor.fetchone()
 
     if weak is None:
         cursor.execute("""
             INSERT INTO weak_points (user_id, subject_id, accuracy, total_answers)
-            VALUES (?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s)
         """, (user_id, subject_id, 100.0 if is_correct else 0.0, 1))
     else:
         total = weak['total_answers'] + 1
@@ -66,23 +59,23 @@ def submit_answer():
         new_accuracy = (correct_count / total) * 100.0
         cursor.execute("""
             UPDATE weak_points
-            SET accuracy = ?, total_answers = ?, updated_at = CURRENT_TIMESTAMP
-            WHERE id = ?
+            SET accuracy = %s, total_answers = %s, updated_at = CURRENT_TIMESTAMP
+            WHERE id = %s
         """, (new_accuracy, total, weak['id']))
 
     today = date.today().isoformat()
     cursor.execute("""
-        SELECT id FROM progress WHERE user_id = ? AND record_date = ?
+        SELECT id FROM progress WHERE user_id = %s AND record_date = %s
     """, (user_id, today))
     progress_row = cursor.fetchone()
     if progress_row is None:
         cursor.execute("""
             INSERT INTO progress (user_id, record_date, answer_count)
-            VALUES (?, ?, 1)
+            VALUES (%s, %s, 1)
         """, (user_id, today))
     else:
         cursor.execute("""
-            UPDATE progress SET answer_count = answer_count + 1 WHERE id = ?
+            UPDATE progress SET answer_count = answer_count + 1 WHERE id = %s
         """, (progress_row['id'],))
 
     conn.commit()
@@ -125,12 +118,12 @@ def answer_history():
         FROM answers a
         JOIN questions q ON a.question_id = q.id
         LEFT JOIN subjects s ON q.subject_id = s.id
-        WHERE a.user_id = ?
+        WHERE a.user_id = %s
     """
     params = [user_id]
 
     if subject_id is not None:
-        query += " AND q.subject_id = ?"
+        query += " AND q.subject_id = %s"
         params.append(subject_id)
 
     query += " ORDER BY a.created_at DESC"
@@ -150,7 +143,7 @@ def answer_history():
             "is_correct": bool(row['is_correct']),
             "subject_id": row['subject_id'],
             "subject_name": row['subject_name'],
-            "created_at": row['created_at']
+            "created_at": serialize_value(row['created_at'])
         })
 
     return jsonify({"success": True, "data": {"items": items}, "message": ""}), 200

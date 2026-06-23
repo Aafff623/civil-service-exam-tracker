@@ -1,17 +1,10 @@
 import json
 from flask import Blueprint, jsonify, request
 from routes.auth import login_required
+from db import get_db
 from models import serialize_row
 
 bp = Blueprint('questions', __name__, url_prefix='/api/questions')
-
-
-def get_db():
-    from flask import current_app
-    import sqlite3
-    conn = sqlite3.connect(current_app.config['DATABASE'])
-    conn.row_factory = sqlite3.Row
-    return conn
 
 
 @bp.route('/', methods=['GET'])
@@ -47,18 +40,18 @@ def list_questions():
     count_params = []
 
     if subject_id is not None:
-        query += " AND q.subject_id = ?"
-        count_query += " AND q.subject_id = ?"
+        query += " AND q.subject_id = %s"
+        count_query += " AND q.subject_id = %s"
         params.append(subject_id)
         count_params.append(subject_id)
 
     if question_type:
-        query += " AND q.type = ?"
-        count_query += " AND q.type = ?"
+        query += " AND q.type = %s"
+        count_query += " AND q.type = %s"
         params.append(question_type)
         count_params.append(question_type)
 
-    query += " ORDER BY q.id LIMIT ? OFFSET ?"
+    query += " ORDER BY q.id LIMIT %s OFFSET %s"
     params.append(per_page)
     params.append((page - 1) * per_page)
 
@@ -101,7 +94,7 @@ def get_question(question_id):
                s.name as subject_name
         FROM questions q
         LEFT JOIN subjects s ON q.subject_id = s.id
-        WHERE q.id = ?
+        WHERE q.id = %s
     """, (question_id,))
     row = cursor.fetchone()
     conn.close()

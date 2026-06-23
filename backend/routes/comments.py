@@ -1,16 +1,9 @@
 from flask import Blueprint, jsonify, request, session
 from routes.auth import login_required
+from db import get_db
 from models import serialize_row
 
 bp = Blueprint('comments', __name__, url_prefix='/api/comments')
-
-
-def get_db():
-    from flask import current_app
-    import sqlite3
-    conn = sqlite3.connect(current_app.config['DATABASE'])
-    conn.row_factory = sqlite3.Row
-    return conn
 
 
 @bp.route('/', methods=['GET'])
@@ -27,7 +20,7 @@ def list_comments():
                u.username
         FROM comments c
         JOIN users u ON c.user_id = u.id
-        WHERE c.question_id = ?
+        WHERE c.question_id = %s
         ORDER BY c.created_at ASC
     """, (question_id,))
     rows = cursor.fetchall()
@@ -60,13 +53,13 @@ def create_comment():
     conn = get_db()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT id FROM questions WHERE id = ?", (question_id,))
+    cursor.execute("SELECT id FROM questions WHERE id = %s", (question_id,))
     if cursor.fetchone() is None:
         conn.close()
         return jsonify({"success": False, "message": "Question not found"}), 404
 
     if reply_to:
-        cursor.execute("SELECT id FROM comments WHERE id = ? AND question_id = ?",
+        cursor.execute("SELECT id FROM comments WHERE id = %s AND question_id = %s",
                        (reply_to, question_id))
         if cursor.fetchone() is None:
             conn.close()
@@ -74,7 +67,7 @@ def create_comment():
 
     cursor.execute("""
         INSERT INTO comments (question_id, user_id, content, reply_to)
-        VALUES (?, ?, ?, ?)
+        VALUES (%s, %s, %s, %s)
     """, (question_id, user_id, content, reply_to))
     comment_id = cursor.lastrowid
     conn.commit()
@@ -84,7 +77,7 @@ def create_comment():
                u.username
         FROM comments c
         JOIN users u ON c.user_id = u.id
-        WHERE c.id = ?
+        WHERE c.id = %s
     """, (comment_id,))
     row = cursor.fetchone()
     conn.close()
