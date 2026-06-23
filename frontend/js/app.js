@@ -111,6 +111,7 @@ async function initApp() {
 
     syncNavActive();
     initPageTransitions();
+    initSurfaceSpotlight();
     window.dispatchEvent(new Event('app:ready'));
     scheduleModuleReadyFallback();
 
@@ -429,7 +430,7 @@ function renderResourceList() {
         const dateStr = item.created_at ? String(item.created_at).slice(0, 10) : '';
         const selected = resourceBatchSelected.has(String(item.id));
         return `
-            <article class="resource-card${selected ? ' is-selected' : ''}" data-resource-id="${item.id}" tabindex="0" role="button">
+            <article class="resource-card surface-spotlight${selected ? ' is-selected' : ''}" data-resource-id="${item.id}" tabindex="0" role="button">
                 ${resourceBatchMode ? `<span class="resource-batch-check${selected ? ' is-checked' : ''}" aria-hidden="true"></span>` : ''}
                 ${resourceThumbHtml(item)}
                 <div>
@@ -487,6 +488,8 @@ function renderResourceList() {
             }
         });
     });
+
+    initSurfaceSpotlight();
 }
 
 if (document.querySelector('.app')) {
