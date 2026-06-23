@@ -1185,23 +1185,34 @@ button.heatmap-cell { cursor: pointer; }
   border: 1px solid rgba(255,255,255,.18);
   box-shadow: var(--shadow-md);
 }
-.welcome-art-wrap {
-  flex: none;
-  margin-left: auto;
+.welcome-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
 }
-.welcome-art {
-  width: 88px;
-  height: 88px;
-  border-radius: 16px;
+.welcome-mascot {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
   object-fit: cover;
+  flex: none;
   border: 1px solid var(--line);
   box-shadow: var(--shadow-sm);
+  background: var(--tone-sky-soft);
 }
-.card.span-2 > .card-title {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
+.welcome-copy {
+  flex: 1;
+  min-width: 0;
 }
+.welcome-title {
+  margin-bottom: 4px;
+}
+.welcome-sub {
+  margin: 0;
+  font-size: 14px;
+}
+
 .page-banner,
 .reco-banner {
   display: flex;
@@ -1414,8 +1425,7 @@ body.app-ready .main-enter {
   .reco-banner { flex-direction: column; align-items: flex-start; }
   .page-banner img,
   .reco-banner img { width: 100%; height: auto; max-height: 160px; }
-  .welcome-art-wrap { display: none; }
-  .card.span-2 > .card-title { flex-wrap: wrap; }
+  .welcome-mascot { width: 40px; height: 40px; }
   .resource-detail-layout { grid-template-columns: 1fr; }
   .resource-detail-toc {
     position: static;

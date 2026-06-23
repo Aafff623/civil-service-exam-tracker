@@ -145,7 +145,7 @@
             if (!emoji || el.querySelector('.heading-emoji')) return;
             el.insertAdjacentHTML('afterbegin', `<span class="heading-emoji" aria-hidden="true">${emoji}</span>`);
         });
-        const greeting = document.querySelector('.card-title h2[data-greeting], .card-title h2');
+        const greeting = document.querySelector('.welcome-title h2, .card-title h2');
         if (greeting && greeting.textContent.includes('你好') && !greeting.textContent.includes('👋')) {
             const user = greeting.querySelector('[data-username]');
             if (user) user.insertAdjacentHTML('afterend', ' 👋');
@@ -187,15 +187,6 @@
         else main.insertAdjacentElement('afterbegin', banner);
     }
 
-    function injectDashboardWelcomeArt() {
-        const card = document.querySelector('.card.span-2 .card-title');
-        if (!card || document.querySelector('.welcome-art')) return;
-        const strip = document.createElement('div');
-        strip.className = 'welcome-art-wrap';
-        strip.innerHTML = '<img class="welcome-art" src="assets/images/mascot-welcome.jpg" alt="" width="88" height="88" loading="lazy" />';
-        card.appendChild(strip);
-    }
-
     function markMotionTargets() {
         document.querySelectorAll('.grid-4 > .kpi').forEach((el, i) => {
             el.classList.add('motion-kpi');
@@ -216,7 +207,6 @@
         decorateHeadings();
         decorateModuleLinks();
         injectHeroVisual();
-        injectDashboardWelcomeArt();
         injectPageBanner();
         markMotionTargets();
     }
