@@ -21,7 +21,8 @@ const NAV_PAGES = {
     'plan.html': 'plan.html',
     'recommendations.html': 'recommendations.html',
     'statistics.html': 'statistics.html',
-    'qa.html': 'qa.html'
+    'qa.html': 'qa.html',
+    'profile.html': 'profile.html'
 };
 
 const ASYNC_MODULE_PAGES = new Set([
@@ -31,7 +32,8 @@ const ASYNC_MODULE_PAGES = new Set([
     'plan.html',
     'recommendations.html',
     'statistics.html',
-    'qa.html'
+    'qa.html',
+    'profile.html'
 ]);
 
 (function bootPageVeilEarly() {

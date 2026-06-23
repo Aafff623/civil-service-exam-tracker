@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>个人信息｜公务员考试学习跟踪系统</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <a class="logo" href="dashboard.html" aria-label="返回总览">
+        <span class="logo-mark"><img src="assets/brand-mark.svg" width="36" height="36" alt="" /></span>
+        <span class="logo-text"><strong>备考跟踪</strong><span>学习进度管理</span></span>
+      </a>
+      <nav class="nav"><a class="" href="dashboard.html"><span class="nav-icon">⌂</span><span>首页</span></a>
+<a class="" href="resources.html"><span class="nav-icon">▣</span><span>考试与资源</span></a>
+<a class="" href="plan.html"><span class="nav-icon">☑</span><span>学习计划</span></a>
+<a class="" href="recommendations.html"><span class="nav-icon">✦</span><span>学习推荐</span></a>
+<a class="" href="statistics.html"><span class="nav-icon">◫</span><span>学习统计</span></a>
+<a class="" href="qa.html"><span class="nav-icon">?</span><span>题库与答疑</span></a></nav>
+      <div class="sidebar-footer">备考有迹可循<br/>计划 · 进度 · 练习</div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-intro">
+          <div class="breadcrumb">备考跟踪 / 账户中心</div>
+          <h1 class="page-title">个人信息</h1>
+          <p class="topbar-lead">查看账户资料、备考目标与学习概况。</p>
+        </div>
+        <div class="top-actions">
+          <a class="btn ghost small" href="dashboard.html">返回首页</a>
+          <button class="btn ghost small" id="logout-btn" title="退出登录">退出</button>
+        </div>
+      </header>
+
+      <section class="profile-hero card surface-spotlight" id="profile-card">
+        <div class="profile-hero-main">
+          <div class="profile-avatar" data-avatar aria-hidden="true">U</div>
+          <div class="profile-identity">
+            <h2 class="profile-name">你好，<span data-username>—</span><span class="topbar-wave" aria-hidden="true">👋</span></h2>
+            <div class="profile-badges">
+              <span class="tag blue" id="profile-role-tag">学习者</span>
+              <span class="tag gray" id="profile-id-tag">ID —</span>
+            </div>
+            <p class="muted profile-bio" id="profile-bio">加载账户信息中...</p>
+          </div>
+        </div>
+        <div class="profile-meta-grid" id="profile-meta">
+          <div class="profile-meta-item"><span>注册时间</span><strong id="profile-created">—</strong></div>
+          <div class="profile-meta-item"><span>连续打卡</span><strong id="profile-streak">—</strong></div>
+          <div class="profile-meta-item"><span>累计学习</span><strong id="profile-hours">—</strong></div>
+          <div class="profile-meta-item"><span>答题总数</span><strong id="profile-answers">—</strong></div>
+        </div>
+      </section>
+
+      <section class="grid grid-2 grid-align-start" style="margin-top:18px;">
+        <div class="card" id="profile-goal-card">
+          <div class="card-title"><h2>备考目标</h2><a class="link" href="plan.html">去调整</a></div>
+          <div id="profile-goal-body"><p class="muted">加载中...</p></div>
+        </div>
+        <div class="card" id="profile-admin-card" hidden>
+          <div class="card-title"><h2>管理员说明</h2><span class="tag orange">Admin</span></div>
+          <div class="profile-admin-copy">
+            <p>当前账号为<strong>演示管理员</strong>，拥有完整备考数据与资源管理能力。</p>
+            <ul class="profile-admin-list">
+              <li>可在「考试与资源」页新增/删除资料与科目</li>
+              <li>可体验完整学习计划、统计与推荐链路</li>
+              <li>演示密码：<code>123456</code>（课程设计专用）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card" id="profile-learner-card">
+          <div class="card-title"><h2>学习概况</h2><a class="link" href="statistics.html">查看统计</a></div>
+          <div class="bar-list" id="profile-quick-stats"><p class="muted">加载中...</p></div>
+        </div>
+      </section>
+
+      <p class="footer-note">个人信息来自账户与学习进度 API，仅在本机演示环境使用。</p>
+    </main>
+  </div>
+  <script src="js/shell.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>
