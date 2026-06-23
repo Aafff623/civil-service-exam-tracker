@@ -6,7 +6,15 @@ async function initQA() {
     if (!document.getElementById('question-detail')) return;
 
     await loadSubjectsForFilter();
-    await loadQuestions();
+
+    const params = new URLSearchParams(location.search);
+    const subjectId = params.get('subject_id');
+    const subjectSelect = document.getElementById('subject-filter');
+    if (subjectId && subjectSelect) {
+        subjectSelect.value = subjectId;
+    }
+
+    await loadQuestions(subjectId ? { subject_id: subjectId } : {});
     await loadAnswerHistory();
     bindFilter();
     bindChat();
@@ -28,7 +36,7 @@ async function loadQuestions(params = {}) {
     const list = document.getElementById('question-detail');
     if (!list) return;
 
-    list.innerHTML = '<p class="muted">加载题目中...</p>';
+    renderLoading(list, '加载题目中...');
 
     const result = await getQuestions({ ...params, per_page: 50 });
     if (!result.ok || !result.data.success) {
@@ -128,12 +136,15 @@ async function submitCurrentAnswer() {
     const card = document.getElementById('question-card');
     const selected = card.querySelector('[data-option].selected');
     if (!selected) {
-        alert('请先选择一个答案');
+        showToast('请先选择一个答案', 'error');
         return;
     }
 
     const selectedAnswer = selected.getAttribute('data-option');
+    const submitBtn = document.getElementById('submit-answer');
+    setButtonLoading(submitBtn, true, '提交中');
     const result = await submitAnswer(currentQuestion.id, selectedAnswer);
+    setButtonLoading(submitBtn, false);
     const resultBox = document.getElementById('answer-result');
 
     if (!result.ok || !result.data.success) {
@@ -175,9 +186,9 @@ async function submitCurrentAnswer() {
     `;
     resultBox.style.display = 'block';
 
-    const submitBtn = document.getElementById('submit-answer');
     if (submitBtn) submitBtn.disabled = true;
 
+    showToast(data.is_correct ? '回答正确' : '回答错误，查看解析', data.is_correct ? 'success' : 'info');
     loadAnswerHistory();
 }
 
@@ -261,6 +272,11 @@ function bindChat() {
     if (input) input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
 }
 
-if (document.getElementById('question-detail')) {
-    initQA();
+function bootQA() {
+    if (document.getElementById('question-detail')) initQA();
+}
+if (document.body.classList.contains('app-ready')) {
+    bootQA();
+} else {
+    window.addEventListener('app:ready', bootQA, { once: true });
 }

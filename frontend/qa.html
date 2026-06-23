@@ -10,8 +10,8 @@
   <div class="app">
     <aside class="sidebar">
       <a class="logo" href="dashboard.html" aria-label="返回总览">
-        <span class="logo-mark">公</span>
-        <span class="logo-text"><strong>公考学习系统</strong><span>学习跟踪原型</span></span>
+        <span class="logo-mark"><img src="assets/brand-mark.svg" width="36" height="36" alt="" /></span>
+        <span class="logo-text"><strong>备考跟踪</strong><span>学习进度管理</span></span>
       </a>
       <nav class="nav"><a class="" href="dashboard.html"><span class="nav-icon">⌂</span><span>首页</span></a>
 <a class="" href="resources.html"><span class="nav-icon">▣</span><span>考试与资源</span></a>
@@ -19,12 +19,12 @@
 <a class="" href="recommendations.html"><span class="nav-icon">✦</span><span>学习推荐</span></a>
 <a class="" href="statistics.html"><span class="nav-icon">◫</span><span>学习统计</span></a>
 <a class="active" href="qa.html"><span class="nav-icon">?</span><span>题库与答疑</span></a></nav>
-      <div class="sidebar-footer">蓝白风格 · 简洁实用 · 前端静态原型<br/>适合小学期课程设计展示</div>
+      <div class="sidebar-footer">备考跟踪 · Flask + MySQL<br/>课程设计演示系统</div>
     </aside>
     <main class="main">
       <header class="topbar">
         <div>
-          <div class="breadcrumb">公务员考试学习跟踪系统 / 方案 A</div>
+          <div class="breadcrumb">备考跟踪 / 学习工作台</div>
           <h1 class="page-title"><span class="title-badge">6</span>题库与练习</h1>
           <div class="muted" style="margin-top:8px; font-size:14px;">选择题库进行练习，提交答案后查看解析、答题技巧和常见误区。</div>
         </div>
@@ -56,12 +56,12 @@
         <div class="card span-2" id="question-detail">
           <p class="muted">加载题目中...</p>
         </div>
-        <aside class="card">
+        <aside class="card chat-panel">
           <div class="card-title"><h2>AI 答疑</h2><span class="tag green">模拟</span></div>
+          <div class="chat-input"><input class="input" data-qa-input placeholder="请输入你的问题，例如：这道题为什么选A？"/><button class="btn primary" data-qa-send>发送</button></div>
           <div class="chat" data-qa-chat>
             <div class="bubble ai">你好，我是学习助手。可以问我这道题的解析、技巧或相关知识点。</div>
           </div>
-          <div class="chat-input"><input class="input" data-qa-input placeholder="请输入你的问题，例如：这道题为什么选A？"/><button class="btn primary" data-qa-send>发送</button></div>
         </aside>
       </section>
 
@@ -73,8 +73,8 @@
       <p class="footer-note">题目数据来自后端 API；答疑输入会保存为留言记录，AI 回复为规则演示。</p>
     </main>
   </div>
-  <script src="assets/app.js"></script>
   <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
   <script src="js/app.js"></script>
   <script src="js/qa.js"></script>
 </body>

@@ -127,6 +127,10 @@ function renderOverview(overview) {
 async function initStatistics() {
     if (!document.getElementById('kpi-hours')) return;
 
+    document.querySelectorAll('.kpi-value').forEach(el => {
+        el.innerHTML = '<span class="skeleton-inline"></span>';
+    });
+
     const now = new Date();
     const result = await getProgress({
         days: 7,
@@ -136,6 +140,7 @@ async function initStatistics() {
 
     if (!result.ok || !result.data.success) {
         document.querySelectorAll('.kpi-value').forEach(el => { el.textContent = '—'; });
+        showToast('统计数据加载失败', 'error');
         return;
     }
 
@@ -163,6 +168,11 @@ async function initStatistics() {
     renderCalendar(cal.year, cal.month, cal.checked_dates);
 }
 
-if (document.getElementById('kpi-hours')) {
-    initStatistics();
+function bootStatistics() {
+    if (document.getElementById('kpi-hours')) initStatistics();
+}
+if (document.body.classList.contains('app-ready')) {
+    bootStatistics();
+} else {
+    window.addEventListener('app:ready', bootStatistics, { once: true });
 }

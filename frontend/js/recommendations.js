@@ -67,9 +67,12 @@ function renderRecommendations(items) {
 async function initRecommendations() {
     if (!document.getElementById('reco-list')) return;
 
+    renderLoading(document.getElementById('reco-list'), '加载推荐中...');
+
     const result = await getRecommendations();
     if (!result.ok || !result.data.success) {
-        document.getElementById('reco-list').innerHTML = '<p class="muted">加载失败</p>';
+        renderError(document.getElementById('reco-list'));
+        showToast('推荐数据加载失败', 'error');
         return;
     }
 
@@ -79,6 +82,11 @@ async function initRecommendations() {
     renderRecommendations(data.items || []);
 }
 
-if (document.getElementById('reco-list')) {
-    initRecommendations();
+function bootRecommendations() {
+    if (document.getElementById('reco-list')) initRecommendations();
+}
+if (document.body.classList.contains('app-ready')) {
+    bootRecommendations();
+} else {
+    window.addEventListener('app:ready', bootRecommendations, { once: true });
 }
