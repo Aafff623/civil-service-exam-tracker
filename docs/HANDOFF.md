@@ -5,70 +5,72 @@
 ## 最近一次更新
 
 - **时间**：2026-06-23
-- **会话动作**：完成剩余全部模块（推荐、Dashboard、答疑留言）+ 前端测试
+- **会话动作**：题库种子扩容至 200 题 + 资源关联 + 多选支持 + 换机部署 README
 - **执行者**：Grok Agent
 
 ## 当前上下文
 
-**7 个核心模块均已实现并接入后端 API**，可进行集中 Review。
+**7 个核心模块均已实现**；题库与资源已通过 `resource_id` 关联；种子数据可满足科目/题型/资料筛选演示。
 
 | 模块 | 状态 |
 |------|------|
 | 用户与账户 | ✅ |
 | 考试资源管理 | ✅ |
 | 智能学习计划 | ✅ |
-| 题库与练习 | ✅ |
+| 题库与练习 | ✅（200 题，含多选） |
 | 学习进度统计 | ✅ |
 | 个性化推荐 | ✅ |
 | 题目答疑留言 | ✅（AI 回复仍为规则演示） |
 
-## 已完成（本次会话）
+## 已完成（本次及近期会话）
 
-### 个性化推荐
-- `GET /api/recommendations/` — 弱项识别 + 资源/题目推荐
-- `recommendations.html` + `recommendations.js`
+### 题库与资源联动（方案 B）
+- `questions.resource_id` 关联 `resources`
+- `qa.html` 支持科目 + 资料来源 + 答题形式筛选
+- `resource-detail.html`「开始练习」跳转 `qa.html?resource_id=`
 
-### Dashboard 接入
-- `dashboard.js` — 今日任务、KPI、弱项、倒计时、进度环、热力图
+### 种子数据扩容
+- `init_db.sql`：**200 道题**（单选 152 / 判断 34 / 多选 14）
+- 23 条资源（含 HTML 18–23 入库）
+- 工具链：`seed_questions_from_html.py` → `patch_init_db.py` → `init_db.py`
+- 备考指南（resource id=2）8 道规划类题
 
-### 答疑留言
-- `GET/POST /api/comments/` — 题目疑问记录
-- `qa.js` — 答疑输入保存为留言
+### 前端 / 后端
+- `qa.js` 多选交互与空状态提示
+- `answers.py` 多选答案规范化比对
+- Dashboard 今日任务勾选 + FLIP 动画（`dashboard.js`）
 
-### 前端测试（Playwright）
-- 登录 → 6 个主页面导航无 JS 错误
-- Dashboard 显示 5 项今日任务、KPI 正常
-- Statistics 显示 0.6h 学习时长
-- Recommendations 显示 2 条推荐卡片
+### 部署文档
+- 根目录 `README.md`：换机完整步骤、演示账号、验收路径、FAQ
 
-### Bug 修复
-- 前端日期使用本地时区（修复 `toISOString()` UTC 偏移问题）
+## 待办（按优先级）
 
-## 提交记录
+1. **答辩机实测**：按 `README.md` 在另一台电脑走一遍 clone → init_db → 双端口启动
+2. **集中 Review**：用户主导排 UI/API 边角 bug
+3. **可选**：考试时间线接 API、AI 答疑 LLM、emoji → SVG、favicon
 
-1. `feat(recommendations): implement personalized recommendation API and page`
-2. `feat(dashboard): wire dashboard to APIs and add comment submission`
-3. `fix(frontend): use local timezone for date filters`（待提交）
+## 换机运行（摘要）
 
-## 已知限制（Review 时可关注）
+```powershell
+copy backend\.env.example backend\.env   # 填 MySQL 密码
+cd backend
+pip install -r requirements.txt
+python init_db.py
+python app.py                            # 5001
 
-- AI 答疑为规则回复，非 LLM
-- 考试时间线仍为静态文案
-- 无 favicon（404，不影响功能）
-- 推荐匹配度为规则计算，非机器学习
-- `frontend/assets/*.html` 为旧原型副本，以根目录页面为准
-- `docs/ROADMAP.md` 勾选状态滞后
-
-## 运行方式
-
-```bash
-cd backend && python init_db.py   # 可选重置
-cd backend && python app.py       # 5001
-cd frontend && python -m http.server 8080
+cd ..\frontend
+python -m http.server 8080
 ```
 
-访问 http://localhost:8080/login.html
+访问 http://localhost:8080/login.html ，账号 `root` / `123456`。
 
-## 测试账号
+## 已知限制
 
-可注册新账号，或使用 `qatest` / `test1234`（若数据库未重置）
+- AI 答疑为规则回复，非 LLM
+- 考试时间线部分仍为静态文案
+- 无 favicon（404，不影响功能）
+- `frontend/assets/*.html`（assets 下）为旧原型副本，以 `frontend/` 根目录页面为准
+
+## 未提交 / 需注意
+
+换机依赖 **Git 中的 `init_db.sql`**，不依赖本机 MySQL 数据文件。改题后须 `git push`，另一台 `pull` + `init_db.py`。

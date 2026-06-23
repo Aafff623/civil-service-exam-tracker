@@ -18,30 +18,154 @@ function daysBetween(startStr, endStr) {
     return Math.max(1, Math.round((end - start) / 86400000) + 1);
 }
 
-function renderTodayTasks(items) {
+let todayTasksState = [];
+let todayTaskToggleLock = false;
+
+const TASK_FLIP_MS = 380;
+
+function sortTodayTasks(items) {
+    const pending = items.filter(item => !item.is_completed).sort((a, b) => a.id - b.id);
+    const done = items.filter(item => item.is_completed).sort((a, b) => a.id - b.id);
+    return [...pending, ...done];
+}
+
+function buildTaskItemHtml(item, pendingIndex) {
+    const done = !!item.is_completed;
+    const isFirstPending = !done && pendingIndex === 0;
+    const tagClass = done ? 'green' : (isFirstPending ? 'orange' : 'gray');
+    const tagText = done ? '完成' : (isFirstPending ? '重点' : '待完成');
+    const checkLabel = done ? '标记为未完成' : `完成任务 ${pendingIndex + 1}`;
+    const checkContent = done ? '✓' : String(pendingIndex + 1);
+
+    return `
+        <div class="task-item ${done ? 'is-done' : ''}" data-task-id="${item.id}">
+            <button type="button" class="task-check ${done ? 'done' : ''}" data-task-toggle="${item.id}" aria-label="${escapeHtml(checkLabel)}" aria-pressed="${done}">
+                ${checkContent}
+            </button>
+            <div class="task-text">
+                <strong>${escapeHtml(item.subject_name)} · ${escapeHtml(item.content.slice(0, 12))}</strong>
+                <span>${item.suggested_minutes} 分钟 · ${done ? '已完成' : '待完成'}</span>
+            </div>
+            <span class="tag ${tagClass}">${tagText}</span>
+        </div>
+    `;
+}
+
+function captureTaskRects(list) {
+    const rects = new Map();
+    list.querySelectorAll('.task-item[data-task-id]').forEach(el => {
+        rects.set(el.dataset.taskId, el.getBoundingClientRect());
+    });
+    return rects;
+}
+
+function playTaskFlip(list, beforeRects) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    list.querySelectorAll('.task-item[data-task-id]').forEach(el => {
+        const first = beforeRects.get(el.dataset.taskId);
+        if (!first) return;
+        const last = el.getBoundingClientRect();
+        const dx = first.left - last.left;
+        const dy = first.top - last.top;
+        if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) return;
+
+        el.style.transform = `translate(${dx}px, ${dy}px)`;
+        el.style.transition = 'none';
+        requestAnimationFrame(() => {
+            el.style.transition = `transform ${TASK_FLIP_MS}ms cubic-bezier(.22, 1, .36, 1)`;
+            el.style.transform = '';
+            const onEnd = () => {
+                el.style.transition = '';
+                el.removeEventListener('transitionend', onEnd);
+            };
+            el.addEventListener('transitionend', onEnd);
+        });
+    });
+}
+
+function renderTodayTasks(items, options = {}) {
     const list = document.getElementById('dashboard-tasks');
     if (!list) return;
 
-    if (!items.length) {
+    const sorted = sortTodayTasks(items);
+    todayTasksState = sorted.map(item => ({ ...item }));
+
+    if (!sorted.length) {
         list.innerHTML = '<p class="muted">今日暂无计划任务，<a class="link" href="plan.html">去生成计划</a></p>';
+        updateTodayKpis([]);
         return;
     }
 
-    list.innerHTML = items.map((item, idx) => {
-        const done = item.is_completed;
-        const tagClass = done ? 'green' : (idx === 0 ? 'orange' : 'gray');
-        const tagText = done ? '完成' : (idx === 0 ? '重点' : '待完成');
-        return `
-            <div class="task-item">
-                <span class="task-check ${done ? 'done' : ''}">${done ? '✓' : idx + 1}</span>
-                <div class="task-text">
-                    <strong>${escapeHtml(item.subject_name)} · ${escapeHtml(item.content.slice(0, 12))}</strong>
-                    <span>${item.suggested_minutes} 分钟 · ${done ? '已完成' : '待完成'}</span>
-                </div>
-                <span class="tag ${tagClass}">${tagText}</span>
-            </div>
-        `;
+    let pendingIndex = 0;
+    const html = sorted.map(item => {
+        const idx = item.is_completed ? -1 : pendingIndex++;
+        return buildTaskItemHtml(item, idx);
     }).join('');
+
+    if (options.useFlip) {
+        const beforeRects = captureTaskRects(list);
+        list.innerHTML = html;
+        playTaskFlip(list, beforeRects);
+    } else {
+        list.innerHTML = html;
+    }
+
+    updateTodayKpis(sorted);
+}
+
+function updateTodayKpis(items) {
+    const completedToday = items.filter(i => i.is_completed).length;
+    const totalToday = items.length;
+    const kpiTasks = document.getElementById('kpi-tasks');
+    const kpiRate = document.getElementById('kpi-rate');
+    if (kpiTasks) kpiTasks.innerHTML = `${completedToday}/${totalToday || '—'} <small>项</small>`;
+    if (kpiRate && totalToday) {
+        kpiRate.innerHTML = `${Math.round(completedToday / totalToday * 100)}<small>%</small>`;
+    }
+}
+
+async function toggleTodayTask(taskId, buttonEl) {
+    if (todayTaskToggleLock) return;
+    const list = document.getElementById('dashboard-tasks');
+    const item = todayTasksState.find(t => String(t.id) === String(taskId));
+    if (!item || !list) return;
+
+    const nextCompleted = !item.is_completed;
+    const snapshot = todayTasksState.map(t => ({ ...t }));
+
+    todayTaskToggleLock = true;
+    list.classList.add('is-busy');
+    if (buttonEl) buttonEl.classList.add('is-popping');
+
+    item.is_completed = nextCompleted;
+    renderTodayTasks(todayTasksState, { useFlip: true });
+
+    const res = await updatePlanItem(taskId, nextCompleted);
+    todayTaskToggleLock = false;
+    list.classList.remove('is-busy');
+
+    if (!res.ok || !res.data.success) {
+        todayTasksState = snapshot;
+        renderTodayTasks(todayTasksState, { useFlip: true });
+        showToast(res.data?.message || '更新失败', 'error');
+        return;
+    }
+
+    showToast(nextCompleted ? '任务已完成' : '已恢复为待完成', 'success');
+}
+
+function bindTodayTaskList() {
+    const list = document.getElementById('dashboard-tasks');
+    if (!list || list.dataset.bound === '1') return;
+    list.dataset.bound = '1';
+
+    list.addEventListener('click', e => {
+        const btn = e.target.closest('[data-task-toggle]');
+        if (!btn || btn.disabled) return;
+        e.preventDefault();
+        toggleTodayTask(btn.getAttribute('data-task-toggle'), btn);
+    });
 }
 
 function weakLevel(accuracy) {
@@ -109,7 +233,7 @@ function renderWeakBars(weakSubjects) {
 }
 
 function renderHeatmap(dailyMinutes) {
-    renderStudyHeatmap(document.getElementById('dashboard-heatmap'), dailyMinutes, { weeks: 12 });
+    renderStudyHeatmap(document.getElementById('dashboard-heatmap'), dailyMinutes, { weeks: 26 });
 }
 
 function updateProgressRing(rate) {
@@ -197,7 +321,7 @@ async function initDashboard() {
     const today = todayIso();
 
     const [progressRes, planItemsRes, goalRes, recoRes] = await Promise.all([
-        getProgress({ days: 84 }),
+        getProgress({ days: 182 }),
         getPlanItems({ date: today }),
         getPlanGoal(),
         getRecommendations()
@@ -205,10 +329,8 @@ async function initDashboard() {
 
     const todayItems = planItemsRes.ok && planItemsRes.data.success
         ? (planItemsRes.data.data.items || []) : [];
+    bindTodayTaskList();
     renderTodayTasks(todayItems);
-
-    const completedToday = todayItems.filter(i => i.is_completed).length;
-    const totalToday = todayItems.length;
 
     let planRate = 0;
     if (progressRes.ok && progressRes.data.success) {
@@ -216,20 +338,13 @@ async function initDashboard() {
         const o = data.overview;
         planRate = o.plan_completion_rate || 0;
 
-        const kpiTasks = document.getElementById('kpi-tasks');
         const kpiHours = document.getElementById('kpi-hours');
-        const kpiRate = document.getElementById('kpi-rate');
         const kpiStreak = document.getElementById('kpi-streak');
 
         const todayMinutes = (data.daily_study_minutes || []).find(d => d.date === today);
         const hoursToday = todayMinutes ? (todayMinutes.minutes / 60).toFixed(1) : '0';
 
-        if (kpiTasks) kpiTasks.innerHTML = `${completedToday}/${totalToday || '—'} <small>项</small>`;
         if (kpiHours) kpiHours.innerHTML = `${hoursToday} <small>h</small>`;
-        if (kpiRate) {
-            const rate = totalToday ? Math.round(completedToday / totalToday * 100) : planRate;
-            kpiRate.innerHTML = `${rate}<small>%</small>`;
-        }
         if (kpiStreak) kpiStreak.innerHTML = `${o.streak_days}<small>天</small>`;
 
         renderHeatmap(data.daily_study_minutes || []);

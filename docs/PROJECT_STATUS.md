@@ -3,7 +3,7 @@
 ## 项目信息
 
 - **项目名称**：公务员考试学习跟踪系统
-- **技术栈**：Python Flask + SQLite + 原生 HTML/CSS/JS
+- **技术栈**：Python Flask + MySQL 8 + 原生 HTML/CSS/JS
 - **仓库地址**：https://github.com/Aafff623/civil-service-exam-tracker
 - **创建日期**：2026-06-23
 
@@ -19,9 +19,13 @@
 - [x] 个性化推荐模块
 - [x] 题目答疑留言 API + Dashboard 数据接入
 - [x] 全站主要页面 API 集成与 Playwright 冒烟测试
+- [x] 题库种子扩容（200 题，科目/题型/资料筛选可演示）
+- [x] 题库与考试资源 `resource_id` 关联 + 多选练习
+- [x] 换机部署说明（根目录 `README.md`）
 
 ## 进行中
 
+- [ ] 答辩机换机实测（按 README 验收）
 - [ ] 集中 Review 与 Bug 修复（由用户主导）
 
 ## 可选后续优化
@@ -29,8 +33,7 @@
 1. Dashboard 考试时间线接入资源 API
 2. AI 答疑接入真实 LLM
 3. emoji 图标替换 SVG
-4. 扩充种子题目数据
-5. 同步更新 `docs/ROADMAP.md` 勾选状态
+4. 同步更新 `docs/ROADMAP.md` 勾选状态
 
 ## 关键决策
 

@@ -28,6 +28,8 @@ async function getResources(params = {}) {
     const query = new URLSearchParams();
     if (params.subject_id) query.append('subject_id', params.subject_id);
     if (params.type) query.append('type', params.type);
+    if (params.has_questions) query.append('has_questions', params.has_questions);
+    if (params.practice_only) query.append('practice_only', params.practice_only);
     const queryString = query.toString() ? `?${query.toString()}` : '';
     return apiRequest(`/resources/${queryString}`);
 }
@@ -69,6 +71,7 @@ async function getHealth() {
 async function getQuestions(params = {}) {
     const query = new URLSearchParams();
     if (params.subject_id) query.append('subject_id', params.subject_id);
+    if (params.resource_id) query.append('resource_id', params.resource_id);
     if (params.type) query.append('type', params.type);
     if (params.page) query.append('page', params.page);
     if (params.per_page) query.append('per_page', params.per_page);

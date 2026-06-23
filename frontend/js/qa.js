@@ -1,6 +1,38 @@
 let currentQuestion = null;
 let currentQuestionIndex = 0;
 let questionsCache = [];
+let practiceResourcesCache = [];
+
+const PRACTICE_RESOURCE_TYPES = new Set(['真题', '模拟题', '资料']);
+
+function normalizeAnswer(value = '') {
+    const letters = [...new Set(String(value).toUpperCase().split('').filter(ch => 'ABCD'.includes(ch)))].sort();
+    return letters.join('');
+}
+
+function isMultiSelectQuestion(q) {
+    return q?.type === '多选';
+}
+
+function buildEmptyFilterMessage() {
+    const typeSelect = document.getElementById('type-filter');
+    const resourceSelect = document.getElementById('resource-filter');
+    const subjectSelect = document.getElementById('subject-filter');
+
+    if (typeSelect?.value === '多选') {
+        return '当前筛选下暂无多选题，请切换答题形式或放宽科目、资料来源条件。';
+    }
+    if (typeSelect?.value === '判断') {
+        return '当前筛选下暂无判断题，请切换答题形式或调整科目筛选。';
+    }
+    if (resourceSelect?.value) {
+        return '该资料暂无匹配题目，请选择其他资料或返回';
+    }
+    if (subjectSelect?.value) {
+        return '该科目暂无匹配题目，请切换科目或选择具体资料来源。';
+    }
+    return '暂无匹配题目，请调整筛选条件';
+}
 
 async function initQA() {
     if (!document.getElementById('question-detail')) return;
@@ -9,12 +41,20 @@ async function initQA() {
 
     const params = new URLSearchParams(location.search);
     const subjectId = params.get('subject_id');
+    const resourceId = params.get('resource_id');
+
     const subjectSelect = document.getElementById('subject-filter');
     if (subjectId && subjectSelect) {
         subjectSelect.value = subjectId;
     }
 
-    await loadQuestions(subjectId ? { subject_id: subjectId } : {});
+    await loadResourcesForFilter(subjectSelect?.value || '');
+    const resourceSelect = document.getElementById('resource-filter');
+    if (resourceId && resourceSelect) {
+        resourceSelect.value = resourceId;
+    }
+
+    await applyQuestionFilters();
     await loadAnswerHistory();
     bindFilter();
     bindChat();
@@ -32,6 +72,68 @@ async function loadSubjectsForFilter() {
         subjects.map(s => `<option value="${s.id}">${escapeHtml(s.name)}</option>`).join('');
 }
 
+async function loadResourcesForFilter(subjectId = '') {
+    const resourceSelect = document.getElementById('resource-filter');
+    if (!resourceSelect) return;
+
+    const result = await getResources({ practice_only: 1 });
+    if (!result.ok || !result.data.success) {
+        resourceSelect.innerHTML = '<option value="">全部可练习资料</option>';
+        return;
+    }
+
+    practiceResourcesCache = (result.data.data.items || []).filter(item =>
+        PRACTICE_RESOURCE_TYPES.has(item.type) && Number(item.question_count) > 0
+    );
+
+    let items = practiceResourcesCache;
+    if (subjectId) {
+        items = items.filter(item => String(item.subject_id) === String(subjectId));
+    }
+
+    resourceSelect.innerHTML = '<option value="">全部可练习资料</option>' +
+        items.map(item => {
+            const count = Number(item.question_count) || 0;
+            const label = `${item.title}（${item.type} · ${count} 题）`;
+            return `<option value="${item.id}">${escapeHtml(label)}</option>`;
+        }).join('');
+}
+
+function buildQuestionQueryParams() {
+    const params = {};
+    const subjectSelect = document.getElementById('subject-filter');
+    const resourceSelect = document.getElementById('resource-filter');
+    const typeSelect = document.getElementById('type-filter');
+
+    if (subjectSelect?.value) params.subject_id = subjectSelect.value;
+    if (resourceSelect?.value) params.resource_id = resourceSelect.value;
+    if (typeSelect?.value) params.type = typeSelect.value;
+    return params;
+}
+
+async function applyQuestionFilters() {
+    await loadQuestions(buildQuestionQueryParams());
+    updateFilterHint();
+}
+
+function updateFilterHint() {
+    const hint = document.getElementById('qa-filter-hint');
+    const resourceSelect = document.getElementById('resource-filter');
+    if (!hint) return;
+
+    if (resourceSelect?.value) {
+        const option = resourceSelect.selectedOptions[0];
+        hint.textContent = option
+            ? `当前练习资料：${option.textContent}。题目来自该备考资源关联题库。`
+            : '题目与「考试与资源」中的真题、模拟题、备考资料关联，可按资料筛选练习。';
+        return;
+    }
+
+    hint.textContent = questionsCache.length
+        ? `共 ${questionsCache.length} 道题，均关联考试与资源模块中的备考资料。`
+        : '暂无匹配题目，请调整科目或资料来源筛选。';
+}
+
 async function loadQuestions(params = {}) {
     const list = document.getElementById('question-detail');
     if (!list) return;
@@ -41,6 +143,7 @@ async function loadQuestions(params = {}) {
     const result = await getQuestions({ ...params, per_page: 50 });
     if (!result.ok || !result.data.success) {
         list.innerHTML = '<p class="muted">加载失败，请稍后重试</p>';
+        questionsCache = [];
         return;
     }
 
@@ -48,11 +151,22 @@ async function loadQuestions(params = {}) {
     currentQuestionIndex = 0;
 
     if (questionsCache.length === 0) {
-        list.innerHTML = '<p class="muted">暂无题目</p>';
+        list.innerHTML = `<p class="muted">${buildEmptyFilterMessage()}。<a class="link" href="resources.html" style="margin-left:8px;">考试与资源</a></p>`;
+        updateFilterHint();
         return;
     }
 
     renderQuestion();
+    updateFilterHint();
+}
+
+function renderResourceLink(q) {
+    if (!q.resource_id || !q.resource_title) return '';
+    return `
+        <a class="link" href="resource-detail.html?id=${encodeURIComponent(q.resource_id)}" style="font-size:13px;">
+            出处：${escapeHtml(q.resource_title)}${q.resource_type ? `（${escapeHtml(q.resource_type)}）` : ''}
+        </a>
+    `;
 }
 
 function renderQuestion() {
@@ -71,6 +185,10 @@ function renderQuestion() {
         `;
     }).join('');
 
+    const multiHint = isMultiSelectQuestion(q)
+        ? '<p class="muted" style="margin:0 0 12px;font-size:13px;">本题为多选题，可选择多个选项后提交。</p>'
+        : '';
+
     container.innerHTML = `
         <div class="card-title">
             <h2>题目详情</h2>
@@ -78,10 +196,13 @@ function renderQuestion() {
                 <span class="tag">${escapeHtml(q.type)}</span>
                 <span class="tag gray">${currentQuestionIndex + 1} / ${questionsCache.length}</span>
                 <span class="tag gray">${escapeHtml(q.subject_name || '通用')}</span>
+                ${q.resource_type ? `<span class="tag blue">${escapeHtml(q.resource_type)}</span>` : ''}
             </div>
         </div>
+        ${renderResourceLink(q) ? `<p style="margin:0 0 14px;">${renderResourceLink(q)}</p>` : ''}
         <div class="question-card" id="question-card">
             <p><strong>${escapeHtml(q.content)}</strong></p>
+            ${multiHint}
             ${optionsHtml}
         </div>
         <div id="answer-result" style="margin-top:18px; display:none;"></div>
@@ -99,8 +220,13 @@ function bindQuestionInteractions() {
     const card = document.getElementById('question-card');
     if (!card) return;
 
+    const multi = isMultiSelectQuestion(currentQuestion);
     card.querySelectorAll('[data-option]').forEach(label => {
         label.addEventListener('click', () => {
+            if (multi) {
+                label.classList.toggle('selected');
+                return;
+            }
             card.querySelectorAll('[data-option]').forEach(el => el.classList.remove('selected'));
             label.classList.add('selected');
         });
@@ -134,13 +260,14 @@ function bindQuestionInteractions() {
 
 async function submitCurrentAnswer() {
     const card = document.getElementById('question-card');
-    const selected = card.querySelector('[data-option].selected');
-    if (!selected) {
-        showToast('请先选择一个答案', 'error');
+    const multi = isMultiSelectQuestion(currentQuestion);
+    const selectedNodes = [...card.querySelectorAll('[data-option].selected')];
+    if (!selectedNodes.length) {
+        showToast(multi ? '请至少选择一个答案' : '请先选择一个答案', 'error');
         return;
     }
 
-    const selectedAnswer = selected.getAttribute('data-option');
+    const selectedAnswer = normalizeAnswer(selectedNodes.map(node => node.getAttribute('data-option')).join(''));
     const submitBtn = document.getElementById('submit-answer');
     setButtonLoading(submitBtn, true, '提交中');
     const result = await submitAnswer(currentQuestion.id, selectedAnswer);
@@ -156,15 +283,22 @@ async function submitCurrentAnswer() {
     const data = result.data.data;
     const q = currentQuestion;
 
-    // Highlight options
+    const normalizedCorrect = normalizeAnswer(data.correct_answer);
+    const selectedLetters = new Set(selectedAnswer.split(''));
+    const correctLetters = new Set(normalizedCorrect.split(''));
+
     card.querySelectorAll('[data-option]').forEach(label => {
         const letter = label.getAttribute('data-option');
-        if (letter === data.correct_answer) {
+        if (correctLetters.has(letter)) {
             label.classList.add('correct');
-        } else if (letter === selectedAnswer && letter !== data.correct_answer) {
+        } else if (selectedLetters.has(letter)) {
             label.classList.add('wrong');
         }
     });
+
+    const resourceNote = q.resource_id
+        ? `<p class="muted" style="margin-top:10px;font-size:13px;">本题出自 <a class="link" href="resource-detail.html?id=${encodeURIComponent(q.resource_id)}">${escapeHtml(q.resource_title || '关联资料')}</a>，可返回资料页查看完整章节。</p>`
+        : '';
 
     resultBox.innerHTML = `
         <div class="grid grid-2">
@@ -174,7 +308,7 @@ async function submitCurrentAnswer() {
                     ? '<span class="tag green">回答正确</span>'
                     : `<span class="tag red">回答错误</span> 你的答案：${escapeHtml(selectedAnswer)}`
                 }
-                <br/>正确答案：<span class="tag green">${escapeHtml(data.correct_answer)}</span>
+                <br/>正确答案：<span class="tag green">${escapeHtml(normalizedCorrect || data.correct_answer)}</span>
             </div>
             <div class="analysis-box">
                 <strong>答题技巧</strong><br/>${escapeHtml(data.tips || '暂无技巧')}
@@ -183,6 +317,7 @@ async function submitCurrentAnswer() {
         <div class="analysis-box" style="margin-top:14px;">
             <strong>题目解析</strong><br/>${escapeHtml(data.explanation || '暂无解析')}
         </div>
+        ${resourceNote}
     `;
     resultBox.style.display = 'block';
 
@@ -198,22 +333,22 @@ async function loadAnswerHistory() {
 
     const result = await getAnswerHistory();
     if (!result.ok || !result.data.success) {
-        list.innerHTML = '<p class="muted">加载失败</p>';
+        list.innerHTML = '<p class="muted">暂无答题记录</p>';
         return;
     }
 
     const items = result.data.data.items || [];
-    if (items.length === 0) {
-        list.innerHTML = '<p class="muted">暂无答题记录，完成练习后将显示在这里</p>';
+    if (!items.length) {
+        list.innerHTML = '<p class="muted">暂无答题记录</p>';
         return;
     }
 
     list.innerHTML = items.slice(0, 8).map(item => `
-        <div class="history-item" style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--line);">
-            <div>
-                <span class="tag ${item.is_correct ? 'green' : 'red'}">${item.is_correct ? '正确' : '错误'}</span>
-                <span class="muted" style="margin-left:8px;">${escapeHtml(item.subject_name || '')}</span>
-                <div style="margin-top:4px; font-size:14px;">${escapeHtml((item.question_content || '').slice(0, 40))}${(item.question_content || '').length > 40 ? '…' : ''}</div>
+        <div class="list-item">
+            <span class="tag ${item.is_correct ? 'green' : 'red'}">${item.is_correct ? '正确' : '错误'}</span>
+            <div class="task-text">
+                <strong>${escapeHtml((item.content || '').slice(0, 48))}${(item.content || '').length > 48 ? '…' : ''}</strong>
+                <span>${escapeHtml(item.subject_name || '')}</span>
             </div>
             <span class="muted" style="font-size:12px; white-space:nowrap;">${escapeHtml(item.selected_answer)} → ${escapeHtml(item.correct_answer)}</span>
         </div>
@@ -222,17 +357,22 @@ async function loadAnswerHistory() {
 
 function bindFilter() {
     const subjectSelect = document.getElementById('subject-filter');
+    const resourceSelect = document.getElementById('resource-filter');
     const typeSelect = document.getElementById('type-filter');
 
-    function applyFilter() {
-        const params = {};
-        if (subjectSelect && subjectSelect.value) params.subject_id = subjectSelect.value;
-        if (typeSelect && typeSelect.value) params.type = typeSelect.value;
-        loadQuestions(params);
+    async function onSubjectChange() {
+        const prevResource = resourceSelect?.value || '';
+        await loadResourcesForFilter(subjectSelect?.value || '');
+        if (prevResource && resourceSelect) {
+            const stillValid = [...resourceSelect.options].some(opt => opt.value === prevResource);
+            resourceSelect.value = stillValid ? prevResource : '';
+        }
+        await applyQuestionFilters();
     }
 
-    if (subjectSelect) subjectSelect.addEventListener('change', applyFilter);
-    if (typeSelect) typeSelect.addEventListener('change', applyFilter);
+    if (subjectSelect) subjectSelect.addEventListener('change', onSubjectChange);
+    if (resourceSelect) resourceSelect.addEventListener('change', applyQuestionFilters);
+    if (typeSelect) typeSelect.addEventListener('change', applyQuestionFilters);
 }
 
 function bindChat() {

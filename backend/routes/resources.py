@@ -15,9 +15,13 @@ def list_resources():
     conn = get_db()
     cursor = conn.cursor()
 
+    has_questions = request.args.get('has_questions', '').strip().lower()
+    practice_only = request.args.get('practice_only', '').strip().lower()
+
     query = """
         SELECT r.id, r.title, r.type, r.content, r.url, r.created_at,
-               r.subject_id, s.name as subject_name
+               r.subject_id, s.name as subject_name,
+               (SELECT COUNT(*) FROM questions q WHERE q.resource_id = r.id) AS question_count
         FROM resources r
         LEFT JOIN subjects s ON r.subject_id = s.id
         WHERE 1=1
@@ -31,6 +35,13 @@ def list_resources():
     if resource_type:
         query += " AND r.type = %s"
         params.append(resource_type)
+
+    if practice_only in ('1', 'true', 'yes'):
+        query += " AND r.type IN ('真题', '模拟题', '资料')"
+        query += " AND EXISTS (SELECT 1 FROM questions q WHERE q.resource_id = r.id)"
+
+    if has_questions in ('1', 'true', 'yes'):
+        query += " AND EXISTS (SELECT 1 FROM questions q WHERE q.resource_id = r.id)"
 
     query += " ORDER BY r.created_at DESC"
 
@@ -50,7 +61,8 @@ def get_resource(resource_id):
     cursor = conn.cursor()
     cursor.execute("""
         SELECT r.id, r.title, r.type, r.content, r.url, r.created_at,
-               r.subject_id, s.name as subject_name
+               r.subject_id, s.name as subject_name,
+               (SELECT COUNT(*) FROM questions q WHERE q.resource_id = r.id) AS question_count
         FROM resources r
         LEFT JOIN subjects s ON r.subject_id = s.id
         WHERE r.id = %s
