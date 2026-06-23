@@ -13,7 +13,7 @@ function renderWeakBars(weakSubjects) {
         <div class="bar-row">
             <span>${escapeHtml(w.subject_name)}</span>
             <div class="progress orange"><span style="width:${Math.round(w.accuracy)}%"></span></div>
-            <strong>${Math.round(w.accuracy)}%</strong>
+            <span class="metric-value">${Math.round(w.accuracy)}%</span>
         </div>
     `).join('');
 }

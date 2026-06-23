@@ -62,7 +62,7 @@ function renderSubjectBars(subjects) {
             <div class="bar-row">
                 <span>${escapeHtml(s.subject_name)}</span>
                 <div class="progress"><span style="width:${rate}%"></span></div>
-                <strong>${rate}%</strong>
+                <span class="metric-value">${rate}%</span>
             </div>
             <div class="muted" style="font-size:12px;margin:-6px 0 10px 92px;">${s.completed || 0}/${s.total || 0} 项${acc}</div>
         `;

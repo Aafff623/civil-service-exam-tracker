@@ -280,7 +280,7 @@ async function loadUpcomingPreview() {
         return `
             <div class="upcoming-day">
                 <div class="upcoming-day-head">
-                    <strong>${escapeHtml(dateStr)}</strong>
+                    <span class="upcoming-date">${escapeHtml(dateStr)}</span>
                     <span class="tag ${done === dayItems.length ? 'green' : 'orange'}">${done}/${dayItems.length} 完成</span>
                 </div>
                 <div class="upcoming-items">

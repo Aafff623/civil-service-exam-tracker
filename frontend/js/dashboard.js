@@ -43,7 +43,7 @@ function buildTaskItemHtml(item, pendingIndex) {
                 ${checkContent}
             </button>
             <div class="task-text">
-                <strong>${escapeHtml(item.subject_name)} · ${escapeHtml(item.content.slice(0, 12))}</strong>
+                <span class="list-title">${escapeHtml(item.subject_name)} · ${escapeHtml(item.content.slice(0, 12))}</span>
                 <span>${item.suggested_minutes} 分钟 · ${done ? '已完成' : '待完成'}</span>
             </div>
             <span class="tag ${tagClass}">${tagText}</span>
@@ -206,8 +206,8 @@ function renderWeakBars(weakSubjects) {
     if (badge) badge.textContent = `${weakSubjects.length} 项弱项`;
     if (summary) {
         summary.innerHTML = `
-            <div class="weak-stat"><span>平均正确率</span><strong>${avg}%</strong></div>
-            <div class="weak-stat"><span>最需加强</span><strong>${escapeHtml(top.subject_name)}</strong></div>
+            <div class="weak-stat"><span>平均正确率</span><span class="metric-value">${avg}%</span></div>
+            <div class="weak-stat"><span>最需加强</span><span class="list-title">${escapeHtml(top.subject_name)}</span></div>
         `;
     }
 
@@ -221,7 +221,7 @@ function renderWeakBars(weakSubjects) {
                     <span class="weak-meta">${w.total_answers || 0} 题 · <span class="tag ${lv.class}">${lv.label}</span></span>
                 </div>
                 <div class="progress orange"><span style="width:${Math.round(w.accuracy)}%"></span></div>
-                <strong>${Math.round(w.accuracy)}%</strong>
+                <span class="metric-value">${Math.round(w.accuracy)}%</span>
             </div>
         `;
     }).join('');
@@ -235,7 +235,7 @@ function renderWeakBars(weakSubjects) {
     }
 
     if (tip) {
-        tip.innerHTML = `建议今天优先加强「<strong>${escapeHtml(top.subject_name)}</strong>」，正确率 ${Math.round(top.accuracy)}%，再练 5 题可见明显提升。`;
+        tip.innerHTML = `建议今天优先加强「${escapeHtml(top.subject_name)}」，正确率 <span class="metric-value">${Math.round(top.accuracy)}%</span>，再练 5 题可见明显提升。`;
     }
 }
 
