@@ -17,8 +17,10 @@ DEMO_SUBJECT_STATS = [
 
 
 def apply_demo_subject_stats(subject_stats, weak_rows, cursor):
-    if subject_stats and any(item.get('completion_rate', 0) > 0 for item in subject_stats):
-        return subject_stats
+    if subject_stats:
+        rates = [float(item.get('completion_rate') or 0) for item in subject_stats]
+        if max(rates) >= 15:
+            return subject_stats
 
     weak_by_name = {row['subject_name']: row for row in weak_rows}
     cursor.execute("SELECT id, name FROM subjects ORDER BY id")

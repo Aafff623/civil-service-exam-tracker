@@ -261,10 +261,10 @@ async function loadUpcomingPreview() {
     }
 
     const items = result.data.data.items || [];
-    if (section) section.classList.toggle('hidden', items.length === 0);
+    if (section) section.classList.remove('hidden');
 
     if (items.length === 0) {
-        box.innerHTML = '<p class="muted">未来 7 天暂无任务</p>';
+        box.innerHTML = '<p class="muted">未来 7 天暂无任务，请先生成学习计划</p>';
         return;
     }
 
