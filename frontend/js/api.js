@@ -138,3 +138,17 @@ async function getProgress(params = {}) {
     const queryString = query.toString() ? `?${query.toString()}` : '';
     return apiRequest(`/progress/${queryString}`);
 }
+
+async function getRecommendations() {
+    return apiRequest('/recommendations/');
+}
+
+async function getComments(question_id) {
+    return apiRequest(`/comments/?question_id=${question_id}`);
+}
+
+async function postComment(question_id, content, reply_to) {
+    const body = { question_id, content };
+    if (reply_to) body.reply_to = reply_to;
+    return apiRequest('/comments/', { method: 'POST', body });
+}
