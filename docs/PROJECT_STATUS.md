@@ -13,21 +13,27 @@
 - [x] 编写 PRD：`PRD-civil-service-exam-tracker.md`
 - [x] 安装项目级 skills：ui-ux-pro-max、ppt-master、matt-pocock
 - [x] 运行 `/setup-matt-pocock-skills`
-- [x] 创建 `CLAUDE.md`、`docs/agents/issue-tracker.md`、`docs/agents/triage-labels.md`、`docs/agents/domain.md`
+- [x] 创建 `CLAUDE.md`、`docs/agents/`
 - [x] 编写 `CONTEXT.md`
 - [x] 初始化 Git 仓库
 - [x] 创建 GitHub private 仓库并推送初始提交
 - [x] 搭建 Flask + 前端项目骨架（含健康检查 API）
 - [x] 配置 `.gitignore`
+- [x] 设计数据库表结构并写 `backend/init_db.sql`
 
 ## 进行中
 
-- [ ] 设计数据库表结构
+- [ ] 用户与账户模块
 
 ## 下一步
 
-1. 设计数据库表结构并写 `backend/init_db.sql`
-2. 按模块逐个实现功能（用户 → 资源 → 题库 → 计划 → 进度 → 推荐 → 答疑）
+1. 实现用户与账户模块（注册、登录、登出、个人信息）
+2. 考试资源管理模块
+3. 题库与练习模块
+4. 智能学习计划生成模块
+5. 学习进度跟踪模块
+6. 个性化推荐模块
+7. 题目解析与答疑模块
 
 ## 关键决策
 
