@@ -39,17 +39,20 @@
   - [x] 后端：目标设置、计划生成、任务列表、标记完成（`routes/plans.py`）
   - [x] 前端：`plan.html` 接入 API（生成计划、本周安排、科目表）
   - [x] 标记完成同步 `progress` 表
+- [x] 学习进度跟踪模块
+  - [x] 后端：进度汇总 API（`routes/progress.py`）
+  - [x] 答题提交同步 `progress.answer_count`
+  - [x] 前端：`statistics.html` 接入 KPI、趋势图、科目完成度、打卡日历
 
 ## 进行中
 
-- [ ] 静态页面后端集成（recommendations、statistics）
+- [ ] 个性化推荐模块（recommendations.html）
 
 ## 下一步
 
-1. 学习进度跟踪模块（后端 `/api/progress` + `statistics.html` 接入）
-2. 个性化推荐模块（后端 `/api/recommendations` + `recommendations.html` 接入）
-3. 题目解析与答疑模块（AI 答疑可接入真实接口）
-4. Dashboard 今日任务接入计划 API
+1. 个性化推荐模块（后端 `/api/recommendations` + `recommendations.html` 接入）
+2. 题目解析与答疑模块（AI 答疑可接入真实接口）
+3. Dashboard 今日任务接入计划 API
 
 ## 关键决策
 

@@ -129,3 +129,12 @@ async function updatePlanItem(id, is_completed) {
 async function getPlanSubjects() {
     return apiRequest('/plans/subjects');
 }
+
+async function getProgress(params = {}) {
+    const query = new URLSearchParams();
+    if (params.days) query.append('days', params.days);
+    if (params.year) query.append('year', params.year);
+    if (params.month) query.append('month', params.month);
+    const queryString = query.toString() ? `?${query.toString()}` : '';
+    return apiRequest(`/progress/${queryString}`);
+}
