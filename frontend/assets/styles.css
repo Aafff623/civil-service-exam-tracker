@@ -1891,4 +1891,73 @@ body.app-ready .main-enter {
     border-right: 0;
     padding-right: 0;
   }
+
+  /* Aceternity mobile sidebar drawer (sidebars/1 port) */
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1200;
+    width: min(280px, 86vw);
+    height: 100vh;
+    padding: 16px 14px 20px;
+    overflow-y: auto;
+    transform: translateX(-105%);
+    transition: transform 0.22s ease;
+    box-shadow: none;
+  }
+
+  .sidebar.is-open {
+    transform: translateX(0);
+    box-shadow: 8px 0 28px rgba(15, 23, 42, 0.14);
+  }
+
+  .nav {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .nav a {
+    justify-content: flex-start;
+    height: 42px;
+    padding: 0 12px;
+  }
+
+  .nav a .nav-icon {
+    display: grid;
+  }
+
+  .sidebar-footer {
+    margin-top: 16px;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    min-width: 72px;
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    background: rgba(15, 23, 42, 0.42);
+    opacity: 0;
+    transition: opacity 0.22s ease;
+    pointer-events: none;
+  }
+
+  .sidebar-overlay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  body.nav-open {
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 861px) {
+  .nav-toggle { display: none; }
+  .sidebar-overlay { display: none !important; }
 }

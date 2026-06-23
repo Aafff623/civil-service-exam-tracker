@@ -134,6 +134,65 @@ function initSurfaceSpotlight() {
     });
 }
 
+function initMobileNav() {
+    const app = document.querySelector('.app');
+    const sidebar = document.querySelector('.sidebar');
+    const main = document.querySelector('.main');
+    if (!app || !sidebar || !main || app.dataset.mobileNavBound) return;
+    app.dataset.mobileNavBound = '1';
+
+    const mq = window.matchMedia('(max-width: 860px)');
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'btn ghost nav-toggle';
+    toggle.setAttribute('aria-label', '打开导航菜单');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.textContent = '菜单';
+
+    const overlay = document.createElement('div');
+    overlay.className = 'sidebar-overlay';
+    overlay.hidden = true;
+
+    const topActions = main.querySelector('.topbar .top-actions');
+    if (topActions) topActions.prepend(toggle);
+    document.body.appendChild(overlay);
+
+    function closeNav() {
+        sidebar.classList.remove('is-open');
+        overlay.classList.remove('is-visible');
+        toggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('nav-open');
+        setTimeout(() => { overlay.hidden = true; }, 220);
+    }
+
+    function openNav() {
+        overlay.hidden = false;
+        requestAnimationFrame(() => {
+            sidebar.classList.add('is-open');
+            overlay.classList.add('is-visible');
+        });
+        toggle.setAttribute('aria-expanded', 'true');
+        document.body.classList.add('nav-open');
+    }
+
+    toggle.addEventListener('click', () => {
+        if (!mq.matches) return;
+        if (sidebar.classList.contains('is-open')) closeNav();
+        else openNav();
+    });
+
+    overlay.addEventListener('click', closeNav);
+    sidebar.querySelectorAll('.nav a, .logo').forEach(link => {
+        link.addEventListener('click', () => {
+            if (mq.matches) closeNav();
+        });
+    });
+
+    mq.addEventListener('change', e => {
+        if (!e.matches) closeNav();
+    });
+}
+
 function navigateToModule(href) {
     const target = (href || '').split('?')[0].toLowerCase();
     const current = (location.pathname.split('/').pop() || '').toLowerCase();
