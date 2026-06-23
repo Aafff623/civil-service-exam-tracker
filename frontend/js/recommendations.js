@@ -1,4 +1,4 @@
-const RECO_THUMB_VARIANTS = ['', 'alt'];
+const RECO_THUMB_VARIANTS = ['', 'teal', 'amber', 'indigo'];
 
 function renderWeakBars(weakSubjects) {
     const container = document.getElementById('reco-weak-bars');
@@ -35,7 +35,18 @@ function renderPreferences(data) {
         tags.add('入门推荐');
     }
 
-    container.innerHTML = [...tags].map(t => `<span class="tag">${escapeHtml(t)}</span>`).join(' ');
+    const tagTone = {
+        '弱项专攻': 'red',
+        '专项练习': 'blue',
+        '图文资料': 'green',
+        '错题复盘': 'orange',
+        '系统备考': 'purple',
+        '入门推荐': 'blue'
+    };
+    container.innerHTML = [...tags].map(t => {
+        const tone = tagTone[t] || '';
+        return `<span class="tag${tone ? ' ' + tone : ''}">${escapeHtml(t)}</span>`;
+    }).join(' ');
 }
 
 function renderGoal(goal, planProgress) {
