@@ -161,4 +161,15 @@ async function loadResourceDetail() {
     buildResourceToc(bodyEl, tocNavEl, tocAsideEl, scrollEl);
 }
 
-window.addEventListener('app:ready', loadResourceDetail);
+function bootResourceDetail() {
+    if (!document.getElementById('detail-body')) {
+        notifyModuleReady();
+        return;
+    }
+    loadResourceDetail().finally(() => notifyModuleReady());
+}
+if (document.body.classList.contains('app-ready')) {
+    bootResourceDetail();
+} else {
+    window.addEventListener('app:ready', bootResourceDetail, { once: true });
+}

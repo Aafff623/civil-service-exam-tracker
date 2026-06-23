@@ -24,27 +24,20 @@ const NAV_PAGES = {
     'qa.html': 'qa.html'
 };
 
-function injectAppVeil() {
-    if (!document.querySelector('.app') || document.querySelector('.app-veil')) return;
-    const veil = document.createElement('div');
-    veil.className = 'app-veil';
-    veil.setAttribute('aria-live', 'polite');
-    veil.innerHTML = '<div class="app-veil-inner"><span class="spinner" aria-hidden="true"></span><span>正在加载...</span></div>';
-    document.body.appendChild(veil);
-    document.body.classList.add('app-pending');
-}
+const ASYNC_MODULE_PAGES = new Set([
+    'dashboard.html',
+    'resources.html',
+    'resource-detail.html',
+    'plan.html',
+    'recommendations.html',
+    'statistics.html',
+    'qa.html'
+]);
 
-function revealApp() {
-    document.body.classList.remove('app-pending');
-    document.body.classList.add('app-ready');
-    const veil = document.querySelector('.app-veil');
-    if (veil) {
-        veil.classList.add('is-hidden');
-        setTimeout(() => veil.remove(), 320);
-    }
-    const main = document.querySelector('.main');
-    if (main) main.classList.add('main-enter');
-}
+(function bootPageVeilEarly() {
+    if (!document.querySelector('.app')) return;
+    showPageVeil(PAGE_LOAD_TEXT);
+})();
 
 function syncNavActive() {
     const page = (location.pathname.split('/').pop() || 'dashboard.html').toLowerCase();
@@ -64,34 +57,48 @@ function syncSidebarMeta(user) {
     });
 }
 
+function isInternalModuleLink(href) {
+    if (!href || href.startsWith('http') || href.startsWith('#') || href.includes('://')) return false;
+    const page = href.split('?')[0].toLowerCase();
+    return Object.prototype.hasOwnProperty.call(NAV_PAGES, page) || ASYNC_MODULE_PAGES.has(page);
+}
+
 function initPageTransitions() {
     if (document.body.dataset.navBound) return;
     document.body.dataset.navBound = '1';
 
     const currentPage = (location.pathname.split('/').pop() || '').toLowerCase();
 
-    document.querySelectorAll('.nav a[href]').forEach(link => {
+    document.querySelectorAll('.nav a[href], a.logo[href], a.module-link[href]').forEach(link => {
         const href = (link.getAttribute('href') || '').trim();
-        if (!href || href.startsWith('http') || href.startsWith('#') || href.includes('://')) return;
+        if (!isInternalModuleLink(href)) return;
 
         link.addEventListener('click', e => {
             if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
             const target = href.split('?')[0].toLowerCase();
-            if (target === currentPage) {
+            const activeTarget = (NAV_PAGES[target] || target).toLowerCase();
+            const activeCurrent = (NAV_PAGES[currentPage] || currentPage).toLowerCase();
+            if (activeTarget === activeCurrent) {
                 e.preventDefault();
                 return;
             }
             e.preventDefault();
-            document.body.classList.add('page-leaving');
-            setTimeout(() => { window.location.href = href; }, 130);
+            navigateToModule(href);
         });
     });
+}
+
+function scheduleModuleReadyFallback() {
+    const page = (location.pathname.split('/').pop() || 'dashboard.html').toLowerCase();
+    if (!ASYNC_MODULE_PAGES.has(page)) {
+        notifyModuleReady();
+    }
+    setTimeout(() => notifyModuleReady(), 8000);
 }
 
 async function initApp() {
     if (!document.querySelector('.app')) return;
 
-    injectAppVeil();
     syncNavActive();
     initPageTransitions();
 
@@ -104,7 +111,6 @@ async function initApp() {
     const user = meResult.data.data;
     currentUser = user;
     syncSidebarMeta(user);
-    revealApp();
 
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn && !logoutBtn.dataset.bound) {
@@ -119,22 +125,27 @@ async function initApp() {
     }
 
     if (document.getElementById('resource-list')) {
-        initResourcesPage(user);
+        await initResourcesPage(user);
     }
 
     window.dispatchEvent(new Event('app:ready'));
+    scheduleModuleReadyFallback();
 }
 
-function initResourcesPage(user) {
+async function initResourcesPage(user) {
     const tabs = document.querySelectorAll('#resource-tabs .tab');
     tabs.forEach(tab => {
         if (tab.dataset.bound) return;
         tab.dataset.bound = '1';
-        tab.addEventListener('click', () => {
+        tab.addEventListener('click', async () => {
+            if (tab.classList.contains('active')) return;
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
             activeResourceTab = tab.getAttribute('data-tab');
-            renderResourceList();
+            const list = document.getElementById('resource-list');
+            await transitionSection(list, async () => {
+                renderResourceList();
+            });
         });
     });
 
@@ -145,8 +156,9 @@ function initResourcesPage(user) {
     }
 
     initResourceAdmin(user);
-    loadResourceSubjects();
-    loadAllResources();
+    await loadResourceSubjects();
+    await loadAllResources();
+    notifyModuleReady();
 }
 
 function isResourceAdmin(user) {
@@ -456,7 +468,7 @@ function renderResourceList() {
             card.classList.add('is-pressed');
             setTimeout(() => {
                 card.classList.remove('is-pressed');
-                window.location.href = `resource-detail.html?id=${encodeURIComponent(id)}`;
+                navigateToModule(`resource-detail.html?id=${encodeURIComponent(id)}`);
             }, 120);
         };
         card.addEventListener('click', showDetail);
