@@ -29,6 +29,11 @@
           <div class="muted" style="margin-top:8px; font-size:14px;">今日任务、学习时长、完成率、弱项提醒与考试倒计时。</div>
         </div>
         <div class="top-actions">
+          <div class="topbar-welcome">
+            <p class="topbar-greeting">你好，<span data-username>同学</span></p>
+            <p class="topbar-greeting-sub">按计划推进，保持每日学习节奏。</p>
+            <small class="topbar-greeting-date" data-today></small>
+          </div>
           <button class="btn ghost" id="logout-btn" title="退出登录">退出</button>
         </div>
       </header>
@@ -41,14 +46,7 @@
 </section>
 <section class="grid grid-3" style="margin-top:18px;">
   <div class="card span-2">
-    <div class="welcome-head">
-      <img class="welcome-mascot" src="assets/images/mascot-welcome.png" alt="" width="48" height="48" loading="lazy" />
-      <div class="welcome-copy">
-        <div class="card-title welcome-title"><h2>你好，<span data-username>同学</span></h2><small data-today></small></div>
-        <p class="muted welcome-sub">按计划推进，保持每日学习节奏。</p>
-      </div>
-    </div>
-    <div class="grid grid-2" style="margin-top:18px;">
+    <div class="grid grid-2">
       <div class="card soft">
         <div class="card-title"><h3>今日任务清单</h3><a class="link" href="plan.html">查看计划</a></div>
         <div class="task-list" id="dashboard-tasks"><p class="muted">加载中...</p></div>

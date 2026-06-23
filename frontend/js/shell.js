@@ -131,7 +131,8 @@
                     <strong class="topbar-user-name" data-topbar-username>—</strong>
                     <small class="topbar-user-role" data-topbar-role>学习者</small>
                 </span>`;
-            if (logout) actions.insertBefore(chip, logout);
+            const anchor = actions.querySelector('.topbar-welcome') || logout;
+            if (anchor) actions.insertBefore(chip, anchor);
             else actions.appendChild(chip);
         });
     }

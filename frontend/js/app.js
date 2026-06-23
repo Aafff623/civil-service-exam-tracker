@@ -135,6 +135,10 @@ async function initApp() {
     currentUser = user;
     syncSidebarMeta(user);
 
+    document.querySelectorAll('[data-today]').forEach(el => {
+        el.textContent = new Date().toLocaleDateString('zh-CN');
+    });
+
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn && !logoutBtn.dataset.bound) {
         logoutBtn.dataset.bound = '1';
