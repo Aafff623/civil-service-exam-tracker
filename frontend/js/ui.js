@@ -50,21 +50,49 @@ function renderError(el, text = '加载失败，请稍后重试') {
 }
 
 const PAGE_LOAD_TEXT = '正在加载中';
+const SHELL_REVEAL_MS = 180;
+const NAV_LEAVE_MS = 200;
 let pageRevealDone = false;
+let shellRevealScheduled = false;
 
 function showPageVeil(message = PAGE_LOAD_TEXT) {
     let veil = document.querySelector('.app-veil');
     if (!veil) {
         veil = document.createElement('div');
-        veil.className = 'app-veil';
+        veil.className = 'app-veil app-veil-main';
         veil.setAttribute('aria-live', 'polite');
+        veil.setAttribute('aria-busy', 'true');
         document.body.appendChild(veil);
     }
-    veil.innerHTML = `<div class="app-veil-inner"><span class="spinner" aria-hidden="true"></span><span>${escapeHtml(message)}</span></div>`;
-    veil.classList.remove('is-hidden');
+    veil.innerHTML = `
+        <div class="app-veil-backdrop" aria-hidden="true"></div>
+        <div class="app-veil-shimmer" aria-hidden="true"></div>
+        <div class="app-veil-inner">
+            <div class="app-veil-spinner" aria-hidden="true"><span></span><span></span><span></span></div>
+            <span class="app-veil-text">${escapeHtml(message)}</span>
+            <div class="app-veil-progress" aria-hidden="true"><span></span></div>
+        </div>`;
+    veil.classList.remove('is-hidden', 'is-closing');
     requestAnimationFrame(() => veil.classList.add('is-open'));
     document.body.classList.add('app-pending');
     return veil;
+}
+
+function scheduleShellReveal() {
+    if (pageRevealDone || shellRevealScheduled) return;
+    shellRevealScheduled = true;
+
+    let delay = SHELL_REVEAL_MS;
+    try {
+        if (sessionStorage.getItem('module-transition')) delay = 120;
+    } catch (_) { /* ignore */ }
+
+    const run = () => notifyModuleReady();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(run, delay), { once: true });
+    } else {
+        setTimeout(run, delay);
+    }
 }
 
 function notifyModuleReady() {
@@ -76,9 +104,10 @@ function notifyModuleReady() {
 
     const veil = document.querySelector('.app-veil');
     if (veil) {
+        veil.setAttribute('aria-busy', 'false');
         veil.classList.remove('is-open');
-        veil.classList.add('is-hidden');
-        setTimeout(() => veil.remove(), 340);
+        veil.classList.add('is-closing');
+        setTimeout(() => veil.remove(), 420);
     }
 
     const main = document.querySelector('.main');
@@ -102,11 +131,10 @@ function navigateToModule(href) {
         sessionStorage.setItem('module-transition', '1');
     } catch (_) { /* ignore */ }
 
-    showPageVeil(PAGE_LOAD_TEXT);
     document.body.classList.add('page-leaving');
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const delay = reduced ? 0 : 320;
+    const delay = reduced ? 0 : NAV_LEAVE_MS;
     setTimeout(() => { window.location.href = href; }, delay);
 }
 

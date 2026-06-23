@@ -37,6 +37,7 @@ const ASYNC_MODULE_PAGES = new Set([
 (function bootPageVeilEarly() {
     if (!document.querySelector('.app')) return;
     showPageVeil(PAGE_LOAD_TEXT);
+    scheduleShellReveal();
 })();
 
 function syncNavActive() {
@@ -73,6 +74,15 @@ function initPageTransitions() {
         const href = (link.getAttribute('href') || '').trim();
         if (!isInternalModuleLink(href)) return;
 
+        link.addEventListener('mouseenter', () => {
+            if (link.dataset.prefetched) return;
+            link.dataset.prefetched = '1';
+            const prefetch = document.createElement('link');
+            prefetch.rel = 'prefetch';
+            prefetch.href = href;
+            document.head.appendChild(prefetch);
+        }, { once: true });
+
         link.addEventListener('click', e => {
             if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
             const target = href.split('?')[0].toLowerCase();
@@ -93,7 +103,7 @@ function scheduleModuleReadyFallback() {
     if (!ASYNC_MODULE_PAGES.has(page)) {
         notifyModuleReady();
     }
-    setTimeout(() => notifyModuleReady(), 8000);
+    setTimeout(() => notifyModuleReady(), 3000);
 }
 
 async function initApp() {
@@ -101,6 +111,8 @@ async function initApp() {
 
     syncNavActive();
     initPageTransitions();
+    window.dispatchEvent(new Event('app:ready'));
+    scheduleModuleReadyFallback();
 
     const meResult = await getMe();
     if (!meResult.ok || !meResult.data.success) {
@@ -125,11 +137,8 @@ async function initApp() {
     }
 
     if (document.getElementById('resource-list')) {
-        await initResourcesPage(user);
+        void initResourcesPage(user);
     }
-
-    window.dispatchEvent(new Event('app:ready'));
-    scheduleModuleReadyFallback();
 }
 
 async function initResourcesPage(user) {
@@ -158,7 +167,6 @@ async function initResourcesPage(user) {
     initResourceAdmin(user);
     await loadResourceSubjects();
     await loadAllResources();
-    notifyModuleReady();
 }
 
 function isResourceAdmin(user) {

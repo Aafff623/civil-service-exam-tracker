@@ -169,11 +169,8 @@ async function initStatistics() {
 }
 
 function bootStatistics() {
-    if (!document.getElementById('kpi-hours')) {
-        notifyModuleReady();
-        return;
-    }
-    initStatistics().finally(() => notifyModuleReady());
+    if (!document.getElementById('kpi-hours')) return;
+    initStatistics();
 }
 if (document.body.classList.contains('app-ready')) {
     bootStatistics();
