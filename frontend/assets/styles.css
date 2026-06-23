@@ -1202,16 +1202,21 @@ button.heatmap-cell { cursor: pointer; }
   align-items: flex-start;
   gap: 12px;
 }
+.page-banner,
 .reco-banner {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   padding: 12px 14px;
   border-radius: 12px;
   background: var(--tone-sky-soft);
   border: 1px solid #bae6fd;
 }
+.page-banner {
+  background: linear-gradient(90deg, var(--tone-sky-soft) 0%, var(--panel) 100%);
+}
+.page-banner img,
 .reco-banner img {
   width: 120px;
   height: 90px;
@@ -1220,6 +1225,7 @@ button.heatmap-cell { cursor: pointer; }
   flex: none;
   border: 1px solid var(--line);
 }
+.page-banner p,
 .reco-banner p { margin: 0; font-size: 13px; }
 .empty-visual {
   display: grid;
@@ -1404,7 +1410,9 @@ body.app-ready .main-enter {
   .reco-thumb { width:100%; min-height:110px; }
   .overview-hero-split { grid-template-columns: 1fr; }
   .overview-hero-visual { order: -1; }
+  .page-banner,
   .reco-banner { flex-direction: column; align-items: flex-start; }
+  .page-banner img,
   .reco-banner img { width: 100%; height: auto; max-height: 160px; }
   .welcome-art-wrap { display: none; }
   .card.span-2 > .card-title { flex-wrap: wrap; }

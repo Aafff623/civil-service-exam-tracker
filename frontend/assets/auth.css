@@ -25,7 +25,7 @@ body:has(.auth-page) {
   content: '';
   position: absolute;
   inset: 0;
-  background: url('auth-brand-bg.jpg') center center / cover no-repeat;
+  background: url('images/auth-hero.jpg') center center / cover no-repeat;
   filter: saturate(1.12) contrast(1.04) brightness(1.06);
   pointer-events: none;
 }

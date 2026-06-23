@@ -32,7 +32,30 @@
         'qa.html': '✍️'
     };
 
-    const KPI_EMOJIS = ['✅', '⏱️', '📈', '🔥'];
+    const KPI_EMOJIS = ['✅', '⏱️', '📈', '🔥', '🏆'];
+
+    const PAGE_BANNERS = {
+        'plan.html': {
+            src: 'assets/images/plan-calendar.jpg',
+            alt: '学习计划示意图',
+            text: '🗓️ 按目标拆解每周任务，一步步推进备考节奏'
+        },
+        'statistics.html': {
+            src: 'assets/images/stats-analytics.jpg',
+            alt: '学习统计示意图',
+            text: '📈 用数据看清时长、正确率与打卡习惯'
+        },
+        'qa.html': {
+            src: 'assets/images/qa-practice.jpg',
+            alt: '题库练习示意图',
+            text: '✍️ 刷题、看解析、留言记录疑问'
+        },
+        'resources.html': {
+            src: 'assets/images/resources-library.jpg',
+            alt: '考试资源库示意图',
+            text: '📚 大纲、真题、资料与公告一站检索'
+        }
+    };
     const MODULE_EMOJIS = ['📊', '📚', '🗓️', '✨', '📈', '✍️'];
 
     const HEADING_EMOJIS = {
@@ -53,7 +76,14 @@
         '强化弱项': '💪',
         '真题驱动': '📑',
         '错题复盘': '🔁',
-        '时间管理': '⏰'
+        '时间管理': '⏰',
+        '学习时长趋势': '📉',
+        '科目正确率': '🎯',
+        '连续打卡': '🔥',
+        '本周学习安排': '📆',
+        '未来 7 天任务预览': '🔮',
+        '知识水平参考': '🧠',
+        '科目重要性 & 难易度': '⚖️'
     };
 
     function navIconSvg(id) {
@@ -140,6 +170,23 @@
         hero.appendChild(visual);
     }
 
+    function injectPageBanner() {
+        const page = (location.pathname.split('/').pop() || '').toLowerCase();
+        const cfg = PAGE_BANNERS[page];
+        const main = document.querySelector('.main');
+        if (!cfg || !main || main.querySelector('.page-banner')) return;
+
+        const banner = document.createElement('section');
+        banner.className = 'page-banner';
+        banner.innerHTML = `
+            <img src="${cfg.src}" alt="${cfg.alt}" loading="lazy" width="360" height="200" />
+            <p class="muted">${cfg.text}</p>`;
+
+        const header = main.querySelector('header.topbar');
+        if (header) header.insertAdjacentElement('afterend', banner);
+        else main.insertAdjacentElement('afterbegin', banner);
+    }
+
     function injectDashboardWelcomeArt() {
         const card = document.querySelector('.card.span-2 .card-title');
         if (!card || document.querySelector('.welcome-art')) return;
@@ -170,6 +217,7 @@
         decorateModuleLinks();
         injectHeroVisual();
         injectDashboardWelcomeArt();
+        injectPageBanner();
         markMotionTargets();
     }
 })();
