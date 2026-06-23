@@ -1,9 +1,17 @@
 import sqlite3
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
+from flask_cors import CORS
 from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+# Enable CORS for local frontend (file:// origins)
+CORS(app, supports_credentials=True, origins=["*"])
+
+# Session config
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['PERMANENT_SESSION_LIFETIME'] = 86400  # 1 day
 
 def get_db():
     conn = sqlite3.connect(app.config['DATABASE'])
@@ -31,4 +39,4 @@ def internal_error(error):
     return jsonify({"success": False, "message": "Internal server error"}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)

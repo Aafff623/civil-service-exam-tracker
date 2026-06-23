@@ -1,8 +1,9 @@
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'http://localhost:5001/api';
 
 async function apiRequest(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
     const config = {
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             ...options.headers
@@ -25,4 +26,26 @@ async function apiRequest(endpoint, options = {}) {
 
 async function getHealth() {
     return apiRequest('/health/');
+}
+
+async function register(username, password) {
+    return apiRequest('/auth/register', {
+        method: 'POST',
+        body: { username, password }
+    });
+}
+
+async function login(username, password) {
+    return apiRequest('/auth/login', {
+        method: 'POST',
+        body: { username, password }
+    });
+}
+
+async function logout() {
+    return apiRequest('/auth/logout', { method: 'POST' });
+}
+
+async function getMe() {
+    return apiRequest('/auth/me');
 }
