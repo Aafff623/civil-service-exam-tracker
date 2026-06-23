@@ -103,6 +103,16 @@ async function loadResourceDetail() {
 
     if (titleEl) titleEl.textContent = item.title;
 
+    let detailThumb = document.querySelector('.detail-thumb');
+    if (typeof resourceThumbHtml === 'function') {
+        if (!detailThumb) {
+            detailThumb = document.createElement('div');
+            detailThumb.className = 'detail-thumb';
+            if (titleEl) titleEl.insertAdjacentElement('beforebegin', detailThumb);
+        }
+        detailThumb.innerHTML = resourceThumbHtml(item);
+    }
+
     if (metaEl) {
         const dateStr = item.created_at ? String(item.created_at).slice(0, 10) : '';
         metaEl.innerHTML = [
