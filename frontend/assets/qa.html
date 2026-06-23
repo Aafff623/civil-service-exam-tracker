@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>智能题目解析与答疑｜公务员考试学习跟踪系统</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <a class="logo" href="overview.html" aria-label="返回总览">
+        <span class="logo-mark">公</span>
+        <span class="logo-text"><strong>公考学习系统</strong><span>学习跟踪原型</span></span>
+      </a>
+      <nav class="nav"><a class="" href="index.html"><span class="nav-icon">⌂</span><span>首页</span></a>
+<a class="" href="resources.html"><span class="nav-icon">▣</span><span>考试与资源</span></a>
+<a class="" href="plan.html"><span class="nav-icon">☑</span><span>学习计划</span></a>
+<a class="" href="recommendations.html"><span class="nav-icon">✦</span><span>学习推荐</span></a>
+<a class="" href="statistics.html"><span class="nav-icon">◫</span><span>学习统计</span></a>
+<a class="active" href="qa.html"><span class="nav-icon">?</span><span>题库与答疑</span></a></nav>
+      <div class="sidebar-footer">蓝白风格 · 简洁实用 · 前端静态原型<br/>适合小学期课程设计展示</div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="breadcrumb">公务员考试学习跟踪系统 / 方案 A</div>
+          <h1 class="page-title"><span class="title-badge">6</span>智能题目解析与答疑</h1>
+          <div class="muted" style="margin-top:8px; font-size:14px;">提供题目解析、答题技巧、常见误区和 AI 答疑输入区域。</div>
+        </div>
+        <div class="top-actions">
+          <label class="search"><span>⌕</span><input placeholder="搜索任务、资料、题目" /></label>
+          <button class="icon-btn" title="通知">🔔</button>
+          <div class="avatar"><span>张</span><span>张同学</span></div>
+        </div>
+      </header>
+      
+<section class="grid grid-3">
+  <div class="card span-2">
+    <div class="card-title"><h2>题目详情</h2><div><span class="tag">单选题</span> <span class="tag gray">1 / 20</span></div></div>
+    <div class="question-card">
+      <p><strong>下列关于我国宪法的说法，正确的是（ ）。</strong></p>
+      <div class="option correct"><span class="option-letter">A</span><span>宪法的制定和修改程序比普通法律更为严格</span></div>
+      <div class="option"><span class="option-letter">B</span><span>宪法是由全国人大常委会制定的</span></div>
+      <div class="option"><span class="option-letter">C</span><span>宪法规定国家生活中的所有问题</span></div>
+      <div class="option"><span class="option-letter">D</span><span>宪法的法律效力低于普通法律</span></div>
+      <p style="margin-top:16px;"><span class="tag green">正确答案：A</span> <span class="tag green">你的答案：A</span> <span class="tag">正确率：75%</span></p>
+    </div>
+    <div class="grid grid-2" style="margin-top:18px;">
+      <div class="analysis-box"><strong>题目解析</strong><br/>宪法是国家的根本大法，具有最高法律效力。宪法的制定和修改程序通常比普通法律更严格，体现其根本法地位。</div>
+      <div class="analysis-box"><strong>答题技巧</strong><br/>判断宪法题时优先抓住“根本大法”“最高法律效力”“制定和修改程序严格”等关键词。</div>
+    </div>
+    <div class="analysis-box" style="margin-top:18px;"><strong>常见误区</strong><br/>B 项容易误选，但宪法不是由全国人大常委会制定；C 项扩大了宪法调整范围；D 项与最高法律效力相反。</div>
+  </div>
+  <aside class="card">
+    <div class="card-title"><h2>AI 答疑</h2><span class="tag green">模拟</span></div>
+    <div class="chat" data-qa-chat>
+      <div class="bubble ai">你好，我是学习助手。可以问我这道题的解析、技巧或相关知识点。</div>
+      <div class="bubble user">为什么选 A？</div>
+      <div class="bubble ai">因为宪法是国家根本法，制定和修改程序都严于普通法律，所以 A 项正确。</div>
+    </div>
+    <div class="chat-input"><input class="input" data-qa-input placeholder="请输入你的问题，例如：这道题为什么选A？"/><button class="btn primary" data-qa-send>发送</button></div>
+    <div style="margin-top:14px;"><span class="tag">宪法修改程序？</span> <span class="tag">普通法律效力？</span></div>
+  </aside>
+</section>
+<section class="grid grid-3" style="margin-top:18px;"><div class="card"><h3>同类题推荐</h3><p class="muted">宪法、行政法、法律效力层级相关题目。</p><a class="link">换一组</a></div><div class="card"><h3>收藏与笔记</h3><p class="muted">可将错题加入收藏，后续在错题本中复习。</p><button class="btn ghost">加入错题本</button></div><div class="card"><h3>掌握度</h3><p class="muted">当前知识点掌握度</p><div class="progress green"><span style="width:75%"></span></div></div></section>
+
+      <p class="footer-note">本页面为静态前端原型，文案与数据均为演示数据，可后续接入后端 API。</p>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>
