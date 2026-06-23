@@ -483,6 +483,7 @@ button { cursor: pointer; }
 .option.correct .option-letter { background: var(--success); color:white; }
 .option.wrong .option-letter { background: var(--danger, #ef4444); color:white; }
 .analysis-box { padding:14px; border-radius:16px; border:1px solid var(--line); background:#f9fbff; line-height:1.75; font-size:14px; }
+.hidden { display: none !important; }
 .chat { display:grid; gap:12px; }
 .bubble { max-width: 86%; padding:12px 14px; border-radius:16px; font-size:14px; line-height:1.6; }
 .bubble.ai { background:#f1f6ff; color:#2d4d75; border-bottom-left-radius:6px; }

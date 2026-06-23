@@ -40,16 +40,26 @@
   <div class="card">
     <div class="card-title"><h2>输入学习目标</h2></div>
     <div class="form-grid">
-      <div class="field"><label>考试目标</label><select class="select"><option>2025 年国家公务员考试</option></select></div>
-      <div class="field"><label>预计考试时间</label><input class="input" value="2025-11-30" /></div>
-      <div class="field"><label>每日可学习时间</label><select class="select"><option>3 小时</option><option>4 小时</option></select></div>
-      <div class="field"><label>开始日期</label><input class="input" value="2024-05-20" /></div>
-      <div class="field"><label>期望分数</label><input class="input" value="130 分以上" /></div>
-      <button class="btn primary" data-demo-action="plan">开始评估</button>
+      <div class="field"><label>考试目标</label>
+        <select class="select" id="goal-exam-type">
+          <option value="国考">国家公务员考试</option>
+          <option value="省考">省级公务员考试</option>
+        </select>
+      </div>
+      <div class="field"><label>预计考试时间</label><input class="input" type="date" id="goal-exam-date" /></div>
+      <div class="field"><label>每日可学习时间</label>
+        <select class="select" id="goal-daily-minutes">
+          <option value="120">2 小时</option>
+          <option value="180" selected>3 小时</option>
+          <option value="240">4 小时</option>
+        </select>
+      </div>
+      <div class="field"><label>开始日期</label><input class="input" type="date" id="goal-start-date" /></div>
+      <button class="btn primary" id="plan-generate-btn">生成学习计划</button>
     </div>
   </div>
   <div class="card">
-    <div class="card-title"><h2>知识水平测试结果</h2><span class="tag">雷达图</span></div>
+    <div class="card-title"><h2>知识水平参考</h2><span class="tag">雷达图</span></div>
     <div class="radar-wrap"><svg viewBox="0 0 300 260" width="100%" height="260" role="img" aria-label="知识水平雷达图">
       <g transform="translate(150 125)">
         <polygon points="0,-92 80,-46 80,46 0,92 -80,46 -80,-46" fill="none" stroke="#dbe7fb"/>
@@ -61,29 +71,33 @@
       </g>
       <g fill="#52637d" font-size="12" font-weight="700"><text x="127" y="18">言语理解</text><text x="237" y="86">数量关系</text><text x="237" y="177">资料分析</text><text x="126" y="246">判断推理</text><text x="7" y="177">常识判断</text><text x="34" y="86">申论</text></g>
     </svg></div>
+    <p class="muted" style="font-size:13px;margin-top:8px;">计划生成会参考你的答题弱项数据（如有）。</p>
   </div>
   <div class="card">
     <div class="card-title"><h2>科目重要性 & 难易度</h2></div>
-    <table class="table"><thead><tr><th>科目</th><th>重要性</th><th>难易度</th></tr></thead><tbody>
-      <tr><td>言语理解</td><td class="star">★★★★★</td><td>较易</td></tr><tr><td>数量关系</td><td class="star">★★★★☆</td><td>较难</td></tr><tr><td>资料分析</td><td class="star">★★★★★</td><td>较难</td></tr><tr><td>判断推理</td><td class="star">★★★★☆</td><td>中等</td></tr><tr><td>常识判断</td><td class="star">★★★☆☆</td><td>较易</td></tr><tr><td>申论</td><td class="star">★★★★★</td><td>较难</td></tr>
-    </tbody></table>
+    <table class="table"><thead><tr><th>科目</th><th>重要性</th><th>难易度</th></tr></thead>
+      <tbody id="plan-subjects-body"><tr><td colspan="3" class="muted">加载中...</td></tr></tbody>
+    </table>
   </div>
 </section>
-<section class="card" style="margin-top:18px;" data-demo-result="plan">
+<section class="card hidden" style="margin-top:18px;" id="plan-result">
   <div class="card-title"><h2>生成结果预览</h2><span class="tag green">已生成</span></div>
-  <p>已为你生成个性化学习计划，覆盖 <strong>26 周</strong>，包含 <strong>182 个学习任务</strong>。</p>
-  <div class="grid grid-3">
-    <div class="card soft"><h3>基础夯实阶段</h3><p class="muted">第 1-8 周：梳理知识点、建立错题本。</p></div>
-    <div class="card soft"><h3>强化提升阶段</h3><p class="muted">第 9-20 周：专项突破、提高做题速度。</p></div>
-    <div class="card soft"><h3>冲刺模考阶段</h3><p class="muted">第 21-26 周：套卷训练、查漏补缺。</p></div>
-  </div>
-  <div style="margin-top:16px;"><button class="btn ghost">查看周计划</button> <button class="btn primary">查看日计划</button></div>
+  <p id="plan-summary">正在加载计划...</p>
+  <div class="grid grid-3" id="plan-phases"></div>
 </section>
-<section class="card" style="margin-top:18px;"><div class="card-title"><h2>本周学习安排</h2><small>示例</small></div><table class="table"><thead><tr><th>日期</th><th>上午</th><th>下午</th><th>晚上</th></tr></thead><tbody><tr><td>周一</td><td>言语理解 45min</td><td>数量关系 45min</td><td>错题复盘 30min</td></tr><tr><td>周二</td><td>资料分析 60min</td><td>申论素材 40min</td><td>每日一练 20min</td></tr><tr><td>周三</td><td>判断推理 45min</td><td>数量关系 45min</td><td>答疑复盘 30min</td></tr></tbody></table></section>
+<section class="card" style="margin-top:18px;">
+  <div class="card-title"><h2>本周学习安排</h2><small>可标记完成</small></div>
+  <table class="table"><thead><tr><th>日期</th><th>上午</th><th>下午</th><th>晚上 / 操作</th></tr></thead>
+    <tbody id="plan-week-body"><tr><td colspan="4" class="muted">加载中...</td></tr></tbody>
+  </table>
+</section>
 
-      <p class="footer-note">本页面为静态前端原型，文案与数据均为演示数据，可后续接入后端 API。</p>
+      <p class="footer-note">学习计划数据来自后端 API，重新生成将覆盖当前计划。</p>
     </main>
   </div>
   <script src="assets/app.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/plan.js"></script>
 </body>
 </html>
