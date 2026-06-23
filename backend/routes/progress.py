@@ -1,22 +1,16 @@
 from datetime import date, datetime, timedelta
 from flask import Blueprint, jsonify, request, session
 from routes.auth import login_required
+from db import get_db
+from models import as_date_str
 
 bp = Blueprint('progress', __name__, url_prefix='/api/progress')
-
-
-def get_db():
-    from flask import current_app
-    import sqlite3
-    conn = sqlite3.connect(current_app.config['DATABASE'])
-    conn.row_factory = sqlite3.Row
-    return conn
 
 
 def get_active_plan_id(cursor, user_id):
     cursor.execute("""
         SELECT id FROM plans
-        WHERE user_id = ? AND status = 'active'
+        WHERE user_id = %s AND status = 'active'
         ORDER BY created_at DESC LIMIT 1
     """, (user_id,))
     row = cursor.fetchone()
@@ -26,14 +20,14 @@ def get_active_plan_id(cursor, user_id):
 def fetch_activity_dates(cursor, user_id):
     cursor.execute("""
         SELECT DISTINCT record_date as d FROM progress
-        WHERE user_id = ? AND (completed_items > 0 OR answer_count > 0 OR study_minutes > 0)
+        WHERE user_id = %s AND (completed_items > 0 OR answer_count > 0 OR study_minutes > 0)
     """, (user_id,))
-    dates = {row['d'] for row in cursor.fetchall()}
+    dates = {as_date_str(row['d']) for row in cursor.fetchall()}
 
     cursor.execute("""
-        SELECT DISTINCT DATE(created_at) as d FROM answers WHERE user_id = ?
+        SELECT DISTINCT DATE(created_at) as d FROM answers WHERE user_id = %s
     """, (user_id,))
-    dates.update(row['d'] for row in cursor.fetchall())
+    dates.update(as_date_str(row['d']) for row in cursor.fetchall())
     return dates
 
 
@@ -75,7 +69,7 @@ def get_progress_summary():
     year = request.args.get('year', date.today().year, type=int)
     month = request.args.get('month', date.today().month, type=int)
 
-    if days < 1 or days > 30:
+    if days < 1 or days > 90:
         days = 7
 
     conn = get_db()
@@ -89,21 +83,21 @@ def get_progress_summary():
         SELECT COALESCE(SUM(study_minutes), 0) as total_minutes,
                COALESCE(SUM(completed_items), 0) as total_completed,
                COALESCE(SUM(answer_count), 0) as total_answers_progress
-        FROM progress WHERE user_id = ?
+        FROM progress WHERE user_id = %s
     """, (user_id,))
     totals = cursor.fetchone()
 
     cursor.execute("""
         SELECT COALESCE(SUM(study_minutes), 0) as minutes
         FROM progress
-        WHERE user_id = ? AND record_date BETWEEN ? AND ?
+        WHERE user_id = %s AND record_date BETWEEN %s AND %s
     """, (user_id, week_ago.isoformat(), today.isoformat()))
     this_week_minutes = cursor.fetchone()['minutes']
 
     cursor.execute("""
         SELECT COALESCE(SUM(study_minutes), 0) as minutes
         FROM progress
-        WHERE user_id = ? AND record_date BETWEEN ? AND ?
+        WHERE user_id = %s AND record_date BETWEEN %s AND %s
     """, (user_id, prev_week_start.isoformat(), prev_week_end.isoformat()))
     prev_week_minutes = cursor.fetchone()['minutes']
 
@@ -114,7 +108,7 @@ def get_progress_summary():
         cursor.execute("""
             SELECT COUNT(*) as total,
                    SUM(CASE WHEN is_completed = 1 THEN 1 ELSE 0 END) as completed
-            FROM plan_items WHERE plan_id = ?
+            FROM plan_items WHERE plan_id = %s
         """, (plan_id,))
         plan_stats = cursor.fetchone()
         plan_total = plan_stats['total'] or 0
@@ -123,7 +117,7 @@ def get_progress_summary():
     cursor.execute("""
         SELECT COUNT(*) as total,
                SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) as correct
-        FROM answers WHERE user_id = ?
+        FROM answers WHERE user_id = %s
     """, (user_id,))
     answer_stats = cursor.fetchone()
     total_answers = answer_stats['total'] or 0
@@ -133,7 +127,7 @@ def get_progress_summary():
         SELECT COUNT(*) as total,
                SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) as correct
         FROM answers
-        WHERE user_id = ? AND DATE(created_at) BETWEEN ? AND ?
+        WHERE user_id = %s AND DATE(created_at) BETWEEN %s AND %s
     """, (user_id, week_ago.isoformat(), today.isoformat()))
     week_answers = cursor.fetchone()
     week_accuracy = 0
@@ -144,7 +138,7 @@ def get_progress_summary():
         SELECT COUNT(*) as total,
                SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) as correct
         FROM answers
-        WHERE user_id = ? AND DATE(created_at) BETWEEN ? AND ?
+        WHERE user_id = %s AND DATE(created_at) BETWEEN %s AND %s
     """, (user_id, prev_week_start.isoformat(), prev_week_end.isoformat()))
     prev_answers = cursor.fetchone()
     prev_week_accuracy = 0
@@ -155,14 +149,18 @@ def get_progress_summary():
     for i in range(days):
         d = week_ago + timedelta(days=i)
         cursor.execute("""
-            SELECT COALESCE(SUM(study_minutes), 0) as minutes
-            FROM progress WHERE user_id = ? AND record_date = ?
+            SELECT COALESCE(SUM(study_minutes), 0) as minutes,
+                   COALESCE(SUM(completed_items), 0) as completed_items,
+                   COALESCE(SUM(answer_count), 0) as answer_count
+            FROM progress WHERE user_id = %s AND record_date = %s
         """, (user_id, d.isoformat()))
         row = cursor.fetchone()
         daily_study.append({
             'date': d.isoformat(),
             'label': d.strftime('%m-%d'),
-            'minutes': row['minutes']
+            'minutes': row['minutes'],
+            'completed_items': row['completed_items'],
+            'answer_count': row['answer_count']
         })
 
     subject_stats = []
@@ -173,7 +171,7 @@ def get_progress_summary():
                    SUM(CASE WHEN pi.is_completed = 1 THEN 1 ELSE 0 END) as completed
             FROM plan_items pi
             JOIN subjects s ON pi.subject_id = s.id
-            WHERE pi.plan_id = ?
+            WHERE pi.plan_id = %s
             GROUP BY s.id, s.name
             ORDER BY s.id
         """, (plan_id,))
@@ -193,7 +191,7 @@ def get_progress_summary():
         SELECT wp.subject_id, s.name as subject_name, wp.accuracy, wp.total_answers
         FROM weak_points wp
         JOIN subjects s ON wp.subject_id = s.id
-        WHERE wp.user_id = ?
+        WHERE wp.user_id = %s
         ORDER BY wp.accuracy ASC
     """, (user_id,))
     weak_rows = cursor.fetchall()
@@ -218,17 +216,18 @@ def get_progress_summary():
         SELECT DATE(created_at) as d,
                COUNT(*) as total,
                SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) as correct
-        FROM answers WHERE user_id = ?
+        FROM answers WHERE user_id = %s
         GROUP BY DATE(created_at)
-        ORDER BY d DESC LIMIT ?
+        ORDER BY d DESC LIMIT %s
     """, (user_id, days))
     accuracy_trend = []
     for row in reversed(cursor.fetchall()):
         total = row['total'] or 0
         acc = round(row['correct'] / total * 100, 1) if total else 0
-        d = datetime.strptime(row['d'], '%Y-%m-%d').date()
+        d_str = as_date_str(row['d'])
+        d = datetime.strptime(d_str, '%Y-%m-%d').date()
         accuracy_trend.append({
-            'date': row['d'],
+            'date': d_str,
             'label': d.strftime('%m-%d'),
             'accuracy': acc,
             'count': total

@@ -1,16 +1,9 @@
 from flask import Blueprint, jsonify, session
 from routes.auth import login_required
+from db import get_db
 from models import serialize_row
 
 bp = Blueprint('recommendations', __name__, url_prefix='/api/recommendations')
-
-
-def get_db():
-    from flask import current_app
-    import sqlite3
-    conn = sqlite3.connect(current_app.config['DATABASE'])
-    conn.row_factory = sqlite3.Row
-    return conn
 
 
 def fetch_weak_subjects(cursor, user_id, limit=3):
@@ -18,9 +11,9 @@ def fetch_weak_subjects(cursor, user_id, limit=3):
         SELECT wp.subject_id, s.name as subject_name, wp.accuracy, wp.total_answers
         FROM weak_points wp
         JOIN subjects s ON wp.subject_id = s.id
-        WHERE wp.user_id = ?
+        WHERE wp.user_id = %s
         ORDER BY wp.accuracy ASC, wp.total_answers DESC
-        LIMIT ?
+        LIMIT %s
     """, (user_id, limit))
     rows = list(cursor.fetchall())
 
@@ -34,10 +27,10 @@ def fetch_weak_subjects(cursor, user_id, limit=3):
         FROM answers a
         JOIN questions q ON a.question_id = q.id
         JOIN subjects s ON q.subject_id = s.id
-        WHERE a.user_id = ?
+        WHERE a.user_id = %s
         GROUP BY q.subject_id, s.name
         ORDER BY accuracy ASC
-        LIMIT ?
+        LIMIT %s
     """, (user_id, limit))
     return list(cursor.fetchall())
 
@@ -66,7 +59,7 @@ def list_recommendations():
 
     cursor.execute("""
         SELECT exam_type, start_date, exam_date, daily_minutes
-        FROM goals WHERE user_id = ? ORDER BY updated_at DESC LIMIT 1
+        FROM goals WHERE user_id = %s ORDER BY updated_at DESC LIMIT 1
     """, (user_id,))
     goal_row = cursor.fetchone()
 
@@ -76,7 +69,7 @@ def list_recommendations():
                (SELECT SUM(CASE WHEN is_completed = 1 THEN 1 ELSE 0 END)
                 FROM plan_items pi WHERE pi.plan_id = p.id) as completed
         FROM plans p
-        WHERE p.user_id = ? AND p.status = 'active'
+        WHERE p.user_id = %s AND p.status = 'active'
         ORDER BY p.created_at DESC LIMIT 1
     """, (user_id,))
     plan_row = cursor.fetchone()
@@ -84,7 +77,7 @@ def list_recommendations():
     if plan_row and plan_row['total']:
         plan_progress = round((plan_row['completed'] or 0) / plan_row['total'] * 100, 1)
 
-    cursor.execute("DELETE FROM recommendations WHERE user_id = ?", (user_id,))
+    cursor.execute("DELETE FROM recommendations WHERE user_id = %s", (user_id,))
 
     items = []
     seen = set()
@@ -95,7 +88,7 @@ def list_recommendations():
 
         cursor.execute("""
             SELECT id, title, type, content
-            FROM resources WHERE subject_id = ?
+            FROM resources WHERE subject_id = %s
             ORDER BY CASE type WHEN '资料' THEN 1 WHEN '真题' THEN 2 ELSE 3 END
             LIMIT 1
         """, (subject_id,))
@@ -104,7 +97,7 @@ def list_recommendations():
             reason = f"针对薄弱项「{weak['subject_name']}」（正确率 {weak['accuracy']}%），推荐相关学习资料。"
             cursor.execute("""
                 INSERT INTO recommendations (user_id, type, target_id, reason)
-                VALUES (?, 'resource', ?, ?)
+                VALUES (%s, 'resource', %s, %s)
             """, (user_id, resource['id'], reason))
             items.append({
                 'type': 'resource',
@@ -120,7 +113,7 @@ def list_recommendations():
 
         cursor.execute("""
             SELECT id, content, type FROM questions
-            WHERE subject_id = ? ORDER BY id LIMIT 1
+            WHERE subject_id = %s ORDER BY id LIMIT 1
         """, (subject_id,))
         question = cursor.fetchone()
         if question and ('question', question['id']) not in seen:
@@ -128,7 +121,7 @@ def list_recommendations():
             reason = f"针对薄弱项「{weak['subject_name']}」，推荐同类练习题巩固。"
             cursor.execute("""
                 INSERT INTO recommendations (user_id, type, target_id, reason)
-                VALUES (?, 'question', ?, ?)
+                VALUES (%s, 'question', %s, %s)
             """, (user_id, question['id'], reason))
             items.append({
                 'type': 'question',
@@ -151,7 +144,7 @@ def list_recommendations():
             reason = '入门推荐：先从考试大纲和真题资料开始系统备考。'
             cursor.execute("""
                 INSERT INTO recommendations (user_id, type, target_id, reason)
-                VALUES (?, 'resource', ?, ?)
+                VALUES (%s, 'resource', %s, %s)
             """, (user_id, resource['id'], reason))
             items.append({
                 'type': 'resource',
