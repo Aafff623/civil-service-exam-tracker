@@ -1,0 +1,311 @@
+<div class="resource-doc">
+  <p class="resource-lead">图形推理是判断推理中规律性最强的题型。常见规律可归纳为<strong>位置、样式、数量、对称、笔画、封闭</strong>六大类。本手册每类规律附 <strong>2 道文字描述例题</strong>，并收录<strong>定义判断、类比推理、逻辑判断各 3 题</strong>精讲。</p>
+
+  <nav class="resource-toc">
+    <h4>目录</h4>
+    <ol>
+      <li><a href="#ch1">一、位置类规律（2 例题）</a></li>
+      <li><a href="#ch2">二、样式类规律（2 例题）</a></li>
+      <li><a href="#ch3">三、数量类规律（2 例题）</a></li>
+      <li><a href="#ch4">四、对称类规律（2 例题）</a></li>
+      <li><a href="#ch5">五、笔画与封闭（2 例题）</a></li>
+      <li><a href="#ch6">六、定义判断（3 题）</a></li>
+      <li><a href="#ch7">七、类比推理（3 题）</a></li>
+      <li><a href="#ch8">八、逻辑判断（3 题）</a></li>
+      <li><a href="#ch9">九、综合解题策略</a></li>
+    </ol>
+  </nav>
+
+  <section class="resource-chapter" id="ch1">
+    <h2>一、位置类规律</h2>
+    <p>图形组成元素<strong>完全相同</strong>，优先考虑位置变化：平移、旋转、翻转。</p>
+    <table class="resource-table">
+      <thead><tr><th>变化类型</th><th>识别特征</th><th>常见考法</th></tr></thead>
+      <tbody>
+        <tr><td>平移</td><td>元素方向不变，位置改变</td><td>九宫格内按固定步长移动</td></tr>
+        <tr><td>旋转</td><td>元素绕点转动，方向改变</td><td>每次顺时针/逆时针 45°、90°</td></tr>
+        <tr><td>翻转</td><td>上下或左右镜像</td><td>区分旋转与翻转：时针法判断</td></tr>
+        <tr><td>相对位置</td><td>元素间距离、相离/相交关系变化</td><td>小元素绕大元素公转</td></tr>
+      </tbody>
+    </table>
+    <div class="resource-sample">
+      <span class="sample-label">例题 1 · 位置类（平移）</span>
+      <p><strong>题干文字描述：</strong>九宫格每幅图均由 1 个黑球和 2 个白球组成，球的数量与大小不变。第一行中，黑球每次向右平移 1 格，到行末后从下一行最左端继续；白球保持不动。问第三行第三格「？」处应填入的图形特征？</p>
+      <div class="sample-answer"><strong>解析：</strong>元素组成相同 → 位置类。追踪黑球轨迹：按列走，每次移动 1 格。推算「？」处黑球应在该格中心位置，白球位置与第一幅图一致。<strong>思路：数量不变 + 路径固定 = 平移规律。</strong></div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 2 · 位置类（旋转）</span>
+      <p><strong>题干文字描述：</strong>每组三幅图含相同直角箭头，箭头数量不变。图 1 到图 2，箭头绕图形中心顺时针旋转 90°；图 2 到图 3 继续顺时针 90°。问「？」处箭头指向？</p>
+      <div class="sample-answer"><strong>解析：</strong>每次顺时针 90°，累计旋转 270° 后箭头指向与原图相比为「向下」。用时针法验证为旋转而非翻转。</div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch2">
+    <h2>二、样式类规律</h2>
+    <p>图形组成元素<strong>相似</strong>，常考遍历、黑白运算、求同求异。</p>
+    <table class="resource-table">
+      <thead><tr><th>规律</th><th>说明</th><th>识别要点</th></tr></thead>
+      <tbody>
+        <tr><td>遍历</td><td>每种元素各出现一次</td><td>缺啥补啥</td></tr>
+        <tr><td>黑白运算</td><td>黑+白=灰等自定义规则</td><td>用已知两图推公式</td></tr>
+        <tr><td>求同 / 求异</td><td>保留相同 / 不同部分</td><td>叠加后比对</td></tr>
+        <tr><td>加减同异</td><td>图1±图2=图3</td><td>线条图常考</td></tr>
+      </tbody>
+    </table>
+    <div class="resource-sample">
+      <span class="sample-label">例题 1 · 样式类（求异）</span>
+      <p><strong>题干文字描述：</strong>每组三图由相同外框和内部线条组成。图 1 与图 2 叠加后，去掉相同线条、保留不同线条得到图 3。第二组前两图已给出，「？」须满足同样规律。</p>
+      <div class="sample-answer"><strong>解析：</strong>元素相似 → 样式类。逐组验证为「求异」规律，将第一、二图去同存异得第三图，据此推算答案。</div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 2 · 样式类（黑白运算）</span>
+      <p><strong>题干文字描述：</strong>九宫格每格为黑白两色方块组合。第一行：黑+白=白，白+黑=白，黑+黑=黑，白+白=黑。第二行验证成立。问第三行「？」处颜色？</p>
+      <div class="sample-answer"><strong>解析：</strong>先列运算规则，再代入第三行前两个图形运算得第三个，注意规则可能按行一致、按列一致，须用第二行验证。</div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch3">
+    <h2>三、数量类规律</h2>
+    <p>图形组成元素<strong>不同</strong>或较杂乱，优先数「点、线、角、面、素」。</p>
+    <table class="resource-table">
+      <thead><tr><th>考点</th><th>数什么</th><th>高频规律</th></tr></thead>
+      <tbody>
+        <tr><td>点</td><td>交点、切点、端点</td><td>交点数等差</td></tr>
+        <tr><td>线</td><td>直线数、曲线数</td><td>直线数 − 曲线数 = 常数</td></tr>
+        <tr><td>角</td><td>直角、锐角个数</td><td>直角数递增</td></tr>
+        <tr><td>面</td><td>封闭区域数</td><td>封闭区域数等差 1、2、3…</td></tr>
+        <tr><td>素</td><td>元素种类数、元素个数</td><td>种类数相同，个数不同</td></tr>
+        <tr><td>部分数</td><td>连通块数量</td><td>部分数 = 2 常考</td></tr>
+      </tbody>
+    </table>
+    <div class="resource-sample">
+      <span class="sample-label">例题 1 · 数量类（封闭区域）</span>
+      <p><strong>题干文字描述：</strong>题干各图均由若干封闭区域构成，封闭区域数依次为 1、2、3、4、？，图形外框均为圆形。</p>
+      <div class="sample-answer"><strong>解析：</strong>封闭区域数等差递增，下一项为 <strong>5</strong>。选项中找封闭区域数为 5 的图形。</div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 2 · 数量类（交点）</span>
+      <p><strong>题干文字描述：</strong>每组图形线条交叉明显，交点数依次为 2、4、6、8、？，且直线数恒为 4 条。</p>
+      <div class="sample-answer"><strong>解析：</strong>交点数呈公差为 2 的等差数列，「？」处交点数应为 <strong>10</strong>。</div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch4">
+    <h2>四、对称类规律</h2>
+    <p>图形整体较规整，优先考虑对称性。</p>
+    <table class="resource-table">
+      <thead><tr><th>进阶考法</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>对称轴数量</td><td>1 条、2 条、4 条、无数条</td></tr>
+        <tr><td>对称轴方向</td><td>每次顺时针旋转 45°</td></tr>
+        <tr><td>对称轴与图形关系</td><td>过顶点、过边中点、与边平行</td></tr>
+      </tbody>
+    </table>
+    <div class="resource-sample">
+      <span class="sample-label">例题 1 · 对称类（轴数量）</span>
+      <p><strong>题干文字描述：</strong>每组图形对称轴数量依次为 1、2、3、？，且对称轴依次逆时针旋转 45°。</p>
+      <div class="sample-answer"><strong>解析：</strong>同时考查对称轴<strong>数量递增</strong>与<strong>方向旋转</strong>，选 4 条对称轴且方向符合旋转规律的图形。</div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 2 · 对称类（中心对称）</span>
+      <p><strong>题干文字描述：</strong>题干图形均为中心对称图形，但对称中心位置每次向右平移 1 格。问「？」处图形？</p>
+      <div class="sample-answer"><strong>解析：</strong>中心对称 + 中心位置平移，须同时满足旋转 180° 重合与中心点位置规律。</div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch5">
+    <h2>五、笔画与封闭</h2>
+    <h3>笔画数</h3>
+    <p>奇点数为 <strong>0 或 2</strong> → 一笔画；奇点数为 <strong>2k</strong> → 至少 k 笔画。</p>
+    <div class="resource-sample">
+      <span class="sample-label">例题 1 · 笔画数</span>
+      <p><strong>题干文字描述：</strong>题干图形均含「田」字或「日」字变形，笔画数依次为 1、1、2、2、？。</p>
+      <div class="sample-answer"><strong>解析：</strong>「日」变形奇点 2 → 1 笔画；「田」变形奇点 4 → 2 笔画。按变形类型判断，下一项为 <strong>1 笔画</strong>图形。</div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 2 · 封闭开放性</span>
+      <p><strong>题干文字描述：</strong>题干图形封闭开放性依次为：全封闭、全开放、半开半封、全封闭、？，呈周期循环。</p>
+      <div class="sample-answer"><strong>解析：</strong>周期为 3，下一项为 <strong>全开放</strong>图形（如 Z 形线条）。</div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch6">
+    <h2>六、定义判断（3 题）</h2>
+    <p>根据定义，选出最符合或最不符合的选项。方法：<strong>抓主体、客体、方式、目的、结果</strong>等关键词。</p>
+    <div class="resource-sample">
+      <span class="sample-label">定义判断 1</span>
+      <p><strong>定义：</strong>「数字鸿沟」指不同社会群体在信息技术接入、使用能力及从信息中获益方面存在的差距。</p>
+      <p>下列属于数字鸿沟的是：</p>
+      <ul class="resource-options">
+        <li>A. 甲公司因设备老化导致生产效率下降</li>
+        <li>B. 偏远地区老年人不会使用智能手机办理政务业务</li>
+        <li>C. 乙国与丙国贸易额下降</li>
+        <li>D. 某市道路拥堵加剧</li>
+      </ul>
+      <div class="sample-answer"><strong>解析：</strong>B 符合信息技术使用能力差距。<strong>答案：B</strong></div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">定义判断 2</span>
+      <p><strong>定义：</strong>「行政许可」指行政机关依申请，经审查准予从事特定活动的行为。</p>
+      <p>下列属于行政许可的是：</p>
+      <ul class="resource-options">
+        <li>A. 交警对违章司机处以罚款</li>
+        <li>B. 市场监管局颁发食品经营许可证</li>
+        <li>C. 税务局征收增值税</li>
+        <li>D. 法院判决被告赔偿损失</li>
+      </ul>
+      <div class="sample-answer"><strong>解析：</strong>行政许可须「依申请、准予从事特定活动」。<strong>答案：B</strong></div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">定义判断 3</span>
+      <p><strong>定义：</strong>「沉没成本」指已经发生且不可收回的支出，理性决策时不应受其影响。</p>
+      <p>下列体现了沉没成本效应（未理性忽视沉没成本）的是：</p>
+      <ul class="resource-options">
+        <li>A. 电影很难看，但小李心想票都买了，还是看完了</li>
+        <li>B. 小王评估新项目时只考虑未来收益与支出</li>
+        <li>C. 公司及时止损关闭了亏损部门</li>
+        <li>D. 小张放弃已投入无效的调研，改选新方案</li>
+      </ul>
+      <div class="sample-answer"><strong>解析：</strong>A 因已买票（沉没成本）继续看烂片，属于沉没成本效应。<strong>答案：A</strong></div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch7">
+    <h2>七、类比推理（3 题）</h2>
+    <p>分析词项间逻辑关系：全同、并列、包含、交叉、对应、因果、条件等。</p>
+    <div class="resource-sample">
+      <span class="sample-label">类比推理 1</span>
+      <p>教师 : 学校</p>
+      <ul class="resource-options">
+        <li>A. 医生 : 医院</li>
+        <li>B. 演员 : 剧本</li>
+        <li>C. 司机 : 公路</li>
+        <li>D. 农民 : 粮食</li>
+      </ul>
+      <div class="sample-answer"><strong>解析：</strong>职业与主要工作场所对应。<strong>答案：A</strong></div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">类比推理 2</span>
+      <p>刻舟 : 求剑</p>
+      <ul class="resource-options">
+        <li>A. 掩耳 : 盗铃</li>
+        <li>B. 画蛇 : 添足</li>
+        <li>C. 守株 : 待兔</li>
+        <li>D. 以上都是</li>
+      </ul>
+      <div class="sample-answer"><strong>解析：</strong>均为成语拆分，前后构成典故关系，且都含不当方法义。C 与题干结构最一致（方法+目的）。<strong>答案：C</strong></div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">类比推理 3</span>
+      <p>光合作用 : 叶绿体</p>
+      <ul class="resource-options">
+        <li>A. 呼吸作用 : 线粒体</li>
+        <li>B. 消化作用 : 胃</li>
+        <li>C. 血液循环 : 心脏</li>
+        <li>D. 神经传导 : 大脑</li>
+      </ul>
+      <div class="sample-answer"><strong>解析：</strong>生理过程与主要发生场所/细胞器对应。<strong>答案：A</strong></div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch8">
+    <h2>八、逻辑判断（3 题）</h2>
+    <p>加强削弱、翻译推理、真假推理、分析推理等，须严格按逻辑规则作答。</p>
+    <div class="resource-sample">
+      <span class="sample-label">逻辑判断 1 · 加强</span>
+      <p>研究表明，每天步行 8000 步以上的人群心血管疾病风险显著降低。下列哪项最能加强上述结论？</p>
+      <ul class="resource-options">
+        <li>A. 步行锻炼有助于控制体重和血压</li>
+        <li>B. 有些人不喜欢步行</li>
+        <li>C. 跑步比步行效果更好</li>
+        <li>D. 心血管疾病与遗传有关</li>
+      </ul>
+      <div class="sample-answer"><strong>解析：</strong>A 解释了步行降低心血管风险的机制，最能加强。<strong>答案：A</strong></div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">逻辑判断 2 · 削弱</span>
+      <p>某公司宣称，其产品销量增长是因为广告投放增加。下列哪项最能削弱？</p>
+      <ul class="resource-options">
+        <li>A. 竞争对手同期也加大了广告投放</li>
+        <li>B. 同期该产品核心性能升级，口碑大幅提升</li>
+        <li>C. 广告投入占销售额比例逐年上升</li>
+        <li>D. 消费者对该品牌认知度提高</li>
+      </ul>
+      <div class="sample-answer"><strong>解析：</strong>B 提出另有他因（性能升级），最能削弱因果归因。<strong>答案：B</strong></div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">逻辑判断 3 · 翻译推理</span>
+      <p>已知：如果天下雨，那么地会湿。如果地湿了，那么小明会带伞。今天小明没带伞。可以推出？</p>
+      <ul class="resource-options">
+        <li>A. 今天下雨了</li>
+        <li>B. 今天没下雨</li>
+        <li>C. 今天地一定没湿</li>
+        <li>D. 今天地可能湿了</li>
+      </ul>
+      <div class="sample-answer"><strong>解析：</strong>小明没带伞 → 否定后件 → 地没湿 → 否定后件 → 没下雨。<strong>答案：B</strong></div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch9">
+    <h2>九、综合解题策略</h2>
+    <h3>30 秒解题流程（图形推理）</h3>
+    <ol>
+      <li><strong>看元素关系</strong>：相同 → 位置；相似 → 样式；不同 → 数量/对称/笔画</li>
+      <li><strong>看图形特征</strong>：规整 → 对称；杂乱 → 数量；有汉字/字母 → 笔画/封闭</li>
+      <li><strong>看题型</strong>：顺推找规律；类比两组一致；九宫格优先横看再竖看</li>
+      <li><strong>验证选项</strong>：代入规律排除 2–3 项</li>
+    </ol>
+    <h3>高频易错点</h3>
+    <ul>
+      <li>旋转与翻转混淆 → 用「时针法」</li>
+      <li>封闭区域数漏数 → 注意嵌套区域</li>
+      <li>奇点漏数端点 → 端点一定是奇点</li>
+      <li>定义判断读不全 → 逐条比对定义要素</li>
+      <li>类比关系不唯一 → 优先找一级关系，再验二级关系</li>
+    </ul>
+    <h3>图形推理规律识别速查表</h3>
+    <table class="resource-table">
+      <thead><tr><th>第一步</th><th>第二步</th><th>第三步</th><th>常见组合规律</th></tr></thead>
+      <tbody>
+        <tr><td>元素相同 → 位置</td><td>平移/旋转/翻转</td><td>按行或按列验证</td><td>平移 + 数量</td></tr>
+        <tr><td>元素相似 → 样式</td><td>遍历/运算/求异</td><td>黑白运算列公式</td><td>求异 + 对称</td></tr>
+        <tr><td>元素不同 → 数量</td><td>点线角面素</td><td>等差/常数/周期</td><td>封闭区域 + 笔画</td></tr>
+        <tr><td>图形规整 → 对称</td><td>轴/中心对称</td><td>对称轴方向数量</td><td>对称 + 旋转</td></tr>
+        <tr><td>汉字/字母 → 笔画</td><td>数奇点</td><td>一笔画/多笔画</td><td>笔画 + 封闭开放性</td></tr>
+      </tbody>
+    </table>
+    <h3>定义判断解题四步法</h3>
+    <ol>
+      <li><strong>圈关键词</strong>：主体、客体、方式、目的、结果</li>
+      <li><strong>逐项比对</strong>：每个选项与定义要素一一对应</li>
+      <li><strong>择优而非完美</strong>：选最符合的，不要求选项覆盖全部要素</li>
+      <li><strong>警惕偷换</strong>：主语、行为方式、结果常被替换</li>
+    </ol>
+    <h3>类比推理十大关系</h3>
+    <table class="resource-table">
+      <thead><tr><th>关系类型</th><th>示例</th><th>二级辨析方向</th></tr></thead>
+      <tbody>
+        <tr><td>全同关系</td><td>番茄 : 西红柿</td><td>学名与俗称</td></tr>
+        <tr><td>并列关系</td><td>钢笔 : 铅笔</td><td>矛盾/反对；人工/自然</td></tr>
+        <tr><td>包含关系</td><td>水果 : 苹果</td><td>种属/组成</td></tr>
+        <tr><td>交叉关系</td><td>党员 : 教师</td><td>身份重叠</td></tr>
+        <tr><td>对应关系</td><td>医生 : 医院</td><td>职业场所、功能配套</td></tr>
+        <tr><td>因果关系</td><td>摩擦 : 生热</td><td>自然/社会因果</td></tr>
+        <tr><td>条件关系</td><td>进面 : 笔试</td><td>充分/必要条件</td></tr>
+        <tr><td>语法关系</td><td>动宾/主谓/偏正</td><td>词性一致</td></tr>
+        <tr><td>语义关系</td><td>近义/反义/象征</td><td>感情色彩</td></tr>
+        <tr><td>加工关系</td><td>木材 : 家具</td><td>原材料与成品</td></tr>
+      </tbody>
+    </table>
+    <h3>逻辑判断加强削弱力度排序</h3>
+    <p>加强：肯定论点 ≈ 肯定论据 &gt; 搭桥 &gt; 排除他因 &gt; 举例支持</p>
+    <p>削弱：否定论点 ≈ 否定论据 &gt; 拆桥 &gt; 另有他因 &gt; 反例削弱。加强削弱题先找论点和论据，再按力度排序择优。</p>
+    <p>图形推理、定义判断、类比推理建议先做，逻辑判断放后；定义与类比单题目标 40 秒内完成。</p>
+    <div class="resource-callout blue">判断推理建议用时 <strong>35–40 分钟</strong>，图形推理单题超 60 秒先标记跳过。</div>
+  </section>
+
+  <aside class="resource-source">
+    <span>内容摘录自公开备考资料，仅供课程演示</span>
+    <a href="http://www.eoffcn.com/gwy/ksjq/" target="_blank" rel="noopener noreferrer">参考来源：中公网校 · 判断推理</a>
+  </aside>
+</div>
