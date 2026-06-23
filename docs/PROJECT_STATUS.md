@@ -9,64 +9,40 @@
 
 ## 已完成
 
-- [x] 创建项目文件夹 `civil-service-exam-tracker`
-- [x] 编写 PRD：`PRD-civil-service-exam-tracker.md`
-- [x] 安装项目级 skills：ui-ux-pro-max、ppt-master、matt-pocock
-- [x] 运行 `/setup-matt-pocock-skills`
-- [x] 创建 `CLAUDE.md`、`docs/agents/`
-- [x] 编写 `CONTEXT.md`
-- [x] 初始化 Git 仓库
-- [x] 创建 GitHub private 仓库并推送初始提交
-- [x] 搭建 Flask + 前端项目骨架（含健康检查 API）
-- [x] 配置 `.gitignore`
-- [x] 设计数据库表结构并写 `backend/init_db.sql`
-- [x] 用户与账户模块（注册、登录、登出、个人信息）
-- [x] 考试资源管理模块（资源列表、筛选、详情）
-- [x] 集成 GPT 生成的前端设计资产压缩包
-  - [x] 解压到 `frontend/assets/`
-  - [x] 将资产 HTML 文件迁移到 `frontend/` 根目录
-  - [x] 创建同设计风格的 `login.html` 和 `register.html`
-  - [x] 修复 CSS/JS 路径和页面导航链接
-  - [x] 集成后端 API：Dashboard 显示当前登录用户、Resources 从 API 加载资源列表
-  - [x] 添加退出登录按钮
-  - [x] 验证登录 → Dashboard → Resources 流程正常
+- [x] 项目初始化、PRD、GitHub 仓库、工程规范
+- [x] 用户与账户模块
+- [x] 考试资源管理模块
+- [x] GPT 前端设计资产集成
 - [x] 题库与练习模块
-  - [x] 后端：题目列表/详情/筛选 API（`routes/questions.py`）
-  - [x] 后端：答题提交/历史/弱项统计 API（`routes/answers.py`）
-  - [x] 前端：`qa.html` 接入真实题库数据（筛选、答题、解析、历史）
-  - [x] API 测试通过（4 道种子题、科目筛选、weak_points 更新）
 - [x] 智能学习计划生成模块
-  - [x] 后端：目标设置、计划生成、任务列表、标记完成（`routes/plans.py`）
-  - [x] 前端：`plan.html` 接入 API（生成计划、本周安排、科目表）
-  - [x] 标记完成同步 `progress` 表
 - [x] 学习进度跟踪模块
-  - [x] 后端：进度汇总 API（`routes/progress.py`）
-  - [x] 答题提交同步 `progress.answer_count`
-  - [x] 前端：`statistics.html` 接入 KPI、趋势图、科目完成度、打卡日历
+- [x] 个性化推荐模块
+- [x] 题目答疑留言 API + Dashboard 数据接入
+- [x] 全站主要页面 API 集成与 Playwright 冒烟测试
 
 ## 进行中
 
-- [ ] 个性化推荐模块（recommendations.html）
+- [ ] 集中 Review 与 Bug 修复（由用户主导）
 
-## 下一步
+## 可选后续优化
 
-1. 个性化推荐模块（后端 `/api/recommendations` + `recommendations.html` 接入）
-2. 题目解析与答疑模块（AI 答疑可接入真实接口）
-3. Dashboard 今日任务接入计划 API
+1. Dashboard 考试时间线接入资源 API
+2. AI 答疑接入真实 LLM
+3. emoji 图标替换 SVG
+4. 扩充种子题目数据
+5. 同步更新 `docs/ROADMAP.md` 勾选状态
 
 ## 关键决策
 
 | 决策项 | 选择 | 说明 |
 |---|---|---|
 | Issue tracker | Local markdown | 使用 `.scratch/<feature>/` |
-| Triage labels | 默认 | `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix` |
-| Domain docs | Single-context | 根目录 `CONTEXT.md` + `docs/adr/` |
-| Git remote | GitHub private | https://github.com/Aafff623/civil-service-exam-tracker |
-| Backend port | 5001 | 避免与本地其他服务冲突 |
-| Frontend server | 8080 | 本地 HTTP 服务器供前端演示 |
+| Backend port | 5001 | 避免端口冲突 |
+| Frontend server | 8080 | 本地静态服务 |
+| 推荐算法 | 规则驱动 | 弱项正确率 + 科目权重，非 ML |
+| Agent 规范 | AGENTS.md | 根目录协作与路由地图 |
 
 ## 备注
 
-- 路线图显示为三周，实际可压缩执行。
-- 每完成一个模块进行一次 review。
-- 每次交接更新 `docs/HANDOFF.md`。
+- 每次交接更新 `docs/HANDOFF.md`
+- 后端 API 地图见 `AGENTS.md`

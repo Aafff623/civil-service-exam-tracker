@@ -5,62 +5,70 @@
 ## 最近一次更新
 
 - **时间**：2026-06-23
-- **会话动作**：实现学习进度跟踪模块（后端 API + statistics.html 接入）
+- **会话动作**：完成剩余全部模块（推荐、Dashboard、答疑留言）+ 前端测试
 - **执行者**：Grok Agent
 
 ## 当前上下文
 
-- 用户与账户、考试资源、题库与练习、学习计划、学习进度统计模块均已完成。
-- `statistics.html` 已接入后端，展示 KPI、学习时长趋势、科目完成度、正确率趋势、打卡日历。
-- 下一步优先：个性化推荐（`recommendations.html`）。
+**7 个核心模块均已实现并接入后端 API**，可进行集中 Review。
+
+| 模块 | 状态 |
+|------|------|
+| 用户与账户 | ✅ |
+| 考试资源管理 | ✅ |
+| 智能学习计划 | ✅ |
+| 题库与练习 | ✅ |
+| 学习进度统计 | ✅ |
+| 个性化推荐 | ✅ |
+| 题目答疑留言 | ✅（AI 回复仍为规则演示） |
 
 ## 已完成（本次会话）
 
-### 后端进度统计 API
+### 个性化推荐
+- `GET /api/recommendations/` — 弱项识别 + 资源/题目推荐
+- `recommendations.html` + `recommendations.js`
 
-- `backend/routes/progress.py`：
-  - `GET /api/progress/` — 汇总统计（支持 `days`、`year`、`month` 参数）
-  - 返回：overview KPI、每日学习时长、科目完成度、正确率趋势、打卡日历
-- `backend/routes/answers.py`：答题时同步 `progress.answer_count`
-- 已在 `app.py` 注册 `progress` blueprint
+### Dashboard 接入
+- `dashboard.js` — 今日任务、KPI、弱项、倒计时、进度环、热力图
 
-### 前端统计页
+### 答疑留言
+- `GET/POST /api/comments/` — 题目疑问记录
+- `qa.js` — 答疑输入保存为留言
 
-- `frontend/js/api.js`：新增 `getProgress()`
-- `frontend/js/statistics.js`（新建）：KPI、SVG 趋势图、科目进度条、打卡日历
-- `frontend/statistics.html`：接入 `api.js` + `app.js` + `statistics.js`，添加登录守卫
+### 前端测试（Playwright）
+- 登录 → 6 个主页面导航无 JS 错误
+- Dashboard 显示 5 项今日任务、KPI 正常
+- Statistics 显示 0.6h 学习时长
+- Recommendations 显示 2 条推荐卡片
 
-### 验证结果
-
-- `GET /api/progress/` 返回 overview + 7 天趋势 ✓
-- 科目完成度来自 `plan_items` ✓
-- 打卡日期来自 `progress` + `answers` ✓
-
-## 待办事项（按优先级）
-
-1. **个性化推荐** — `routes/recommendations.py` + `recommendations.html`
-2. **Dashboard 今日任务** — 从 `/api/plans/items?date=today` 动态加载
-3. **题目答疑** — `comments` API；AI 答疑仍为模拟
-
-## 已知问题 / 注意事项
-
-- `recommendations.html` 仍为静态，未挂登录守卫
-- 模考平均分已改为「答题总数」（无模考数据表）
-- 计划完成率在大计划下可能显示为小数（如 0.3%）
-
-## 下一步动作
-
-由下一个 Agent 继续：
-1. 实现 `/api/recommendations` 推荐 API（基于 `weak_points` 规则）
-2. 接入 `recommendations.html`
-
-## 运行方式
-
-1. `cd backend && python app.py`（端口 5001）
-2. `cd frontend && python -m http.server 8080`
-3. 访问 http://localhost:8080/statistics.html
+### Bug 修复
+- 前端日期使用本地时区（修复 `toISOString()` UTC 偏移问题）
 
 ## 提交记录
 
-- `feat(plans): implement study plan generation and plan page`
-- 进度统计模块（待提交）：`feat(progress): implement learning statistics API and statistics page`
+1. `feat(recommendations): implement personalized recommendation API and page`
+2. `feat(dashboard): wire dashboard to APIs and add comment submission`
+3. `fix(frontend): use local timezone for date filters`（待提交）
+
+## 已知限制（Review 时可关注）
+
+- AI 答疑为规则回复，非 LLM
+- 考试时间线仍为静态文案
+- 无 favicon（404，不影响功能）
+- 推荐匹配度为规则计算，非机器学习
+- `frontend/assets/*.html` 为旧原型副本，以根目录页面为准
+- `docs/ROADMAP.md` 勾选状态滞后
+
+## 运行方式
+
+```bash
+cd backend && python init_db.py   # 可选重置
+cd backend && python app.py       # 5001
+cd frontend && python -m http.server 8080
+```
+
+访问 http://localhost:8080/login.html
+
+## 测试账号
+
+可注册新账号，或使用 `qatest` / `test1234`（若数据库未重置）
