@@ -35,9 +35,15 @@ function getResourceThumbSrc(item) {
     return 'assets/images/resources/02-prep-plan-guide.svg';
 }
 
-function resourceThumbHtml(item) {
+function resourceThumbHtml(item, options = {}) {
     const src = getResourceThumbSrc(item);
     const typeLabel = item.type || '资料';
+    if (options.compact) {
+        return `
+            <div class="resource-thumb resource-thumb-compact">
+                <img src="${escapeHtml(src)}" alt="" width="40" height="40" loading="lazy" />
+            </div>`;
+    }
     return `
         <div class="resource-thumb">
             <img src="${escapeHtml(src)}" alt="" width="56" height="56" loading="lazy" />

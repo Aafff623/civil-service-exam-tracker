@@ -103,14 +103,9 @@ async function loadResourceDetail() {
 
     if (titleEl) titleEl.textContent = item.title;
 
-    let detailThumb = document.querySelector('.detail-thumb');
-    if (typeof resourceThumbHtml === 'function') {
-        if (!detailThumb) {
-            detailThumb = document.createElement('div');
-            detailThumb.className = 'detail-thumb';
-            if (titleEl) titleEl.insertAdjacentElement('beforebegin', detailThumb);
-        }
-        detailThumb.innerHTML = resourceThumbHtml(item);
+    const detailThumb = document.getElementById('detail-thumb');
+    if (detailThumb && typeof resourceThumbHtml === 'function') {
+        detailThumb.innerHTML = resourceThumbHtml(item, { compact: true });
     }
 
     if (metaEl) {
@@ -123,7 +118,9 @@ async function loadResourceDetail() {
     }
 
     if (summaryEl) {
-        summaryEl.textContent = item.content || '';
+        summaryEl.textContent = '';
+        summaryEl.hidden = true;
+        summaryEl.classList.remove('is-visible');
     }
 
     const practiceBtn = document.getElementById('practice-resource-btn');
@@ -151,9 +148,19 @@ async function loadResourceDetail() {
             bodyEl.innerHTML = html;
         } catch {
             bodyEl.innerHTML = `<div class="resource-excerpt"><p>${escapeHtml(item.content || '暂无正文')}</p></div>`;
+            if (summaryEl && item.content) {
+                summaryEl.textContent = item.content;
+                summaryEl.hidden = false;
+                summaryEl.classList.add('is-visible');
+            }
         }
     } else if (item.content) {
         bodyEl.innerHTML = `<div class="resource-excerpt"><p>${escapeHtml(item.content)}</p></div>`;
+        if (summaryEl) {
+            summaryEl.textContent = item.content;
+            summaryEl.hidden = false;
+            summaryEl.classList.add('is-visible');
+        }
     } else {
         renderEmpty(bodyEl, '该资料暂无正文内容');
     }
