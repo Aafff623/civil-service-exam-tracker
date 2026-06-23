@@ -30,16 +30,22 @@
   - [x] 集成后端 API：Dashboard 显示当前登录用户、Resources 从 API 加载资源列表
   - [x] 添加退出登录按钮
   - [x] 验证登录 → Dashboard → Resources 流程正常
+- [x] 题库与练习模块
+  - [x] 后端：题目列表/详情/筛选 API（`routes/questions.py`）
+  - [x] 后端：答题提交/历史/弱项统计 API（`routes/answers.py`）
+  - [x] 前端：`qa.html` 接入真实题库数据（筛选、答题、解析、历史）
+  - [x] API 测试通过（4 道种子题、科目筛选、weak_points 更新）
 
 ## 进行中
 
-- [ ] 题库与练习模块
+- [ ] 静态页面后端集成（plan、recommendations、statistics）
 
 ## 下一步
 
-1. 继续集成前端资产与后端 API（plan、recommendations、statistics、qa 页面目前仍为静态演示数据）
-2. 题库与练习模块（题目列表、答题、记录答题历史）
-3. 智能学习计划生成模块
+1. 智能学习计划生成模块（后端 `/api/plans` + `plan.html` 接入）
+2. 学习进度跟踪模块（后端 `/api/progress` + `statistics.html` 接入）
+3. 个性化推荐模块（后端 `/api/recommendations` + `recommendations.html` 接入）
+4. 题目解析与答疑模块（AI 答疑可接入真实接口）
 4. 学习进度跟踪模块
 5. 个性化推荐模块
 6. 题目解析与答疑模块

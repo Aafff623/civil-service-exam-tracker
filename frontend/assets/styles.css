@@ -473,10 +473,15 @@ button { cursor: pointer; }
   background: #fff;
   padding: 18px;
 }
-.option { display:flex; align-items:center; gap:10px; padding:12px; border-radius:14px; border:1px solid var(--line); margin-top:10px; background:#fff; }
+.option { display:flex; align-items:center; gap:10px; padding:12px; border-radius:14px; border:1px solid var(--line); margin-top:10px; background:#fff; cursor:pointer; }
+.option:hover { border-color: var(--primary); }
+.option.selected { border-color: var(--primary); background:#f1f6ff; }
 .option.correct { border-color: rgba(19,185,129,.35); background:#eefdf7; }
+.option.wrong { border-color: rgba(239,68,68,.35); background:#fef2f2; }
 .option-letter { width:28px; height:28px; display:grid; place-items:center; border-radius:10px; background:#f1f5ff; color:var(--primary); font-weight:900; }
+.option.selected .option-letter { background: var(--primary); color:white; }
 .option.correct .option-letter { background: var(--success); color:white; }
+.option.wrong .option-letter { background: var(--danger, #ef4444); color:white; }
 .analysis-box { padding:14px; border-radius:16px; border:1px solid var(--line); background:#f9fbff; line-height:1.75; font-size:14px; }
 .chat { display:grid; gap:12px; }
 .bubble { max-width: 86%; padding:12px 14px; border-radius:16px; font-size:14px; line-height:1.6; }

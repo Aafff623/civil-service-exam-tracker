@@ -65,3 +65,31 @@ async function getMe() {
 async function getHealth() {
     return apiRequest('/health');
 }
+
+async function getQuestions(params = {}) {
+    const query = new URLSearchParams();
+    if (params.subject_id) query.append('subject_id', params.subject_id);
+    if (params.type) query.append('type', params.type);
+    if (params.page) query.append('page', params.page);
+    if (params.per_page) query.append('per_page', params.per_page);
+    const queryString = query.toString() ? `?${query.toString()}` : '';
+    return apiRequest(`/questions/${queryString}`);
+}
+
+async function getQuestion(id) {
+    return apiRequest(`/questions/${id}`);
+}
+
+async function submitAnswer(question_id, selected_answer) {
+    return apiRequest('/answers/', {
+        method: 'POST',
+        body: { question_id, selected_answer }
+    });
+}
+
+async function getAnswerHistory(params = {}) {
+    const query = new URLSearchParams();
+    if (params.subject_id) query.append('subject_id', params.subject_id);
+    const queryString = query.toString() ? `?${query.toString()}` : '';
+    return apiRequest(`/answers/history${queryString}`);
+}
