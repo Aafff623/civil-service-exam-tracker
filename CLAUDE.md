@@ -22,6 +22,10 @@ We use the five canonical Matt Pocock labels unchanged: `needs-triage`, `needs-i
 
 Single-context repo: `CONTEXT.md` at the repo root plus `docs/adr/` for architectural decisions. See `docs/agents/domain.md`.
 
+### Module workflow
+
+When implementing a feature module, follow the standard before/during/after workflow. See `docs/agents/module-development-workflow.md`.
+
 ## Core modules
 
 1. 用户与账户
