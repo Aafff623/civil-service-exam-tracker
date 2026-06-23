@@ -5,7 +5,7 @@
 ## 最近一次更新
 
 - **时间**：2026-06-23
-- **会话动作**：完成考试资源管理模块
+- **会话动作**：完成 Frontend Design 审查报告
 - **执行者**：Claude Fable 5
 
 ## 当前上下文
@@ -13,42 +13,67 @@
 - 项目已初始化并推送到 GitHub private 仓库。
 - Matt Pocock 工程技能配置完成（issue tracker、labels、domain docs）。
 - 三个项目级 skill 已安装：ui-ux-pro-max、ppt-master、matt-pocock。
-- PRD 和 CONTEXT.md 已完成，需求拆分为 7 个功能模块。
-- 用户与账户模块已完成并通过浏览器验证。
-- **考试资源管理模块已完成并通过浏览器验证**。
+- Frontend Design skill 已安装并用于审查。
+- 用户与账户模块、考试资源管理模块已完成并通过功能验证。
+- **已完成 Frontend Design 设计审查报告**。
 
 ## 已完成（本次会话）
 
-- 实现用户与账户模块：
-  - 后端：`/api/auth/register`、`/api/auth/login`、`/api/auth/logout`、`/api/auth/me`
-  - 前端：login.html、register.html、dashboard.html 对接完成
-  - 浏览器流程验证通过
-- 实现考试资源管理模块：
-  - 后端：`GET /api/resources/`（支持科目/类型筛选）、`GET /api/resources/<id>`
-  - 后端：`GET /api/subjects/` 供前端筛选使用
-  - 前端：resources.html 资源库页面，支持科目和类型筛选
-  - dashboard.html 添加资源库入口
-  - 浏览器流程验证：登录 → 资源库 → 列表显示 → 筛选正常
+- 实现用户与账户模块（注册、登录、登出、个人信息）
+- 实现考试资源管理模块（资源列表、筛选、详情）
+- 使用 Frontend Design skill 原则完成前端设计审查
+- 输出 `docs/frontend-design-review.md`，包含：
+  - 当前设计问题分析
+  - 各页面具体优化建议
+  - 可执行的分阶段改进方案
+  - 优先级排序（P0/P1/P2/P3）
+
+## 设计审查关键结论
+
+**P0（最优先）**：
+1. 用 inline message/toast 替代原生 alert
+2. 统一色彩系统（政务蓝 + 琥珀强调色）
+3. 按钮/input 增加过渡和 focus 状态
+
+**P1**：
+1. 登录/注册页表单卡片化 + 品牌区
+2. 资源库筛选区样式整理
+3. 移动端基础适配
+4. Dashboard 空状态引导
+
+**P2/P3**：首页 hero、动画过渡、彩色 badge 等。
+
+完整报告见 `docs/frontend-design-review.md`。
 
 ## 待办事项（按优先级）
 
-1. **题库与练习模块**
+1. **执行 Frontend Design 优化（P0 + P1）**
+   - 更新 CSS 色彩和基础组件样式
+   - 替换 alert 为 inline/toast 提示
+   - 登录/注册页卡片化
+   - 资源库筛选区整理
+   - Dashboard 空状态优化
+   - 移动端适配
+
+2. **题库与练习模块**
    - 题目列表与筛选 API
    - 答题提交与记录 API
    - 前端题库练习页面
-   - 答题结果展示
 
-2. **智能学习计划生成模块**
-3. **学习进度跟踪模块**
-4. **个性化推荐模块**
-5. **题目解析与答疑模块**
+3. **智能学习计划生成模块**
+4. **学习进度跟踪模块**
+5. **个性化推荐模块**
+6. **题目解析与答疑模块**
 
 ## 下一步动作
 
-开始实现题库与练习模块。
+根据用户决策，二选一：
+- **选项 A**：先执行 Frontend Design 的 P0/P1 优化，再推进题库模块
+- **选项 B**：跳过设计优化，直接推进题库与练习模块
 
 ## 重要文件路径
 
+- 设计审查报告：`docs/frontend-design-review.md`
 - PRD：`PRD-civil-service-exam-tracker.md`
 - 项目配置：`CLAUDE.md`
 - 领域上下文：`CONTEXT.md`
