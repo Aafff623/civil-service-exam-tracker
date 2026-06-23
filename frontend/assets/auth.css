@@ -26,7 +26,7 @@ body:has(.auth-page) {
   position: absolute;
   inset: 0;
   background: url('images/auth-hero.jpg') center center / cover no-repeat;
-  filter: saturate(1.12) contrast(1.04) brightness(1.06);
+  filter: saturate(1.05) contrast(1.02) brightness(0.88);
   pointer-events: none;
 }
 
@@ -35,8 +35,8 @@ body:has(.auth-page) {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(105deg, rgba(15, 23, 42, 0.42) 0%, rgba(15, 23, 42, 0.18) 48%, rgba(15, 23, 42, 0.06) 100%),
-    linear-gradient(180deg, rgba(15, 23, 42, 0.12) 0%, transparent 38%, rgba(15, 23, 42, 0.22) 100%);
+    linear-gradient(105deg, rgba(15, 23, 42, 0.78) 0%, rgba(15, 23, 42, 0.58) 42%, rgba(15, 23, 42, 0.38) 100%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.35) 0%, transparent 32%, rgba(15, 23, 42, 0.5) 100%);
   pointer-events: none;
 }
 
@@ -52,8 +52,8 @@ body:has(.auth-page) {
   width: fit-content;
   padding: 10px 16px 10px 12px;
   border-radius: 10px;
-  background: rgba(15, 23, 42, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: var(--shadow-sm);
 }
 
@@ -89,7 +89,7 @@ body:has(.auth-page) {
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.14em;
-  color: rgba(248, 250, 252, 0.48);
+  color: #cbd5e1;
 }
 
 .auth-brand-inner {
@@ -105,9 +105,10 @@ body:has(.auth-page) {
   position: relative;
   padding: 36px 32px 32px;
   border-radius: 4px;
-  background: rgba(15, 23, 42, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow: var(--shadow-md);
+  background: rgba(15, 23, 42, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(10px);
 }
 
 .auth-copy-panel::before {
@@ -129,7 +130,7 @@ body:has(.auth-page) {
   font-weight: 600;
   letter-spacing: 0.34em;
   text-transform: uppercase;
-  color: rgba(248, 250, 252, 0.62);
+  color: #94a3b8;
 }
 
 .auth-brand h1 {
@@ -145,15 +146,14 @@ body:has(.auth-page) {
 .auth-title-line {
   display: block;
   font-weight: 400;
-  color: rgba(248, 250, 252, 0.82);
-  text-shadow: 0 2px 18px rgba(15, 23, 42, 0.28);
+  color: #e2e8f0;
 }
 
 .auth-title-accent {
   display: block;
   margin-top: 6px;
   font-weight: 700;
-  color: rgba(248, 250, 252, 0.95);
+  color: #ffffff;
 }
 
 .auth-lead {
@@ -163,7 +163,7 @@ body:has(.auth-page) {
   font-weight: 400;
   line-height: 1.85;
   letter-spacing: 0.03em;
-  color: rgba(248, 250, 252, 0.68);
+  color: #cbd5e1;
   max-width: 340px;
 }
 
@@ -182,7 +182,7 @@ body:has(.auth-page) {
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.12em;
-  color: rgba(248, 250, 252, 0.52);
+  color: #94a3b8;
 }
 
 .auth-meta span + span::before {
@@ -192,7 +192,7 @@ body:has(.auth-page) {
   height: 3px;
   margin: 0 14px 2px;
   border-radius: 50%;
-  background: rgba(248, 250, 252, 0.35);
+  background: #64748b;
   vertical-align: middle;
 }
 
@@ -206,19 +206,19 @@ body:has(.auth-page) {
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.16em;
-  color: rgba(248, 250, 252, 0.38);
+  color: #94a3b8;
 }
 
 .auth-foot-dot {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: rgba(248, 250, 252, 0.28);
+  background: #64748b;
   flex-shrink: 0;
 }
 
 .auth-foot-year {
-  color: rgba(248, 250, 252, 0.52);
+  color: #cbd5e1;
 }
 
 /* —— Form panel —— */
