@@ -1,5 +1,7 @@
 const WEEKDAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
+let lastPlanSnapshot = null;
+
 function formatLocalDate(d) {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
@@ -33,6 +35,21 @@ function fillGoalForm(goal) {
     if (startDate) startDate.value = goal.start_date || defaultStartDate();
     if (examDate) examDate.value = goal.exam_date || defaultExamDate();
     if (dailyMinutes) dailyMinutes.value = String(goal.daily_minutes || 180);
+}
+
+function setPlanStep(step) {
+    document.querySelectorAll('#plan-stepper .step').forEach(el => {
+        const n = parseInt(el.getAttribute('data-step'), 10);
+        el.classList.toggle('active', n === step);
+        el.classList.toggle('done', n < step);
+    });
+}
+
+function flashSection(el) {
+    if (!el) return;
+    el.classList.remove('hidden');
+    el.classList.add('flash-update');
+    setTimeout(() => el.classList.remove('flash-update'), 1200);
 }
 
 async function initPlan() {
@@ -80,9 +97,13 @@ async function loadExistingPlan() {
     if (!planResult.ok || !planResult.data.success) return;
 
     const plan = planResult.data.data.plan;
+    const goal = planResult.data.data.goal;
     if (plan) {
-        renderPlanPreview(plan);
+        lastPlanSnapshot = { total_items: plan.total_items, total_days: plan.total_days };
+        renderPlanPreview(plan, goal);
+        setPlanStep(3);
         await loadWeekSchedule();
+        await loadUpcomingPreview();
     }
 }
 
@@ -91,60 +112,110 @@ async function handleGeneratePlan() {
     const goal = getGoalFromForm();
 
     if (!goal.start_date || !goal.exam_date) {
-        alert('请填写开始日期和预计考试时间');
+        showToast('请填写开始日期和预计考试时间', 'error');
         return;
     }
 
-    if (btn) {
-        btn.disabled = true;
-        btn.textContent = '生成中...';
+    if (new Date(goal.exam_date) <= new Date(goal.start_date)) {
+        showToast('预计考试时间必须晚于开始日期', 'error');
+        return;
     }
 
+    setPlanStep(2);
+    setButtonLoading(btn, true, '生成中');
+
+    await savePlanGoal(goal);
     const result = await generatePlan(goal);
 
-    if (btn) {
-        btn.disabled = false;
-        btn.textContent = '生成学习计划';
-    }
+    setButtonLoading(btn, false);
 
     if (!result.ok || !result.data.success) {
-        alert(result.data.message || '生成失败，请稍后重试');
+        setPlanStep(1);
+        showToast(result.data.message || '生成失败，请稍后重试', 'error');
         return;
     }
 
+    setPlanStep(3);
+
     const planResult = await getPlan();
+    const goalResult = await getPlanGoal();
+    const savedGoal = goalResult.ok && goalResult.data.success ? goalResult.data.data : goal;
+
+    let planData;
     if (planResult.ok && planResult.data.success && planResult.data.data.plan) {
-        renderPlanPreview(planResult.data.data.plan);
+        planData = planResult.data.data.plan;
     } else {
-        renderPlanPreview({
+        planData = {
             total_weeks: result.data.data.total_weeks,
             total_items: result.data.data.total_items,
-            phases: result.data.data.phases
-        });
+            total_days: result.data.data.total_days,
+            phases: result.data.data.phases,
+            completed_items: 0
+        };
     }
 
+    renderPlanPreview(planData, savedGoal, result.data.data);
     await loadWeekSchedule();
+    await loadUpcomingPreview();
 
     const preview = document.getElementById('plan-result');
-    if (preview) {
-        preview.classList.remove('hidden');
-        preview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
+    const upcoming = document.getElementById('plan-upcoming');
+    flashSection(preview);
+    flashSection(upcoming);
+    if (preview) preview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-function renderPlanPreview(plan) {
+function renderPlanPreview(plan, goal, generateMeta) {
     const summary = document.getElementById('plan-summary');
     const phasesBox = document.getElementById('plan-phases');
+    const statsBox = document.getElementById('plan-stats');
+    const badge = document.getElementById('plan-result-badge');
+
+    const prevItems = lastPlanSnapshot?.total_items;
+    const delta = prevItems != null && plan.total_items != null
+        ? plan.total_items - prevItems : null;
+    lastPlanSnapshot = { total_items: plan.total_items, total_days: plan.total_days };
+
+    if (badge) {
+        const now = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+        badge.textContent = `已更新 ${now}`;
+    }
+
+    if (statsBox) {
+        statsBox.innerHTML = `
+            <div class="plan-stat-card">
+                <span>学习周期</span>
+                <strong>${plan.total_days || '—'}<small>天</small></strong>
+            </div>
+            <div class="plan-stat-card">
+                <span>任务总数</span>
+                <strong>${plan.total_items || '—'}<small>项</small></strong>
+                ${delta != null && delta !== 0 ? `<em class="${delta > 0 ? 'up' : 'down'}">${delta > 0 ? '+' : ''}${delta}</em>` : ''}
+            </div>
+            <div class="plan-stat-card">
+                <span>每日学习</span>
+                <strong>${goal?.daily_minutes || '—'}<small>分钟</small></strong>
+            </div>
+            <div class="plan-stat-card">
+                <span>考试目标</span>
+                <strong>${escapeHtml(goal?.exam_type || '—')}</strong>
+                <small>${escapeHtml(goal?.exam_date || '')}</small>
+            </div>
+        `;
+    }
 
     if (summary) {
-        summary.innerHTML = `已为你生成个性化学习计划，覆盖 <strong>${plan.total_weeks} 周</strong>，包含 <strong>${plan.total_items} 个学习任务</strong>。`;
+        const completed = plan.completed_items || 0;
+        summary.innerHTML = `已根据你的目标生成 <strong>${plan.total_weeks} 周</strong> 学习计划，共 <strong>${plan.total_items} 个任务</strong>（已完成 ${completed} 项）。${generateMeta?.plan_id ? ` 计划编号 #${generateMeta.plan_id}。` : ''}`;
     }
 
     if (phasesBox && plan.phases) {
-        phasesBox.innerHTML = plan.phases.map(phase => `
-            <div class="card soft">
+        phasesBox.innerHTML = plan.phases.map((phase, i) => `
+            <div class="card soft phase-card">
+                <span class="phase-index">阶段 ${i + 1}</span>
                 <h3>${escapeHtml(phase.name)}</h3>
                 <p class="muted">${escapeHtml(phase.description)}</p>
+                <span class="tag blue">约 ${phase.weeks} 周</span>
             </div>
         `).join('');
     }
@@ -167,6 +238,61 @@ function weekRange() {
         from: formatLocalDate(monday),
         to: formatLocalDate(sunday)
     };
+}
+
+function upcomingRange(days = 7) {
+    const start = new Date();
+    const end = new Date();
+    end.setDate(end.getDate() + days - 1);
+    return { from: formatLocalDate(start), to: formatLocalDate(end) };
+}
+
+async function loadUpcomingPreview() {
+    const box = document.getElementById('plan-upcoming-list');
+    const section = document.getElementById('plan-upcoming');
+    if (!box) return;
+
+    const range = upcomingRange(7);
+    const result = await getPlanItems(range);
+
+    if (!result.ok || !result.data.success) {
+        box.innerHTML = '<p class="muted">加载失败</p>';
+        return;
+    }
+
+    const items = result.data.data.items || [];
+    if (section) section.classList.toggle('hidden', items.length === 0);
+
+    if (items.length === 0) {
+        box.innerHTML = '<p class="muted">未来 7 天暂无任务</p>';
+        return;
+    }
+
+    const byDate = {};
+    items.forEach(item => {
+        if (!byDate[item.item_date]) byDate[item.item_date] = [];
+        byDate[item.item_date].push(item);
+    });
+
+    box.innerHTML = Object.keys(byDate).sort().map(dateStr => {
+        const dayItems = byDate[dateStr];
+        const done = dayItems.filter(i => i.is_completed).length;
+        return `
+            <div class="upcoming-day">
+                <div class="upcoming-day-head">
+                    <strong>${escapeHtml(dateStr)}</strong>
+                    <span class="tag ${done === dayItems.length ? 'green' : 'orange'}">${done}/${dayItems.length} 完成</span>
+                </div>
+                <div class="upcoming-items">
+                    ${dayItems.map(item => `
+                        <span class="upcoming-chip ${item.is_completed ? 'done' : ''}">
+                            ${item.is_completed ? '✓ ' : ''}${escapeHtml(item.subject_name)} · ${item.suggested_minutes}min
+                        </span>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 async function loadWeekSchedule() {
@@ -223,14 +349,28 @@ async function loadWeekSchedule() {
     tbody.innerHTML = rows;
     tbody.querySelectorAll('[data-toggle-item]').forEach(btn => {
         btn.addEventListener('click', async () => {
+            if (btn.disabled) return;
             const id = btn.getAttribute('data-toggle-item');
             const completed = btn.getAttribute('data-completed') === '1';
-            await updatePlanItem(id, !completed);
+            setButtonLoading(btn, true, '…');
+            const res = await updatePlanItem(id, !completed);
+            setButtonLoading(btn, false);
+            if (!res.ok || !res.data.success) {
+                showToast(res.data.message || '更新失败', 'error');
+                return;
+            }
+            showToast(completed ? '已取消完成' : '任务已完成', 'success');
             await loadWeekSchedule();
+            await loadUpcomingPreview();
         });
     });
 }
 
-if (document.getElementById('plan-generate-btn')) {
-    initPlan();
+function bootPlan() {
+    if (document.getElementById('plan-generate-btn')) initPlan();
+}
+if (document.body.classList.contains('app-ready')) {
+    bootPlan();
+} else {
+    window.addEventListener('app:ready', bootPlan, { once: true });
 }

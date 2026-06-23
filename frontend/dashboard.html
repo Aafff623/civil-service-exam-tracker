@@ -10,8 +10,8 @@
   <div class="app">
     <aside class="sidebar">
       <a class="logo" href="dashboard.html" aria-label="返回总览">
-        <span class="logo-mark">公</span>
-        <span class="logo-text"><strong>公考学习系统</strong><span>学习跟踪原型</span></span>
+        <span class="logo-mark"><img src="assets/brand-mark.svg" width="36" height="36" alt="" /></span>
+        <span class="logo-text"><strong>备考跟踪</strong><span>学习进度管理</span></span>
       </a>
       <nav class="nav"><a class="active" href="dashboard.html"><span class="nav-icon">⌂</span><span>首页</span></a>
 <a class="" href="resources.html"><span class="nav-icon">▣</span><span>考试与资源</span></a>
@@ -19,12 +19,12 @@
 <a class="" href="recommendations.html"><span class="nav-icon">✦</span><span>学习推荐</span></a>
 <a class="" href="statistics.html"><span class="nav-icon">◫</span><span>学习统计</span></a>
 <a class="" href="qa.html"><span class="nav-icon">?</span><span>题库与答疑</span></a></nav>
-      <div class="sidebar-footer">蓝白风格 · 简洁实用 · 前端静态原型<br/>适合小学期课程设计展示</div>
+      <div class="sidebar-footer">备考跟踪 · Flask + MySQL<br/>课程设计演示系统</div>
     </aside>
     <main class="main">
       <header class="topbar">
         <div>
-          <div class="breadcrumb">公务员考试学习跟踪系统 / 方案 A</div>
+          <div class="breadcrumb">备考跟踪 / 学习工作台</div>
           <h1 class="page-title"><span class="title-badge">1</span>首页 / 学习总览 Dashboard</h1>
           <div class="muted" style="margin-top:8px; font-size:14px;">集中展示今日学习任务、学习时长、完成率、弱项提醒与考试倒计时。</div>
         </div>
@@ -50,23 +50,38 @@
         <div class="card-title"><h3>今日任务清单</h3><a class="link" href="plan.html">查看计划</a></div>
         <div class="task-list" id="dashboard-tasks"><p class="muted">加载中...</p></div>
       </div>
-      <div class="card soft">
-        <div class="card-title"><h3>弱项提醒</h3><span class="tag red">需加强</span></div>
+      <div class="card soft weak-panel">
+        <div class="card-title"><h3>弱项提醒</h3><span class="tag red" id="dashboard-weak-badge">分析中</span></div>
+        <div class="weak-summary" id="dashboard-weak-summary"></div>
         <div class="bar-list" id="dashboard-weak-bars"><p class="muted">加载中...</p></div>
-        <div class="notice" style="margin-top:18px;" id="dashboard-weak-tip">📘 加载弱项建议中...</div>
+        <div class="weak-actions" id="dashboard-weak-actions"></div>
+        <div class="notice" style="margin-top:14px;" id="dashboard-weak-tip">📘 加载弱项建议中...</div>
       </div>
     </div>
   </div>
-  <div class="card">
-    <div class="card-title"><h2>考试倒计时</h2><span class="tag" id="dashboard-exam-year">—</span></div>
-    <div class="countdown"><div class="num" id="dashboard-countdown-days">—</div></div>
-    <div style="margin-top:18px;"><svg viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="完成率">
-      <circle cx="60" cy="60" r="45" fill="none" stroke="#e8f1ff" stroke-width="12"/>
-      <circle id="dashboard-progress-ring" cx="60" cy="60" r="45" fill="none" stroke="#0b66ff" stroke-width="12" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283" transform="rotate(-90 60 60)"/>
-      <text x="60" y="54" text-anchor="middle" fill="#6e7f9a" font-size="12" font-weight="700">完成率</text>
-      <text id="dashboard-progress-text" x="60" y="78" text-anchor="middle" fill="#13213c" font-size="24" font-weight="900">—</text>
-    </svg></div>
-    <p class="muted" id="dashboard-progress-desc">加载进度中...</p>
+  <div class="card countdown-card">
+    <div class="card-title"><h2>考试倒计时</h2><span class="tag blue" id="dashboard-exam-type-tag">—</span></div>
+    <div class="countdown-hero">
+      <div class="countdown"><div class="num" id="dashboard-countdown-days">—</div></div>
+      <div class="countdown-meta">
+        <div class="countdown-date" id="dashboard-exam-date">目标考试日 —</div>
+        <div class="countdown-sub" id="dashboard-countdown-sub">距笔试还有 — 天</div>
+      </div>
+    </div>
+    <div class="countdown-milestones" id="dashboard-milestones"></div>
+    <div class="countdown-bar-wrap">
+      <div class="countdown-bar-label"><span>备考进度</span><strong id="dashboard-prep-percent">0%</strong></div>
+      <div class="progress blue"><span id="dashboard-prep-bar" style="width:0%"></span></div>
+    </div>
+    <div class="countdown-ring-row">
+      <svg viewBox="0 0 120 120" width="100" height="100" role="img" aria-label="计划完成率">
+        <circle cx="60" cy="60" r="45" fill="none" stroke="#e8f1ff" stroke-width="12"/>
+        <circle id="dashboard-progress-ring" cx="60" cy="60" r="45" fill="none" stroke="#0b66ff" stroke-width="12" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283" transform="rotate(-90 60 60)"/>
+        <text x="60" y="54" text-anchor="middle" fill="#6e7f9a" font-size="11" font-weight="700">完成率</text>
+        <text id="dashboard-progress-text" x="60" y="78" text-anchor="middle" fill="#13213c" font-size="22" font-weight="900">—</text>
+      </svg>
+      <p class="muted" id="dashboard-progress-desc">加载进度中...</p>
+    </div>
   </div>
 </section>
 <section class="grid grid-2" style="margin-top:18px;">
@@ -80,17 +95,17 @@
     </div>
   </div>
   <div class="card">
-    <div class="card-title"><h2>学习热力图</h2><small>近 30 天</small></div>
-    <div class="heatmap" id="dashboard-heatmap"><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span></div>
-    <p class="muted">颜色越深代表当天学习时长越高，用于快速观察学习连续性。</p>
+    <div class="card-title"><h2>学习热力图</h2><small>近 12 周</small></div>
+    <div id="dashboard-heatmap"><p class="state-loading">加载中...</p></div>
+    <p class="muted">悬停格子可查看当天学习时长；颜色越深代表学习越多。</p>
   </div>
 </section>
 
       <p class="footer-note">首页数据来自学习计划、进度统计与推荐模块。</p>
     </main>
   </div>
-  <script src="assets/app.js"></script>
   <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
   <script src="js/app.js"></script>
   <script src="js/dashboard.js"></script>
 </body>
