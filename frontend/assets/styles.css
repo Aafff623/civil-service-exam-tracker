@@ -56,6 +56,13 @@
   --tone-rose-soft: #ffe4e6;
   --tone-slate: #475569;
   --tone-slate-soft: #f1f5f9;
+
+  --heatmap-empty: #ebedf0;
+  --heatmap-l1: #bbf7d0;
+  --heatmap-l2: #6ee7a0;
+  --heatmap-l3: #34d399;
+  --heatmap-l4: #059669;
+  --heatmap-deep: #047857;
   --shadow: var(--shadow-md);
   --radius: 12px;
   --radius-sm: 8px;
@@ -993,8 +1000,8 @@ button.task-check.is-popping {
   width: 100%;
   padding: 12px 10px 6px;
   border-radius: 12px;
-  background: linear-gradient(145deg, #f8fafc 0%, #eef4fa 48%, #e8f0f8 100%);
-  border: 1px solid rgba(3, 105, 161, 0.08);
+  background: linear-gradient(145deg, #f8fafc 0%, #f0fdf4 48%, #ecfdf5 100%);
+  border: 1px solid rgba(5, 150, 105, 0.1);
 }
 .heatmap-months {
   display: flex;
@@ -1037,7 +1044,7 @@ button.task-check.is-popping {
   padding: 0;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(145deg, #f1f5f9 0%, #e8edf5 100%);
+  background: linear-gradient(145deg, #f4f6f8 0%, var(--heatmap-empty) 100%);
   cursor: default;
   transition: transform .1s ease, box-shadow .1s ease;
 }
@@ -1045,24 +1052,24 @@ button.heatmap-cell { cursor: pointer; }
 .heatmap-cell.is-future { background: transparent; box-shadow: none; pointer-events: none; }
 .heatmap-cell.is-future::after { display: none; }
 .heatmap-cell.l0 {
-  background: linear-gradient(145deg, #f4f7fa 0%, #e8ecf1 52%, #dfe6ee 100%);
+  background: linear-gradient(145deg, #f4f6f8 0%, var(--heatmap-empty) 52%, #e2e6eb 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
 }
 .heatmap-cell.l1 {
-  background: linear-gradient(145deg, #ecf6fc 0%, #d6eaf5 48%, #c5e0f0 100%);
+  background: linear-gradient(145deg, #dcfce7 0%, var(--heatmap-l1) 48%, #a7f3c0 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 .heatmap-cell.l2 {
-  background: linear-gradient(145deg, #b8dff0 0%, #9ccfe8 46%, #7ec0e2 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38), 0 1px 2px rgba(3, 105, 161, 0.14);
+  background: linear-gradient(145deg, #a7f3c0 0%, var(--heatmap-l2) 46%, #4ade80 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38), 0 1px 2px rgba(5, 150, 105, 0.16);
 }
 .heatmap-cell.l3 {
-  background: linear-gradient(145deg, #6bb8dc 0%, #4da3d4 50%, #3b8fc8 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 2px 4px rgba(3, 105, 161, 0.22);
+  background: linear-gradient(145deg, #4ade80 0%, var(--heatmap-l3) 50%, #10b981 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 2px 4px rgba(5, 150, 105, 0.24);
 }
 .heatmap-cell.l4 {
-  background: linear-gradient(145deg, #0ea5e9 0%, var(--color-accent) 46%, var(--primary-700) 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 2px 6px rgba(3, 105, 161, 0.34);
+  background: linear-gradient(145deg, #10b981 0%, var(--heatmap-l4) 46%, var(--heatmap-deep) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 2px 6px rgba(5, 150, 105, 0.36);
 }
 .heatmap-cell.l2::after,
 .heatmap-cell.l3::after,
@@ -1077,7 +1084,7 @@ button.heatmap-cell { cursor: pointer; }
 .heatmap-cell:hover,
 .heatmap-cell:focus-visible {
   transform: scale(1.15);
-  box-shadow: 0 0 0 1px rgba(3, 105, 161, 0.45), 0 4px 12px rgba(3, 105, 161, 0.28);
+  box-shadow: 0 0 0 1px rgba(5, 150, 105, 0.45), 0 4px 12px rgba(5, 150, 105, 0.28);
   outline: none;
   z-index: 1;
 }
