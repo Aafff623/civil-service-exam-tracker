@@ -5,7 +5,7 @@
 ## 最近一次更新
 
 - **时间**：2026-06-23
-- **会话动作**：完成用户与账户模块
+- **会话动作**：完成考试资源管理模块
 - **执行者**：Claude Fable 5
 
 ## 当前上下文
@@ -14,45 +14,38 @@
 - Matt Pocock 工程技能配置完成（issue tracker、labels、domain docs）。
 - 三个项目级 skill 已安装：ui-ux-pro-max、ppt-master、matt-pocock。
 - PRD 和 CONTEXT.md 已完成，需求拆分为 7 个功能模块。
-- 后端 Flask 骨架已跑通，`/api/health/` 返回正常。
-- 前端基础页面已创建：index、login、register、dashboard。
-- 数据库 12 张核心表已设计完成。
-- **用户与账户模块已完成并通过浏览器流程验证**。
+- 用户与账户模块已完成并通过浏览器验证。
+- **考试资源管理模块已完成并通过浏览器验证**。
 
 ## 已完成（本次会话）
 
-- 创建 GitHub private 仓库 `civil-service-exam-tracker`
-- 本地 `git init` 并推送初始提交
-- 创建 `docs/ROADMAP.md`
-- 创建 `docs/PROJECT_STATUS.md`
-- 创建本文件 `docs/HANDOFF.md`
-- 编写并提交 `CONTEXT.md`
-- 搭建 Flask 后端（app.py、config、routes、requirements.txt）
-- 创建前端页面（index/login/register/dashboard + CSS/JS）
-- 测试健康检查 API 通过
-- 添加 `.gitignore` 并清理误提交的 `__pycache__`
-- 设计数据库表结构（12 张表 + 索引 + 种子数据）
 - 实现用户与账户模块：
   - 后端：`/api/auth/register`、`/api/auth/login`、`/api/auth/logout`、`/api/auth/me`
   - 前端：login.html、register.html、dashboard.html 对接完成
-  - 浏览器流程验证：注册 → 登录 → dashboard 显示用户名 → 退出后重定向
+  - 浏览器流程验证通过
+- 实现考试资源管理模块：
+  - 后端：`GET /api/resources/`（支持科目/类型筛选）、`GET /api/resources/<id>`
+  - 后端：`GET /api/subjects/` 供前端筛选使用
+  - 前端：resources.html 资源库页面，支持科目和类型筛选
+  - dashboard.html 添加资源库入口
+  - 浏览器流程验证：登录 → 资源库 → 列表显示 → 筛选正常
 
 ## 待办事项（按优先级）
 
-1. **考试资源管理模块**
-   - 资源列表 API
-   - 资源分类与详情
-   - 前端资源库页面
+1. **题库与练习模块**
+   - 题目列表与筛选 API
+   - 答题提交与记录 API
+   - 前端题库练习页面
+   - 答题结果展示
 
-2. **题库与练习模块**
-3. **智能学习计划生成模块**
-4. **学习进度跟踪模块**
-5. **个性化推荐模块**
-6. **题目解析与答疑模块**
+2. **智能学习计划生成模块**
+3. **学习进度跟踪模块**
+4. **个性化推荐模块**
+5. **题目解析与答疑模块**
 
 ## 下一步动作
 
-开始实现考试资源管理模块。
+开始实现题库与练习模块。
 
 ## 重要文件路径
 

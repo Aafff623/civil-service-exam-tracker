@@ -24,8 +24,20 @@ async function apiRequest(endpoint, options = {}) {
     }
 }
 
-async function getHealth() {
-    return apiRequest('/health/');
+async function getResources(params = {}) {
+    const query = new URLSearchParams();
+    if (params.subject_id) query.append('subject_id', params.subject_id);
+    if (params.type) query.append('type', params.type);
+    const queryString = query.toString() ? `?${query.toString()}` : '';
+    return apiRequest(`/resources/${queryString}`);
+}
+
+async function getResource(id) {
+    return apiRequest(`/resources/${id}`);
+}
+
+async function getSubjects() {
+    return apiRequest('/subjects/');
 }
 
 async function register(username, password) {

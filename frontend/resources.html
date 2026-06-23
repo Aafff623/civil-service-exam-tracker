@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资源库 - 公务员考试学习跟踪系统</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>学习资源库</h1>
+            <nav>
+                <a href="dashboard.html" class="btn btn-secondary">个人主页</a>
+                <button id="logout-btn" class="btn btn-secondary">退出登录</button>
+            </nav>
+        </header>
+
+        <div class="filters">
+            <select id="subject-filter">
+                <option value="">全部科目</option>
+            </select>
+            <select id="type-filter">
+                <option value="">全部类型</option>
+                <option value="大纲">大纲</option>
+                <option value="真题">真题</option>
+                <option value="模拟题">模拟题</option>
+                <option value="资料">资料</option>
+            </select>
+            <button id="apply-filter" class="btn">筛选</button>
+        </div>
+
+        <div id="resource-list" class="resource-list">
+            <p>加载中...</p>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/resources.js"></script>
+</body>
+</html>

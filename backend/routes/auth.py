@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request, session
+from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import serialize_row
 
@@ -10,6 +11,14 @@ def get_db():
     conn = sqlite3.connect(current_app.config['DATABASE'])
     conn.row_factory = sqlite3.Row
     return conn
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            return jsonify({"success": False, "message": "Not authenticated"}), 401
+        return f(*args, **kwargs)
+    return decorated_function
 
 @bp.route('/register', methods=['POST'])
 def register():
