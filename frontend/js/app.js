@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         const user = result.data.data;
-        const header = document.querySelector('header h1');
+        const header = document.getElementById('welcome-title');
         if (header) {
             header.textContent = `欢迎，${user.username}`;
         }

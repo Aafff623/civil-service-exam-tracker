@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <header>
+        <header class="page-header">
             <h1>学习资源库</h1>
             <nav>
                 <a href="dashboard.html" class="btn btn-secondary">个人主页</a>
@@ -16,22 +16,28 @@
             </nav>
         </header>
 
-        <div class="filters">
-            <select id="subject-filter">
-                <option value="">全部科目</option>
-            </select>
-            <select id="type-filter">
-                <option value="">全部类型</option>
-                <option value="大纲">大纲</option>
-                <option value="真题">真题</option>
-                <option value="模拟题">模拟题</option>
-                <option value="资料">资料</option>
-            </select>
+        <div class="filter-bar">
+            <div class="form-group">
+                <label for="subject-filter">科目</label>
+                <select id="subject-filter">
+                    <option value="">全部科目</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="type-filter">类型</label>
+                <select id="type-filter">
+                    <option value="">全部类型</option>
+                    <option value="大纲">大纲</option>
+                    <option value="真题">真题</option>
+                    <option value="模拟题">模拟题</option>
+                    <option value="资料">资料</option>
+                </select>
+            </div>
             <button id="apply-filter" class="btn">筛选</button>
         </div>
 
         <div id="resource-list" class="resource-list">
-            <p>加载中...</p>
+            <p class="text-center"><span class="spinner"></span> 正在加载资源...</p>
         </div>
     </div>
 

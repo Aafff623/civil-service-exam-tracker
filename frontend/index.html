@@ -7,15 +7,39 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>公务员考试学习跟踪系统</h1>
-        <p>一个简单的备考辅助工具</p>
-        <div class="nav-links">
-            <a href="login.html" class="btn">登录</a>
-            <a href="register.html" class="btn btn-secondary">注册</a>
+    <div class="landing">
+        <div class="landing-hero">
+            <div class="logo">📚</div>
+            <h1>公务员考试学习跟踪系统</h1>
+            <p class="tagline">制定计划 · 跟踪进度 · 高效备考</p>
+            <div class="nav-links">
+                <a href="login.html" class="btn">登录</a>
+                <a href="register.html" class="btn btn-secondary">注册</a>
+            </div>
         </div>
-        <div id="health-check" class="status-box">
-            正在检查服务状态...
+
+        <div class="feature-grid">
+            <div class="card feature-card">
+                <div class="feature-icon">🗓️</div>
+                <h3>智能计划</h3>
+                <p>根据目标和可用时间生成每日学习任务</p>
+            </div>
+            <div class="card feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>进度跟踪</h3>
+                <p>记录每日完成情况，可视化学习进度</p>
+            </div>
+            <div class="card feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>弱项分析</h3>
+                <p>识别薄弱环节，推荐针对性练习</p>
+            </div>
+        </div>
+
+        <div class="landing-footer">
+            <div id="health-check" class="status-box">
+                正在检查服务状态...
+            </div>
         </div>
     </div>
     <script src="js/api.js"></script>

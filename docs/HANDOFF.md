@@ -5,7 +5,7 @@
 ## 最近一次更新
 
 - **时间**：2026-06-23
-- **会话动作**：完成 Frontend Design 审查报告
+- **会话动作**：完成 Frontend Design P0/P1 优化
 - **执行者**：Claude Fable 5
 
 ## 当前上下文
@@ -15,61 +15,61 @@
 - 三个项目级 skill 已安装：ui-ux-pro-max、ppt-master、matt-pocock。
 - Frontend Design skill 已安装并用于审查。
 - 用户与账户模块、考试资源管理模块已完成并通过功能验证。
-- **已完成 Frontend Design 设计审查报告**。
+- **Frontend Design P0/P1 优化已完成并验证**。
 
 ## 已完成（本次会话）
 
-- 实现用户与账户模块（注册、登录、登出、个人信息）
-- 实现考试资源管理模块（资源列表、筛选、详情）
-- 使用 Frontend Design skill 原则完成前端设计审查
-- 输出 `docs/frontend-design-review.md`，包含：
-  - 当前设计问题分析
-  - 各页面具体优化建议
-  - 可执行的分阶段改进方案
-  - 优先级排序（P0/P1/P2/P3）
+- 更新 `frontend/css/style.css`：
+  - 统一色彩系统为政务蓝 `#1e3a5f` + 琥珀 `#f59e0b`
+  - 增加按钮/input 过渡、focus 状态、卡片阴影
+  - 增加 `.toast`、`.form-error`、`.badge`、`.filter-bar`、`.empty-state` 等通用类
+  - 增加移动端 `@media` 适配
+- 重构 `frontend/login.html` 和 `frontend/register.html`：
+  - 表单卡片化 + 品牌区（logo + 标题 + slogan）
+  - 增加 inline 错误提示占位
+- 更新 `frontend/js/auth.js`：
+  - 用 inline error + toast 替代原生 alert
+  - 增加按钮 loading 状态
+- 更新 `frontend/dashboard.html`：
+  - 统一 page header
+  - 卡片增加图标
+  - 空状态增加引导按钮
+- 更新 `frontend/resources.html`：
+  - 筛选区卡片化、带标签对齐
+  - 加载状态使用 spinner
+- 更新 `frontend/js/resources.js`：
+  - 资源卡片增加类型/科目 badge
+  - 空状态和错误状态优化
+- 更新 `frontend/index.html`：
+  - 增加 hero 区 + 3 个功能卡片
+  - 服务状态提示移至页脚
+- 修复 `frontend/js/api.js`：补充缺失的 `getHealth()` 函数
 
-## 设计审查关键结论
+## 验证结果
 
-**P0（最优先）**：
-1. 用 inline message/toast 替代原生 alert
-2. 统一色彩系统（政务蓝 + 琥珀强调色）
-3. 按钮/input 增加过渡和 focus 状态
-
-**P1**：
-1. 登录/注册页表单卡片化 + 品牌区
-2. 资源库筛选区样式整理
-3. 移动端基础适配
-4. Dashboard 空状态引导
-
-**P2/P3**：首页 hero、动画过渡、彩色 badge 等。
-
-完整报告见 `docs/frontend-design-review.md`。
+- 登录失败显示 inline 错误提示（不再 alert）
+- 注册成功显示 toast 并跳转登录页
+- 登录成功跳转 Dashboard，欢迎语正确
+- 资源库筛选、资源卡片正常显示
+- 首页服务状态检查正常
+- 移动端 375px 宽度下布局正常
+- Console 无项目相关 error（仅 favicon 404 和浏览器插件 warning）
 
 ## 待办事项（按优先级）
 
-1. **执行 Frontend Design 优化（P0 + P1）**
-   - 更新 CSS 色彩和基础组件样式
-   - 替换 alert 为 inline/toast 提示
-   - 登录/注册页卡片化
-   - 资源库筛选区整理
-   - Dashboard 空状态优化
-   - 移动端适配
-
-2. **题库与练习模块**
+1. **题库与练习模块**
    - 题目列表与筛选 API
    - 答题提交与记录 API
    - 前端题库练习页面
 
-3. **智能学习计划生成模块**
-4. **学习进度跟踪模块**
-5. **个性化推荐模块**
-6. **题目解析与答疑模块**
+2. **智能学习计划生成模块**
+3. **学习进度跟踪模块**
+4. **个性化推荐模块**
+5. **题目解析与答疑模块**
 
 ## 下一步动作
 
-根据用户决策，二选一：
-- **选项 A**：先执行 Frontend Design 的 P0/P1 优化，再推进题库模块
-- **选项 B**：跳过设计优化，直接推进题库与练习模块
+继续实现 **题库与练习模块**。
 
 ## 重要文件路径
 
