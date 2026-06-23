@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" role="img" aria-label="备考跟踪">
+  <defs>
+    <linearGradient id="brand-bg" x1="6" y1="4" x2="34" y2="36" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#0369a1"/>
+    </linearGradient>
+    <linearGradient id="brand-line" x1="10" y1="28" x2="30" y2="12" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#bae6fd"/>
+    </linearGradient>
+  </defs>
+  <rect width="40" height="40" rx="11" fill="url(#brand-bg)"/>
+  <path d="M10 28V22M16 28V18M22 28V24M28 28V14" stroke="rgba(255,255,255,0.22)" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M10 28L16 18L22 24L28 14" stroke="url(#brand-line)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="28" cy="14" r="2.6" fill="#7dd3fc"/>
+  <circle cx="28" cy="14" r="5" stroke="rgba(125,211,252,0.35)" stroke-width="1"/>
+</svg>
