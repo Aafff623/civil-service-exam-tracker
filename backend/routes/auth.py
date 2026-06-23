@@ -17,6 +17,25 @@ def login_required(f):
     return decorated_function
 
 
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({"success": False, "message": "Not authenticated"}), 401
+
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT role FROM users WHERE id = %s", (user_id,))
+        row = cursor.fetchone()
+        conn.close()
+
+        if row is None or row['role'] != 'admin':
+            return jsonify({"success": False, "message": "需要管理员权限"}), 403
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 @bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json() or {}

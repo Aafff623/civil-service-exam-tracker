@@ -52,11 +52,87 @@
 </section>
 <section class="grid grid-2" style="margin-top:18px;">
   <div class="card"><div class="card-title"><h2>考试公告</h2><a class="link">查看更多</a></div><div class="plain-list"><div class="list-item"><span class="tag red">置顶</span><div class="task-text"><strong>2025 年国家公务员考试公告发布</strong><span>报名时间、考试科目、职位表下载入口</span></div></div><div class="list-item"><span class="tag">更新</span><div class="task-text"><strong>各地公务员考试信息汇总</strong><span>持续更新省考、事业单位、选调生信息</span></div></div></div></div>
-  <div class="card"><div class="card-title"><h2>资源管理入口</h2><small>管理员视图</small></div><div class="grid grid-3"><button class="btn primary">上传资源</button><button class="btn ghost">新建分类</button><button class="btn ghost">批量管理</button></div><p class="muted">该区域可作为课程项目中的资源增删改查入口。</p></div>
+  <div class="card" id="resource-admin-panel">
+    <div class="card-title"><h2>资源管理入口</h2><small id="resource-admin-role">管理员视图</small></div>
+    <div class="grid grid-3 admin-actions">
+      <button type="button" class="btn primary" id="btn-upload-resource">上传资源</button>
+      <button type="button" class="btn ghost" id="btn-new-category">新建分类</button>
+      <button type="button" class="btn ghost" id="btn-batch-manage">批量管理</button>
+    </div>
+    <div class="batch-toolbar" id="batch-toolbar" hidden>
+      <span id="batch-count">已选 0 项</span>
+      <button type="button" class="btn ghost" id="btn-batch-cancel">取消</button>
+      <button type="button" class="btn primary" id="btn-batch-delete" disabled>删除选中</button>
+    </div>
+    <p class="muted" id="resource-admin-hint">上传资料、维护科目分类，或进入批量模式删除资源。需使用管理员账号（如 root）登录。</p>
+  </div>
 </section>
 
       <p class="footer-note">资源数据来自后端 API，切换标签可筛选大纲、真题、资料与政策公告。</p>
     </main>
+  </div>
+
+  <div class="modal-overlay" id="modal-upload-resource" hidden>
+    <div class="modal" role="dialog" aria-labelledby="modal-upload-title">
+      <div class="modal-header">
+        <h3 id="modal-upload-title">上传资源</h3>
+        <button type="button" class="modal-close" data-modal-close aria-label="关闭">×</button>
+      </div>
+      <form id="form-upload-resource" class="form-grid">
+        <div class="field">
+          <label for="upload-title">资源标题</label>
+          <input class="input" id="upload-title" name="title" required maxlength="255" placeholder="例如：2026 行测冲刺资料" />
+        </div>
+        <div class="field">
+          <label for="upload-type">资源类型</label>
+          <select class="select" id="upload-type" name="type" required>
+            <option value="大纲">考试大纲</option>
+            <option value="真题">历年真题</option>
+            <option value="模拟题">模拟题</option>
+            <option value="资料" selected>备考资料</option>
+            <option value="公告">政策公告</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="upload-subject">所属科目</label>
+          <select class="select" id="upload-subject" name="subject_id">
+            <option value="">通用（不限科目）</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="upload-content">简介</label>
+          <textarea class="textarea" id="upload-content" name="content" rows="3" placeholder="资源的简要说明"></textarea>
+        </div>
+        <div class="field">
+          <label for="upload-url">链接地址（可选）</label>
+          <input class="input" id="upload-url" name="url" placeholder="assets/resources/xxx.html 或外部 URL" />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn ghost" data-modal-close>取消</button>
+          <button type="submit" class="btn primary" id="btn-submit-upload">确认上传</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-new-category" hidden>
+    <div class="modal" role="dialog" aria-labelledby="modal-category-title">
+      <div class="modal-header">
+        <h3 id="modal-category-title">新建分类</h3>
+        <button type="button" class="modal-close" data-modal-close aria-label="关闭">×</button>
+      </div>
+      <form id="form-new-category" class="form-grid">
+        <div class="field">
+          <label for="category-name">科目 / 分类名称</label>
+          <input class="input" id="category-name" name="name" required maxlength="100" placeholder="例如：数量关系专项" />
+        </div>
+        <p class="muted" style="font-size:12px;margin:0;">新建后将出现在资源筛选与上传表单的科目列表中。</p>
+        <div class="modal-actions">
+          <button type="button" class="btn ghost" data-modal-close>取消</button>
+          <button type="submit" class="btn primary" id="btn-submit-category">创建分类</button>
+        </div>
+      </form>
+    </div>
   </div>
   <script src="js/shell.js"></script>
   <script src="js/api.js"></script>
