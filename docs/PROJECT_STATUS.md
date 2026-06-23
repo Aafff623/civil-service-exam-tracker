@@ -35,20 +35,21 @@
   - [x] 后端：答题提交/历史/弱项统计 API（`routes/answers.py`）
   - [x] 前端：`qa.html` 接入真实题库数据（筛选、答题、解析、历史）
   - [x] API 测试通过（4 道种子题、科目筛选、weak_points 更新）
+- [x] 智能学习计划生成模块
+  - [x] 后端：目标设置、计划生成、任务列表、标记完成（`routes/plans.py`）
+  - [x] 前端：`plan.html` 接入 API（生成计划、本周安排、科目表）
+  - [x] 标记完成同步 `progress` 表
 
 ## 进行中
 
-- [ ] 静态页面后端集成（plan、recommendations、statistics）
+- [ ] 静态页面后端集成（recommendations、statistics）
 
 ## 下一步
 
-1. 智能学习计划生成模块（后端 `/api/plans` + `plan.html` 接入）
-2. 学习进度跟踪模块（后端 `/api/progress` + `statistics.html` 接入）
-3. 个性化推荐模块（后端 `/api/recommendations` + `recommendations.html` 接入）
-4. 题目解析与答疑模块（AI 答疑可接入真实接口）
-4. 学习进度跟踪模块
-5. 个性化推荐模块
-6. 题目解析与答疑模块
+1. 学习进度跟踪模块（后端 `/api/progress` + `statistics.html` 接入）
+2. 个性化推荐模块（后端 `/api/recommendations` + `recommendations.html` 接入）
+3. 题目解析与答疑模块（AI 答疑可接入真实接口）
+4. Dashboard 今日任务接入计划 API
 
 ## 关键决策
 

@@ -93,3 +93,39 @@ async function getAnswerHistory(params = {}) {
     const queryString = query.toString() ? `?${query.toString()}` : '';
     return apiRequest(`/answers/history${queryString}`);
 }
+
+async function getPlanGoal() {
+    return apiRequest('/plans/goal');
+}
+
+async function savePlanGoal(goal) {
+    return apiRequest('/plans/goal', { method: 'POST', body: goal });
+}
+
+async function getPlan() {
+    return apiRequest('/plans/');
+}
+
+async function generatePlan(goal) {
+    return apiRequest('/plans/generate', { method: 'POST', body: goal || {} });
+}
+
+async function getPlanItems(params = {}) {
+    const query = new URLSearchParams();
+    if (params.date) query.append('date', params.date);
+    if (params.from) query.append('from', params.from);
+    if (params.to) query.append('to', params.to);
+    const queryString = query.toString() ? `?${query.toString()}` : '';
+    return apiRequest(`/plans/items${queryString}`);
+}
+
+async function updatePlanItem(id, is_completed) {
+    return apiRequest(`/plans/items/${id}`, {
+        method: 'PATCH',
+        body: { is_completed }
+    });
+}
+
+async function getPlanSubjects() {
+    return apiRequest('/plans/subjects');
+}
