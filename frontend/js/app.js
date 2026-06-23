@@ -1,6 +1,10 @@
 let resourcesCache = [];
 let activeResourceTab = '备考资料';
 let activeSubjectFilter = '';
+let currentUser = null;
+let resourceBatchMode = false;
+let resourceBatchSelected = new Set();
+let resourceSubjectsCache = [];
 
 const RESOURCE_TAB_TYPES = {
     '考试大纲': ['大纲'],
@@ -98,6 +102,7 @@ async function initApp() {
     }
 
     const user = meResult.data.data;
+    currentUser = user;
     syncSidebarMeta(user);
     revealApp();
 
@@ -114,13 +119,13 @@ async function initApp() {
     }
 
     if (document.getElementById('resource-list')) {
-        initResourcesPage();
+        initResourcesPage(user);
     }
 
     window.dispatchEvent(new Event('app:ready'));
 }
 
-function initResourcesPage() {
+function initResourcesPage(user) {
     const tabs = document.querySelectorAll('#resource-tabs .tab');
     tabs.forEach(tab => {
         if (tab.dataset.bound) return;
@@ -139,8 +144,187 @@ function initResourcesPage() {
         search.addEventListener('input', () => renderResourceList());
     }
 
+    initResourceAdmin(user);
     loadResourceSubjects();
     loadAllResources();
+}
+
+function isResourceAdmin(user) {
+    return user && user.role === 'admin';
+}
+
+function updateBatchToolbar() {
+    const toolbar = document.getElementById('batch-toolbar');
+    const countEl = document.getElementById('batch-count');
+    const deleteBtn = document.getElementById('btn-batch-delete');
+    const count = resourceBatchSelected.size;
+
+    if (countEl) countEl.textContent = `已选 ${count} 项`;
+    if (deleteBtn) deleteBtn.disabled = count === 0;
+    if (toolbar) toolbar.hidden = !resourceBatchMode;
+}
+
+function setResourceBatchMode(enabled) {
+    resourceBatchMode = enabled;
+    if (!enabled) resourceBatchSelected.clear();
+    document.body.classList.toggle('resource-batch-mode', enabled);
+    updateBatchToolbar();
+    renderResourceList();
+}
+
+function populateUploadSubjectSelect() {
+    const select = document.getElementById('upload-subject');
+    if (!select) return;
+    const current = select.value;
+    select.innerHTML = '<option value="">通用（不限科目）</option>' +
+        resourceSubjectsCache.map(s => `<option value="${s.id}">${escapeHtml(s.name)}</option>`).join('');
+    if (current) select.value = current;
+}
+
+function syncUploadTypeWithTab() {
+    const typeSelect = document.getElementById('upload-type');
+    if (!typeSelect) return;
+    const types = RESOURCE_TAB_TYPES[activeResourceTab] || ['资料'];
+    const preferred = types[0];
+    if ([...typeSelect.options].some(opt => opt.value === preferred)) {
+        typeSelect.value = preferred;
+    }
+}
+
+function initResourceAdmin(user) {
+    const panel = document.getElementById('resource-admin-panel');
+    if (!panel || panel.dataset.bound) return;
+    panel.dataset.bound = '1';
+
+    const isAdmin = isResourceAdmin(user);
+    const roleEl = document.getElementById('resource-admin-role');
+    const hintEl = document.getElementById('resource-admin-hint');
+
+    if (roleEl) {
+        roleEl.textContent = isAdmin ? '管理员视图' : '只读视图';
+    }
+    if (hintEl && !isAdmin) {
+        hintEl.textContent = '当前账号无管理权限。请使用管理员账号（如 root）登录后可上传、分类与批量删除。';
+    }
+
+    bindModalDismiss('modal-upload-resource');
+    bindModalDismiss('modal-new-category');
+
+    const guardAdmin = action => {
+        if (!isAdmin) {
+            showToast('需要管理员权限，请使用 root 账号登录', 'error');
+            return false;
+        }
+        return action();
+    };
+
+    document.getElementById('btn-upload-resource')?.addEventListener('click', () => {
+        guardAdmin(() => {
+            syncUploadTypeWithTab();
+            populateUploadSubjectSelect();
+            openModal('modal-upload-resource');
+        });
+    });
+
+    document.getElementById('btn-new-category')?.addEventListener('click', () => {
+        guardAdmin(() => openModal('modal-new-category'));
+    });
+
+    document.getElementById('btn-batch-manage')?.addEventListener('click', () => {
+        guardAdmin(() => setResourceBatchMode(!resourceBatchMode));
+    });
+
+    document.getElementById('btn-batch-cancel')?.addEventListener('click', () => {
+        setResourceBatchMode(false);
+    });
+
+    document.getElementById('btn-batch-delete')?.addEventListener('click', async () => {
+        if (!isAdmin || resourceBatchSelected.size === 0) return;
+        const ids = [...resourceBatchSelected];
+        if (!window.confirm(`确定删除选中的 ${ids.length} 条资源吗？`)) return;
+
+        const btn = document.getElementById('btn-batch-delete');
+        setButtonLoading(btn, true, '删除中');
+        const result = await batchDeleteResources(ids);
+        setButtonLoading(btn, false);
+
+        if (!result.ok || !result.data.success) {
+            showToast(result.data?.message || '批量删除失败', 'error');
+            return;
+        }
+
+        showToast(result.data.message || '删除成功', 'success');
+        setResourceBatchMode(false);
+        await loadAllResources();
+    });
+
+    document.getElementById('form-upload-resource')?.addEventListener('submit', async e => {
+        e.preventDefault();
+        if (!isAdmin) return;
+
+        const submitBtn = document.getElementById('btn-submit-upload');
+        const title = document.getElementById('upload-title')?.value.trim();
+        const type = document.getElementById('upload-type')?.value;
+        const subject_id = document.getElementById('upload-subject')?.value || null;
+        const content = document.getElementById('upload-content')?.value.trim();
+        const url = document.getElementById('upload-url')?.value.trim();
+
+        if (!title) {
+            showToast('请填写资源标题', 'error');
+            return;
+        }
+
+        setButtonLoading(submitBtn, true, '上传中');
+        const result = await createResource({ title, type, subject_id, content, url });
+        setButtonLoading(submitBtn, false);
+
+        if (!result.ok || !result.data.success) {
+            showToast(result.data?.message || '上传失败', 'error');
+            return;
+        }
+
+        showToast('资源已上传', 'success');
+        e.target.reset();
+        closeModal('modal-upload-resource');
+        await loadAllResources();
+    });
+
+    document.getElementById('form-new-category')?.addEventListener('submit', async e => {
+        e.preventDefault();
+        if (!isAdmin) return;
+
+        const submitBtn = document.getElementById('btn-submit-category');
+        const name = document.getElementById('category-name')?.value.trim();
+        if (!name) {
+            showToast('请填写分类名称', 'error');
+            return;
+        }
+
+        setButtonLoading(submitBtn, true, '创建中');
+        const result = await createSubject(name);
+        setButtonLoading(submitBtn, false);
+
+        if (!result.ok || !result.data.success) {
+            showToast(result.data?.message || '创建失败', 'error');
+            return;
+        }
+
+        showToast('分类已创建', 'success');
+        e.target.reset();
+        closeModal('modal-new-category');
+        await loadResourceSubjects();
+        populateUploadSubjectSelect();
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.key !== 'Escape') return;
+        if (resourceBatchMode) {
+            setResourceBatchMode(false);
+            return;
+        }
+        closeModal('modal-upload-resource');
+        closeModal('modal-new-category');
+    });
 }
 
 async function loadResourceSubjects() {
@@ -151,6 +335,8 @@ async function loadResourceSubjects() {
     if (!result.ok || !result.data.success) return;
 
     const subjects = result.data.data.items || [];
+    resourceSubjectsCache = subjects;
+    populateUploadSubjectSelect();
     container.innerHTML = `
         <span class="tag active" data-subject="">全部</span>
         ${subjects.map(s => `<span class="tag gray" data-subject="${s.id}">${escapeHtml(s.name)}</span>`).join('')}
@@ -221,8 +407,10 @@ function renderResourceList() {
     list.className = 'grid grid-3';
     list.innerHTML = items.map(item => {
         const dateStr = item.created_at ? String(item.created_at).slice(0, 10) : '';
+        const selected = resourceBatchSelected.has(String(item.id));
         return `
-            <article class="resource-card" data-resource-id="${item.id}" tabindex="0" role="button">
+            <article class="resource-card${selected ? ' is-selected' : ''}" data-resource-id="${item.id}" tabindex="0" role="button">
+                ${resourceBatchMode ? `<span class="resource-batch-check${selected ? ' is-checked' : ''}" aria-hidden="true"></span>` : ''}
                 ${resourceThumbHtml(item)}
                 <div>
                     <div class="resource-title">${escapeHtml(item.title)}</div>
@@ -238,8 +426,32 @@ function renderResourceList() {
     }).join('');
 
     list.querySelectorAll('.resource-card').forEach(card => {
+        const id = card.getAttribute('data-resource-id');
+        if (resourceBatchMode) {
+            const toggleSelect = () => {
+                const key = String(id);
+                if (resourceBatchSelected.has(key)) {
+                    resourceBatchSelected.delete(key);
+                    card.classList.remove('is-selected');
+                    card.querySelector('.resource-batch-check')?.classList.remove('is-checked');
+                } else {
+                    resourceBatchSelected.add(key);
+                    card.classList.add('is-selected');
+                    card.querySelector('.resource-batch-check')?.classList.add('is-checked');
+                }
+                updateBatchToolbar();
+            };
+            card.addEventListener('click', toggleSelect);
+            card.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleSelect();
+                }
+            });
+            return;
+        }
+
         const showDetail = () => {
-            const id = card.getAttribute('data-resource-id');
             if (!id) return;
             card.classList.add('is-pressed');
             setTimeout(() => {

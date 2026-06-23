@@ -49,6 +49,38 @@ function renderError(el, text = '加载失败，请稍后重试') {
     el.innerHTML = `<p class="state-error">${escapeHtml(text)}</p>`;
 }
 
+function openModal(id) {
+    const overlay = document.getElementById(id);
+    if (!overlay) return;
+    overlay.hidden = false;
+    overlay.classList.add('is-open');
+    document.body.classList.add('modal-open');
+    const focusable = overlay.querySelector('input, select, textarea, button');
+    if (focusable) focusable.focus();
+}
+
+function closeModal(id) {
+    const overlay = document.getElementById(id);
+    if (!overlay) return;
+    overlay.classList.remove('is-open');
+    overlay.hidden = true;
+    if (!document.querySelector('.modal-overlay.is-open')) {
+        document.body.classList.remove('modal-open');
+    }
+}
+
+function bindModalDismiss(overlayId) {
+    const overlay = document.getElementById(overlayId);
+    if (!overlay || overlay.dataset.bound) return;
+    overlay.dataset.bound = '1';
+    overlay.addEventListener('click', e => {
+        if (e.target === overlay) closeModal(overlayId);
+    });
+    overlay.querySelectorAll('[data-modal-close]').forEach(btn => {
+        btn.addEventListener('click', () => closeModal(overlayId));
+    });
+}
+
 let heatmapTooltipEl = null;
 
 function ensureHeatmapTooltip() {

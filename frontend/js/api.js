@@ -42,6 +42,22 @@ async function getSubjects() {
     return apiRequest('/subjects/');
 }
 
+async function createResource(payload) {
+    return apiRequest('/resources/', { method: 'POST', body: payload });
+}
+
+async function deleteResource(id) {
+    return apiRequest(`/resources/${id}`, { method: 'DELETE' });
+}
+
+async function batchDeleteResources(ids) {
+    return apiRequest('/resources/batch-delete', { method: 'POST', body: { ids } });
+}
+
+async function createSubject(name) {
+    return apiRequest('/subjects/', { method: 'POST', body: { name } });
+}
+
 async function register(username, password) {
     return apiRequest('/auth/register', {
         method: 'POST',
