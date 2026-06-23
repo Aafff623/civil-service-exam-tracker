@@ -169,11 +169,8 @@ async function loadResourceDetail() {
 }
 
 function bootResourceDetail() {
-    if (!document.getElementById('detail-body')) {
-        notifyModuleReady();
-        return;
-    }
-    loadResourceDetail().finally(() => notifyModuleReady());
+    if (!document.getElementById('detail-body')) return;
+    loadResourceDetail();
 }
 if (document.body.classList.contains('app-ready')) {
     bootResourceDetail();
