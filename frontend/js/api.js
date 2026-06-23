@@ -61,3 +61,7 @@ async function logout() {
 async function getMe() {
     return apiRequest('/auth/me');
 }
+
+async function getHealth() {
+    return apiRequest('/health');
+}

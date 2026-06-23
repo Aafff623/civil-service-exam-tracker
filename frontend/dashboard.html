@@ -8,25 +8,35 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>个人主页</h1>
+        <header class="page-header">
+            <h1 id="welcome-title">个人主页</h1>
             <nav>
                 <a href="resources.html" class="btn btn-secondary">资源库</a>
                 <button id="logout-btn" class="btn btn-secondary">退出登录</button>
             </nav>
         </header>
+
         <div class="dashboard">
             <div class="card">
-                <h2>今日任务</h2>
-                <p>暂无计划，请先设置学习目标。</p>
+                <h2><span class="card-icon">📋</span>今日任务</h2>
+                <div class="empty-state">
+                    <p>还没有今日任务。</p>
+                    <a href="#" class="btn btn-accent" onclick="showToast('学习计划模块即将上线', 'info'); return false;">设置学习目标</a>
+                </div>
             </div>
             <div class="card">
-                <h2>学习进度</h2>
-                <p>完成率：0%</p>
+                <h2><span class="card-icon">📈</span>学习进度</h2>
+                <div class="empty-state">
+                    <p>完成率：0%</p>
+                    <a href="#" class="btn btn-accent" onclick="showToast('题库练习模块即将上线', 'info'); return false;">开始练习</a>
+                </div>
             </div>
             <div class="card">
-                <h2>弱项分析</h2>
-                <p>暂无数据。</p>
+                <h2><span class="card-icon">🎯</span>弱项分析</h2>
+                <div class="empty-state">
+                    <p>暂无足够答题数据。</p>
+                    <a href="#" class="btn btn-accent" onclick="showToast('题库练习模块即将上线', 'info'); return false;">去刷题</a>
+                </div>
             </div>
         </div>
     </div>
