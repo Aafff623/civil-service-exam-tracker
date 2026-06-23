@@ -21,22 +21,27 @@
 <a class="" href="qa.html"><span class="nav-icon">?</span><span>题库与答疑</span></a></nav>
       <div class="sidebar-footer">备考有迹可循<br/>计划 · 进度 · 练习</div>
     </aside>
-    <main class="main">
-      <header class="topbar">
-        <div>
+    <main class="main main-resource-detail">
+      <header class="topbar resource-detail-topbar">
+        <div class="resource-detail-head">
           <div class="breadcrumb"><a class="link" href="resources.html">考试与资源</a> / 资料详情</div>
-          <h1 class="page-title" id="detail-title">加载中…</h1>
-          <div class="resource-detail-meta muted" id="detail-meta"></div>
+          <div class="resource-detail-title-row">
+            <div class="detail-thumb" id="detail-thumb" aria-hidden="true"></div>
+            <div class="resource-detail-title-block">
+              <h1 class="page-title" id="detail-title">加载中…</h1>
+              <div class="resource-detail-meta muted" id="detail-meta"></div>
+            </div>
+          </div>
         </div>
         <div class="top-actions">
-          <a class="btn primary" id="practice-resource-btn" href="#" hidden>开始练习本题库</a>
-          <a class="btn ghost" href="resources.html">← 返回列表</a>
-          <button class="btn ghost" id="logout-btn" title="退出登录">退出</button>
+          <a class="btn primary small" id="practice-resource-btn" href="#" hidden>开始练习本题库</a>
+          <a class="btn ghost small" href="resources.html">返回列表</a>
+          <button class="btn ghost small" id="logout-btn" title="退出登录">退出</button>
         </div>
       </header>
 
       <section class="card resource-detail-card">
-        <p class="resource-detail-summary" id="detail-summary"></p>
+        <p class="resource-detail-summary" id="detail-summary" hidden></p>
         <div class="resource-detail-layout">
           <div class="resource-detail-scroll" id="detail-scroll">
             <div class="resource-detail-body" id="detail-body">
