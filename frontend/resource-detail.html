@@ -29,6 +29,7 @@
           <div class="resource-detail-meta muted" id="detail-meta"></div>
         </div>
         <div class="top-actions">
+          <a class="btn primary" id="practice-resource-btn" href="#" hidden>开始练习本题库</a>
           <a class="btn ghost" href="resources.html">← 返回列表</a>
           <button class="btn ghost" id="logout-btn" title="退出登录">退出</button>
         </div>
@@ -36,8 +37,16 @@
 
       <section class="card resource-detail-card">
         <p class="resource-detail-summary" id="detail-summary"></p>
-        <div class="resource-detail-body" id="detail-body">
-          <p class="muted">正在加载正文…</p>
+        <div class="resource-detail-layout">
+          <div class="resource-detail-scroll" id="detail-scroll">
+            <div class="resource-detail-body" id="detail-body">
+              <p class="muted">正在加载正文…</p>
+            </div>
+          </div>
+          <aside class="resource-detail-toc" id="detail-toc" aria-label="章节目录" hidden>
+            <h4>目录</h4>
+            <nav class="resource-detail-toc-nav" id="detail-toc-nav"></nav>
+          </aside>
         </div>
       </section>
 

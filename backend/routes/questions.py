@@ -11,6 +11,7 @@ bp = Blueprint('questions', __name__, url_prefix='/api/questions')
 @login_required
 def list_questions():
     subject_id = request.args.get('subject_id', type=int)
+    resource_id = request.args.get('resource_id', type=int)
     question_type = request.args.get('type', '').strip()
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 20, type=int)
@@ -24,11 +25,13 @@ def list_questions():
     cursor = conn.cursor()
 
     query = """
-        SELECT q.id, q.subject_id, q.type, q.content, q.options,
+        SELECT q.id, q.subject_id, q.resource_id, q.type, q.content, q.options,
                q.correct_answer, q.explanation, q.tips, q.created_at,
-               s.name as subject_name
+               s.name as subject_name,
+               r.title as resource_title, r.type as resource_type
         FROM questions q
         LEFT JOIN subjects s ON q.subject_id = s.id
+        LEFT JOIN resources r ON q.resource_id = r.id
         WHERE 1=1
     """
     count_query = """
@@ -44,6 +47,12 @@ def list_questions():
         count_query += " AND q.subject_id = %s"
         params.append(subject_id)
         count_params.append(subject_id)
+
+    if resource_id is not None:
+        query += " AND q.resource_id = %s"
+        count_query += " AND q.resource_id = %s"
+        params.append(resource_id)
+        count_params.append(resource_id)
 
     if question_type:
         query += " AND q.type = %s"
@@ -89,11 +98,13 @@ def get_question(question_id):
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT q.id, q.subject_id, q.type, q.content, q.options,
+        SELECT q.id, q.subject_id, q.resource_id, q.type, q.content, q.options,
                q.correct_answer, q.explanation, q.tips, q.created_at,
-               s.name as subject_name
+               s.name as subject_name,
+               r.title as resource_title, r.type as resource_type
         FROM questions q
         LEFT JOIN subjects s ON q.subject_id = s.id
+        LEFT JOIN resources r ON q.resource_id = r.id
         WHERE q.id = %s
     """, (question_id,))
     row = cursor.fetchone()

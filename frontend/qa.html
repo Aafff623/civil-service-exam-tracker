@@ -42,7 +42,11 @@
           <select id="subject-filter" class="input" style="width:180px;">
             <option value="">全部科目</option>
           </select>
-          <span class="filter-label">题型</span>
+          <span class="filter-label">资料来源</span>
+          <select id="resource-filter" class="input" style="width:min(320px, 100%);">
+            <option value="">全部可练习资料</option>
+          </select>
+          <span class="filter-label">答题形式</span>
           <select id="type-filter" class="input" style="width:140px;">
             <option value="">全部</option>
             <option value="单选">单选</option>
@@ -50,6 +54,7 @@
             <option value="判断">判断</option>
           </select>
         </div>
+        <p class="muted" id="qa-filter-hint" style="margin:10px 0 0;font-size:13px;">题目与「考试与资源」中的真题、模拟题、备考资料关联，可按资料筛选练习。</p>
       </section>
 
       <section class="grid grid-3">

@@ -36,3 +36,4 @@ Thumbs.db
 # Temporary test files
 cookies.txt
 *.tmp
+backend/_generated_questions.sql

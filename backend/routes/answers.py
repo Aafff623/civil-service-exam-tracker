@@ -8,6 +8,11 @@ from models import serialize_value
 bp = Blueprint('answers', __name__, url_prefix='/api/answers')
 
 
+def normalize_answer(value: str) -> str:
+    letters = sorted({c for c in value.upper() if c in 'ABCD'})
+    return ''.join(letters)
+
+
 @bp.route('/', methods=['POST'])
 @login_required
 def submit_answer():
@@ -32,7 +37,8 @@ def submit_answer():
         conn.close()
         return jsonify({"success": False, "message": "Question not found"}), 404
 
-    correct_answer = question['correct_answer'].strip()
+    correct_answer = normalize_answer(question['correct_answer'].strip())
+    selected_answer = normalize_answer(selected_answer)
     is_correct = 1 if selected_answer == correct_answer else 0
 
     cursor.execute("""

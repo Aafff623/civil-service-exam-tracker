@@ -237,6 +237,7 @@ function renderResourceList() {
                     <div class="resource-title">${escapeHtml(item.title)}</div>
                     <div class="resource-meta">
                         <span class="tag">${escapeHtml(item.subject_name || '通用')}</span>
+                        ${Number(item.question_count) > 0 ? `<span class="tag blue">含 ${item.question_count} 道练习题</span>` : ''}
                         ${dateStr ? `<span>${escapeHtml(dateStr)}</span>` : ''}
                     </div>
                     <p class="resource-desc">${escapeHtml((item.content || '').slice(0, 72))}${(item.content || '').length > 72 ? '…' : ''}</p>
