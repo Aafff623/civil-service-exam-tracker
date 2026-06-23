@@ -36,23 +36,35 @@
       </header>
       
 <section class="grid grid-3">
-  <div class="card"><div class="card-title"><h2>薄弱模块</h2><span class="tag red">Top 3</span></div><div class="bar-list"><div class="bar-row"><span>资料分析</span><div class="progress orange"><span style="width:48%"></span></div><strong>48%</strong></div><div class="bar-row"><span>判断推理</span><div class="progress orange"><span style="width:53%"></span></div><strong>53%</strong></div><div class="bar-row"><span>数量关系</span><div class="progress orange"><span style="width:55%"></span></div><strong>55%</strong></div></div></div>
-  <div class="card"><div class="card-title"><h2>学习偏好</h2></div><p><span class="tag">视频课程</span> <span class="tag">图文资料</span> <span class="tag">晚上学习</span></p><p class="muted">更偏好短时高效、讲练结合、可收藏复习的学习资源。</p></div>
-  <div class="card"><div class="card-title"><h2>学习目标</h2></div><div class="kpi-sub">目标分数</div><div class="kpi-value">130+</div><div class="progress"><span style="width:32%"></span></div><p class="muted">当前进度 32%，系统会优先推荐弱项提升内容。</p></div>
+  <div class="card">
+    <div class="card-title"><h2>薄弱模块</h2><span class="tag red">Top 3</span></div>
+    <div class="bar-list" id="reco-weak-bars"><p class="muted">加载中...</p></div>
+  </div>
+  <div class="card">
+    <div class="card-title"><h2>学习偏好</h2></div>
+    <p><span class="tag">专项练习</span> <span class="tag">图文资料</span> <span class="tag">错题复盘</span></p>
+    <p class="muted">系统根据你的答题记录和计划进度，优先推荐弱项相关内容。</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><h2>学习目标</h2></div>
+    <div class="kpi-sub" id="reco-goal-type">考试目标</div>
+    <div class="kpi-value" id="reco-goal-exam">—</div>
+    <div class="progress"><span id="reco-goal-progress" style="width:0%"></span></div>
+    <p class="muted" id="reco-goal-desc">当前进度 —%，系统会优先推荐弱项提升内容。</p>
+  </div>
 </section>
 <section class="card" style="margin-top:18px;">
-  <div class="card-title"><h2>为你推荐</h2><div class="tabs" style="margin:0;"><button class="tab active">课程推荐</button><button class="tab">题库推荐</button><button class="tab">资料推荐</button></div></div>
-  <div class="grid">
-    <article class="reco-card"><div class="reco-thumb">资料分析<br/>速解技巧</div><div class="reco-body"><h3>资料分析速解技巧</h3><p>推荐理由：针对你的薄弱项资料分析，强化速算技巧和公式应用。</p><span class="tag green">匹配度 94%</span></div><a class="btn primary" href="qa.html">去学习</a></article>
-    <article class="reco-card"><div class="reco-thumb green">判断推理<br/>题型精讲</div><div class="reco-body"><h3>判断推理高频题型精讲</h3><p>推荐理由：系统梳理图形推理、逻辑判断、定义判断的高频题型。</p><span class="tag green">匹配度 90%</span></div><a class="btn primary" href="qa.html">去学习</a></article>
-    <article class="reco-card"><div class="reco-thumb orange">行测考点<br/>思维导图</div><div class="reco-body"><h3>行测高频考点思维导图</h3><p>推荐理由：将零散考点结构化，适合碎片时间快速复习。</p><span class="tag green">匹配度 88%</span></div><a class="btn ghost" href="resources.html">查看资料</a></article>
-  </div>
+  <div class="card-title"><h2>为你推荐</h2></div>
+  <div class="grid" id="reco-list"><p class="muted">加载中...</p></div>
 </section>
 <section class="grid grid-4" style="margin-top:18px;"><div class="card"><h3>强化弱项</h3><p class="muted">优先提升正确率低的模块。</p></div><div class="card"><h3>真题驱动</h3><p class="muted">每周完成至少 1 套真题。</p></div><div class="card"><h3>错题复盘</h3><p class="muted">错题按科目和题型归档。</p></div><div class="card"><h3>时间管理</h3><p class="muted">用番茄钟保持专注节奏。</p></div></section>
 
-      <p class="footer-note">本页面为静态前端原型，文案与数据均为演示数据，可后续接入后端 API。</p>
+      <p class="footer-note">推荐内容根据答题弱项与计划进度实时生成。</p>
     </main>
   </div>
   <script src="assets/app.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/recommendations.js"></script>
 </body>
 </html>

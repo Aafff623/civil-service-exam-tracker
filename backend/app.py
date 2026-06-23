@@ -25,7 +25,7 @@ def close_db(exception):
         db.close()
 
 # Register blueprints
-from routes import health, auth, resources, subjects, questions, answers, plans, progress
+from routes import health, auth, resources, subjects, questions, answers, plans, progress, recommendations, comments
 
 app.register_blueprint(health.bp)
 app.register_blueprint(auth.bp)
@@ -35,6 +35,8 @@ app.register_blueprint(questions.bp)
 app.register_blueprint(answers.bp)
 app.register_blueprint(plans.bp)
 app.register_blueprint(progress.bp)
+app.register_blueprint(recommendations.bp)
+app.register_blueprint(comments.bp)
 
 @app.errorhandler(404)
 def not_found(error):
