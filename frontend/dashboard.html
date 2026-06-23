@@ -19,18 +19,16 @@
 <a class="" href="recommendations.html"><span class="nav-icon">✦</span><span>学习推荐</span></a>
 <a class="" href="statistics.html"><span class="nav-icon">◫</span><span>学习统计</span></a>
 <a class="" href="qa.html"><span class="nav-icon">?</span><span>题库与答疑</span></a></nav>
-      <div class="sidebar-footer">备考跟踪 · Flask + MySQL<br/>课程设计演示系统</div>
+      <div class="sidebar-footer">备考有迹可循<br/>计划 · 进度 · 练习</div>
     </aside>
     <main class="main">
       <header class="topbar">
         <div>
           <div class="breadcrumb">备考跟踪 / 学习工作台</div>
-          <h1 class="page-title"><span class="title-badge">1</span>首页 / 学习总览 Dashboard</h1>
-          <div class="muted" style="margin-top:8px; font-size:14px;">集中展示今日学习任务、学习时长、完成率、弱项提醒与考试倒计时。</div>
+          <h1 class="page-title">学习总览</h1>
+          <div class="muted" style="margin-top:8px; font-size:14px;">今日任务、学习时长、完成率、弱项提醒与考试倒计时。</div>
         </div>
         <div class="top-actions">
-          <label class="search"><span>⌕</span><input placeholder="搜索任务、资料、题目" /></label>
-          <button class="icon-btn" title="通知">🔔</button>
           <button class="btn ghost" id="logout-btn" title="退出登录">退出</button>
         </div>
       </header>
@@ -43,8 +41,8 @@
 </section>
 <section class="grid grid-3" style="margin-top:18px;">
   <div class="card span-2">
-    <div class="card-title"><h2>你好，<span data-username>同学</span> 👋</h2><small data-today></small></div>
-    <p class="muted" style="margin-top:-6px;">为公考上岸，每天稳定推进一点点。</p>
+    <div class="card-title"><h2>你好，<span data-username>同学</span></h2><small data-today></small></div>
+    <p class="muted" style="margin-top:-6px;">按计划推进，保持每日学习节奏。</p>
     <div class="grid grid-2" style="margin-top:18px;">
       <div class="card soft">
         <div class="card-title"><h3>今日任务清单</h3><a class="link" href="plan.html">查看计划</a></div>
@@ -55,7 +53,7 @@
         <div class="weak-summary" id="dashboard-weak-summary"></div>
         <div class="bar-list" id="dashboard-weak-bars"><p class="muted">加载中...</p></div>
         <div class="weak-actions" id="dashboard-weak-actions"></div>
-        <div class="notice" style="margin-top:14px;" id="dashboard-weak-tip">📘 加载弱项建议中...</div>
+        <div class="notice" style="margin-top:14px;" id="dashboard-weak-tip">加载弱项建议中...</div>
       </div>
     </div>
   </div>
@@ -75,8 +73,8 @@
     </div>
     <div class="countdown-ring-row">
       <svg viewBox="0 0 120 120" width="100" height="100" role="img" aria-label="计划完成率">
-        <circle cx="60" cy="60" r="45" fill="none" stroke="#e8f1ff" stroke-width="12"/>
-        <circle id="dashboard-progress-ring" cx="60" cy="60" r="45" fill="none" stroke="#0b66ff" stroke-width="12" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283" transform="rotate(-90 60 60)"/>
+        <circle cx="60" cy="60" r="45" fill="none" stroke="var(--color-muted-bg)" stroke-width="12"/>
+        <circle id="dashboard-progress-ring" cx="60" cy="60" r="45" fill="none" stroke="var(--color-accent)" stroke-width="12" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283" transform="rotate(-90 60 60)"/>
         <text x="60" y="54" text-anchor="middle" fill="#6e7f9a" font-size="11" font-weight="700">完成率</text>
         <text id="dashboard-progress-text" x="60" y="78" text-anchor="middle" fill="#13213c" font-size="22" font-weight="900">—</text>
       </svg>
@@ -92,13 +90,13 @@
   </div>
   <div class="card">
     <div class="card-title"><h2>考试时间线</h2><a class="link" href="resources.html">查看考试信息</a></div>
-    <div class="timeline timeline-rainbow">
-      <div class="timeline-row" data-tone="indigo"><span class="timeline-date">2026-10-14</span><span class="timeline-dot">招考公告发布</span></div>
-      <div class="timeline-row" data-tone="emerald"><span class="timeline-date">2026-10-15</span><span class="timeline-dot">网上报名开始</span></div>
-      <div class="timeline-row" data-tone="amber"><span class="timeline-date">2026-10-24</span><span class="timeline-dot">报名截止 · 缴费</span></div>
-      <div class="timeline-row" data-tone="rose"><span class="timeline-date">2026-11-01</span><span class="timeline-dot">打印准考证</span></div>
-      <div class="timeline-row" data-tone="cyan"><span class="timeline-date">2026-11-29</span><span class="timeline-dot">公共科目笔试</span></div>
-      <div class="timeline-row" data-tone="violet"><span class="timeline-date">2027-01-15</span><span class="timeline-dot">成绩查询（预计）</span></div>
+    <div class="timeline">
+      <div class="timeline-row"><span class="timeline-date">2026-10-14</span><span class="timeline-dot">招考公告发布</span></div>
+      <div class="timeline-row"><span class="timeline-date">2026-10-15</span><span class="timeline-dot">网上报名开始</span></div>
+      <div class="timeline-row"><span class="timeline-date">2026-10-24</span><span class="timeline-dot">报名截止 · 缴费</span></div>
+      <div class="timeline-row"><span class="timeline-date">2026-11-01</span><span class="timeline-dot">打印准考证</span></div>
+      <div class="timeline-row"><span class="timeline-date">2026-11-29</span><span class="timeline-dot">公共科目笔试</span></div>
+      <div class="timeline-row"><span class="timeline-date">2027-01-15</span><span class="timeline-dot">成绩查询（预计）</span></div>
     </div>
   </div>
 </section>
@@ -106,6 +104,8 @@
       <p class="footer-note">首页数据来自学习计划、进度统计与推荐模块。</p>
     </main>
   </div>
+  <script src="js/shell.js"></script>
+  <script src="js/motion.js"></script>
   <script src="js/api.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/app.js"></script>

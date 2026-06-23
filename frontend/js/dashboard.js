@@ -103,7 +103,14 @@ function renderTodayTasks(items, options = {}) {
         return buildTaskItemHtml(item, idx);
     }).join('');
 
-    if (options.useFlip) {
+    if (options.useFlip && window.MotionKit) {
+        const flipState = MotionKit.captureTaskState(list);
+        list.innerHTML = html;
+        if (!MotionKit.playTaskFlip(list, flipState)) {
+            const beforeRects = captureTaskRects(list);
+            playTaskFlip(list, beforeRects);
+        }
+    } else if (options.useFlip) {
         const beforeRects = captureTaskRects(list);
         list.innerHTML = html;
         playTaskFlip(list, beforeRects);
@@ -187,7 +194,7 @@ function renderWeakBars(weakSubjects) {
         if (summary) summary.innerHTML = '';
         if (actions) actions.innerHTML = '<a class="btn ghost small" href="qa.html">去做题</a>';
         if (badge) badge.textContent = '待分析';
-        if (tip) tip.textContent = '📘 建议先去题库完成几道练习题。';
+        if (tip) tip.textContent = '建议先去题库完成几道练习题，系统将自动识别薄弱项。';
         return;
     }
 
@@ -228,7 +235,7 @@ function renderWeakBars(weakSubjects) {
     }
 
     if (tip) {
-        tip.innerHTML = `📘 建议今天优先加强「<strong>${escapeHtml(top.subject_name)}</strong>」，正确率 ${Math.round(top.accuracy)}%，再练 5 题可见明显提升。`;
+        tip.innerHTML = `建议今天优先加强「<strong>${escapeHtml(top.subject_name)}</strong>」，正确率 ${Math.round(top.accuracy)}%，再练 5 题可见明显提升。`;
     }
 }
 
@@ -237,15 +244,20 @@ function renderHeatmap(dailyMinutes) {
 }
 
 function updateProgressRing(rate) {
-    const text = document.getElementById('dashboard-progress-text');
-    const ring = document.getElementById('dashboard-progress-ring');
     const desc = document.getElementById('dashboard-progress-desc');
     const pct = Math.round(rate || 0);
 
-    if (text) text.textContent = `${pct}%`;
-    if (ring) {
-        const circumference = 283;
-        ring.setAttribute('stroke-dashoffset', String(circumference * (1 - pct / 100)));
+    if (window.MotionKit) {
+        MotionKit.animateRing(pct);
+    } else {
+        const text = document.getElementById('dashboard-progress-text');
+        const ring = document.getElementById('dashboard-progress-ring');
+        if (text) text.textContent = `${pct}%`;
+        if (ring) {
+            const circumference = 283;
+            ring.setAttribute('stroke', 'var(--color-accent)');
+            ring.setAttribute('stroke-dashoffset', String(circumference * (1 - pct / 100)));
+        }
     }
     if (desc) desc.textContent = `当前计划完成率 ${pct}%，坚持完成每日任务可稳步提升。`;
 }
@@ -262,7 +274,11 @@ function renderCountdown(goal, planRate) {
     if (countdown && days !== null) {
         const urgency = days <= 30 ? 'urgent' : days <= 90 ? 'soon' : '';
         countdown.className = `num ${urgency}`;
-        countdown.innerHTML = `${days}<small>天</small>`;
+        if (window.MotionKit) {
+            MotionKit.animateCountdown(days);
+        } else {
+            countdown.innerHTML = `${days}<small>天</small>`;
+        }
     }
 
     const typeTag = document.getElementById('dashboard-exam-type-tag');
@@ -295,10 +311,14 @@ function renderCountdown(goal, planRate) {
         `).join('');
     }
 
-    const prepBar = document.getElementById('dashboard-prep-bar');
-    const prepPctEl = document.getElementById('dashboard-prep-percent');
-    if (prepBar) prepBar.style.width = `${prepPct}%`;
-    if (prepPctEl) prepPctEl.textContent = `${prepPct}%`;
+    if (window.MotionKit) {
+        MotionKit.animatePrepBar(prepPct);
+    } else {
+        const prepBar = document.getElementById('dashboard-prep-bar');
+        const prepPctEl = document.getElementById('dashboard-prep-percent');
+        if (prepBar) prepBar.style.width = `${prepPct}%`;
+        if (prepPctEl) prepPctEl.textContent = `${prepPct}%`;
+    }
 
     updateProgressRing(planRate || 0);
 }

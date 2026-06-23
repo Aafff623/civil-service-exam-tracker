@@ -1,4 +1,4 @@
-const RECO_THUMB_CLASSES = ['', 'green', 'orange'];
+const RECO_THUMB_VARIANTS = ['', 'alt'];
 
 function renderWeakBars(weakSubjects) {
     const container = document.getElementById('reco-weak-bars');
@@ -16,6 +16,26 @@ function renderWeakBars(weakSubjects) {
             <strong>${Math.round(w.accuracy)}%</strong>
         </div>
     `).join('');
+}
+
+function renderPreferences(data) {
+    const container = document.getElementById('reco-preferences');
+    if (!container) return;
+
+    const tags = new Set();
+    const weak = data.weak_subjects || [];
+    const items = data.items || [];
+
+    if (weak.length) tags.add('弱项专攻');
+    if (items.some(i => i.type === 'question')) tags.add('专项练习');
+    if (items.some(i => i.type === 'resource')) tags.add('图文资料');
+    if (weak.some(w => (w.accuracy || 100) < 60)) tags.add('错题复盘');
+    if (!tags.size) {
+        tags.add('系统备考');
+        tags.add('入门推荐');
+    }
+
+    container.innerHTML = [...tags].map(t => `<span class="tag">${escapeHtml(t)}</span>`).join(' ');
 }
 
 function renderGoal(goal, planProgress) {
@@ -47,7 +67,7 @@ function renderRecommendations(items) {
     }
 
     container.innerHTML = items.map((item, i) => {
-        const thumbClass = RECO_THUMB_CLASSES[i % RECO_THUMB_CLASSES.length];
+        const thumbClass = RECO_THUMB_VARIANTS[i % RECO_THUMB_VARIANTS.length];
         const btnClass = item.type === 'resource' ? 'ghost' : 'primary';
         const btnText = item.type === 'resource' ? '查看资料' : '去学习';
         return `
@@ -78,6 +98,7 @@ async function initRecommendations() {
 
     const data = result.data.data;
     renderWeakBars(data.weak_subjects || []);
+    renderPreferences(data);
     renderGoal(data.goal, data.plan_progress);
     renderRecommendations(data.items || []);
 }
