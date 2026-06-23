@@ -383,7 +383,7 @@ function bindChat() {
     function addBubble(text, type) {
         if (!chat || !text.trim()) return;
         const div = document.createElement('div');
-        div.className = 'bubble ' + type;
+        div.className = type === 'user' ? 'note-item is-user' : 'note-item is-reply';
         div.textContent = text;
         chat.appendChild(div);
         chat.scrollTop = chat.scrollHeight;

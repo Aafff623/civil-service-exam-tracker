@@ -20,39 +20,38 @@
 <a class="" href="recommendations.html"><span class="nav-icon">✦</span><span>学习推荐</span></a>
 <a class="" href="statistics.html"><span class="nav-icon">◫</span><span>学习统计</span></a>
 <a class="" href="qa.html"><span class="nav-icon">?</span><span>题库与答疑</span></a></nav>
-      <div class="sidebar-footer">备考跟踪 · Flask + MySQL<br/>课程设计演示系统</div>
+      <div class="sidebar-footer">备考有迹可循<br/>计划 · 进度 · 练习</div>
     </aside>
     <main class="main">
       <header class="topbar">
         <div>
           <div class="breadcrumb">备考跟踪 / 学习工作台</div>
-          <h1 class="page-title"><span class="title-badge">总</span>项目原型总览</h1>
-          <div class="muted" style="margin-top:8px; font-size:14px;">六个功能模块已按蓝白后台风完成，可直接点击进入页面。</div>
+          <h1 class="page-title">模块导航</h1>
+          <div class="muted" style="margin-top:8px; font-size:14px;">公务员考试学习跟踪系统 — 各功能模块入口。</div>
         </div>
         <div class="top-actions">
-          <label class="search"><span>⌕</span><input placeholder="搜索任务、资料、题目" /></label>
-          <button class="icon-btn" title="通知">🔔</button>
           <button class="btn ghost" id="logout-btn" title="退出登录">退出</button>
         </div>
       </header>
       
 <section class="overview-hero">
   <h1>公务员考试学习跟踪系统</h1>
-  <p>基于你选定的方案 A 做成的完整静态前端原型。页面覆盖考试资源、学习计划、个性化推荐、学习进度统计、题目解析与答疑等核心模块，适合小学期项目展示、答辩和后续改造成 Vue / React。</p>
+  <p>Flask + SQLite 后端与原生前端，覆盖考试资源、学习计划、个性化推荐、学习进度统计、题库练习与答疑留言等模块，适合课程设计演示与答辩。</p>
 </section>
 <section class="grid grid-3" style="margin-top:18px;">
-  <a class="card module-link" href="dashboard.html"><div class="card-title"><div class="module-index">1</div><span class="tag">Dashboard</span></div><h2>首页 / 学习总览</h2><p class="muted">今日任务、学习时长、完成率、弱项提醒和考试倒计时。</p></a>
-  <a class="card module-link" href="resources.html"><div class="card-title"><div class="module-index">2</div><span class="tag green">Resources</span></div><h2>考试信息与资源管理</h2><p class="muted">考试大纲、历年试题、备考资料、搜索筛选和资源卡片。</p></a>
-  <a class="card module-link" href="plan.html"><div class="card-title"><div class="module-index">3</div><span class="tag orange">Plan</span></div><h2>智能学习计划生成</h2><p class="muted">根据目标、学习时间、知识水平和科目难度生成学习计划。</p></a>
-  <a class="card module-link" href="recommendations.html"><div class="card-title"><div class="module-index">4</div><span class="tag purple">Recommend</span></div><h2>个性化学习推荐</h2><p class="muted">基于薄弱项和偏好推荐课程、题库、资料与复习策略。</p></a>
-  <a class="card module-link" href="statistics.html"><div class="card-title"><div class="module-index">5</div><span class="tag">Stats</span></div><h2>学习进度跟踪与统计分析</h2><p class="muted">学习进度、做题正确率、科目完成度和连续打卡日历。</p></a>
-  <a class="card module-link" href="qa.html"><div class="card-title"><div class="module-index">6</div><span class="tag green">QA</span></div><h2>智能题目解析与答疑</h2><p class="muted">题目详情、标准答案、解析技巧、误区提醒和 AI 答疑输入框。</p></a>
+  <a class="card module-link" href="dashboard.html"><div class="card-title"><div class="module-index">01</div></div><h2>学习总览</h2><p class="muted">今日任务、学习时长、完成率、弱项提醒和考试倒计时。</p></a>
+  <a class="card module-link" href="resources.html"><div class="card-title"><div class="module-index">02</div></div><h2>考试与资源</h2><p class="muted">考试大纲、历年试题、备考资料与政策公告。</p></a>
+  <a class="card module-link" href="plan.html"><div class="card-title"><div class="module-index">03</div></div><h2>学习计划</h2><p class="muted">根据目标与时间生成可执行的学习计划。</p></a>
+  <a class="card module-link" href="recommendations.html"><div class="card-title"><div class="module-index">04</div></div><h2>学习推荐</h2><p class="muted">基于薄弱项推荐资料与练习题。</p></a>
+  <a class="card module-link" href="statistics.html"><div class="card-title"><div class="module-index">05</div></div><h2>学习统计</h2><p class="muted">学习进度、正确率与连续打卡。</p></a>
+  <a class="card module-link" href="qa.html"><div class="card-title"><div class="module-index">06</div></div><h2>题库与练习</h2><p class="muted">题目练习、解析与留言答疑。</p></a>
 </section>
-<section class="notice" style="margin-top:18px;"><strong>使用方式：</strong>打开 index.html 或 overview.html 即可预览。所有页面都是纯 HTML / CSS / JS，无需安装依赖。</section>
+<section class="notice" style="margin-top:18px;"><strong>启动：</strong>后端 <code>python app.py</code>（5001）+ 前端 <code>python -m http.server 8080</code>，登录后使用各模块。</section>
 
-      <p class="footer-note">本页面为静态前端原型，文案与数据均为演示数据，可后续接入后端 API。</p>
+      <p class="footer-note">数据来自后端 API；考试时间线为演示参考日期。</p>
     </main>
   </div>
+  <script src="js/shell.js"></script>
   <script src="js/api.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/app.js"></script>

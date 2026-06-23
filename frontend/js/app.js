@@ -10,11 +10,11 @@ const RESOURCE_TAB_TYPES = {
 };
 
 const RESOURCE_TYPE_STYLE = {
-    '大纲': 'icon-blue',
-    '真题': 'icon-purple',
-    '模拟题': 'icon-orange',
-    '资料': 'icon-green',
-    '公告': 'icon-pink'
+    '大纲': 'icon-accent',
+    '真题': 'icon-accent',
+    '资料': 'icon-accent',
+    '模拟题': 'icon-neutral',
+    '公告': 'icon-neutral'
 };
 
 const NAV_PAGES = {
@@ -228,7 +228,7 @@ function renderResourceList() {
 
     list.className = 'grid grid-3';
     list.innerHTML = items.map(item => {
-        const typeClass = RESOURCE_TYPE_STYLE[item.type] || 'icon-blue';
+        const typeClass = RESOURCE_TYPE_STYLE[item.type] || 'icon-accent';
         const dateStr = item.created_at ? String(item.created_at).slice(0, 10) : '';
         return `
             <article class="resource-card" data-resource-id="${item.id}" tabindex="0" role="button">

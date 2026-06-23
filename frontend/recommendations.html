@@ -19,18 +19,16 @@
 <a class="active" href="recommendations.html"><span class="nav-icon">✦</span><span>学习推荐</span></a>
 <a class="" href="statistics.html"><span class="nav-icon">◫</span><span>学习统计</span></a>
 <a class="" href="qa.html"><span class="nav-icon">?</span><span>题库与答疑</span></a></nav>
-      <div class="sidebar-footer">备考跟踪 · Flask + MySQL<br/>课程设计演示系统</div>
+      <div class="sidebar-footer">备考有迹可循<br/>计划 · 进度 · 练习</div>
     </aside>
     <main class="main">
       <header class="topbar">
         <div>
           <div class="breadcrumb">备考跟踪 / 学习工作台</div>
-          <h1 class="page-title"><span class="title-badge">4</span>个性化学习推荐</h1>
-          <div class="muted" style="margin-top:8px; font-size:14px;">基于学习偏好和薄弱项识别，推荐适合的课程、题库与资料。</div>
+          <h1 class="page-title">学习推荐</h1>
+          <div class="muted" style="margin-top:8px; font-size:14px;">基于薄弱项与答题记录，推荐适合的资料与练习题。</div>
         </div>
         <div class="top-actions">
-          <label class="search"><span>⌕</span><input placeholder="搜索任务、资料、题目" /></label>
-          <button class="icon-btn" title="通知">🔔</button>
           <button class="btn ghost" id="logout-btn" title="退出登录">退出</button>
         </div>
       </header>
@@ -42,7 +40,7 @@
   </div>
   <div class="card">
     <div class="card-title"><h2>学习偏好</h2></div>
-    <p><span class="tag">专项练习</span> <span class="tag">图文资料</span> <span class="tag">错题复盘</span></p>
+    <p id="reco-preferences"><span class="muted">分析偏好中...</span></p>
     <p class="muted">系统根据你的答题记录和计划进度，优先推荐弱项相关内容。</p>
   </div>
   <div class="card">
@@ -62,6 +60,7 @@
       <p class="footer-note">推荐内容根据答题弱项与计划进度实时生成。</p>
     </main>
   </div>
+  <script src="js/shell.js"></script>
   <script src="js/api.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/app.js"></script>
