@@ -36,7 +36,7 @@ function buildLineChartSvg(labels, values, maxVal, unitLabel) {
         return `<text x="8" y="${y + 4}" fill="#7a8aa6" font-size="11">${label}</text>`;
     }).join('');
 
-    return `<svg viewBox="0 0 520 210" width="100%" height="210" role="img">
+    return `<svg viewBox="0 0 520 210" width="100%" role="img" aria-hidden="false">
       <defs><linearGradient id="gline-stats" x1="0" x2="1"><stop stop-color="#0b66ff"/><stop offset="1" stop-color="#5aa8ff"/></linearGradient></defs>
       <g stroke="#e5edf9" stroke-width="1"><line x1="40" y1="30" x2="500" y2="30"/><line x1="40" y1="70" x2="500" y2="70"/><line x1="40" y1="110" x2="500" y2="110"/><line x1="40" y1="150" x2="500" y2="150"/></g>
       <g>${ticks}</g>
