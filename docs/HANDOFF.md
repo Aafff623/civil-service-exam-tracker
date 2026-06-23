@@ -5,7 +5,7 @@
 ## 最近一次更新
 
 - **时间**：2026-06-23
-- **会话动作**：完成 CONTEXT.md 编写
+- **会话动作**：完成 Flask + 前端项目骨架搭建
 - **执行者**：Claude Fable 5
 
 ## 当前上下文
@@ -14,6 +14,8 @@
 - Matt Pocock 工程技能配置完成（issue tracker、labels、domain docs）。
 - 三个项目级 skill 已安装：ui-ux-pro-max、ppt-master、matt-pocock。
 - PRD 和 CONTEXT.md 已完成，需求拆分为 7 个功能模块。
+- 后端 Flask 骨架已跑通，`/api/health/` 返回正常。
+- 前端基础页面已创建：index、login、register、dashboard。
 
 ## 已完成（本次会话）
 
@@ -23,20 +25,19 @@
 - 创建 `docs/PROJECT_STATUS.md`
 - 创建本文件 `docs/HANDOFF.md`
 - 编写并提交 `CONTEXT.md`
+- 搭建 Flask 后端（app.py、config、routes、requirements.txt）
+- 创建前端页面（index/login/register/dashboard + CSS/JS）
+- 测试健康检查 API 通过
+- 添加 `.gitignore` 并清理误提交的 `__pycache__`
 
 ## 待办事项（按优先级）
 
-1. **搭建项目骨架**
-   - `backend/` Flask 目录
-   - `frontend/` 目录
-   - `requirements.txt`
-   - 健康检查 API
-
-2. **设计数据库**
+1. **设计数据库**
    - 写 `backend/init_db.sql`
    - 确定表结构和关系
+   - 添加种子数据
 
-3. **按模块实现功能**
+2. **按模块实现功能**
    - 用户与账户
    - 考试资源管理
    - 题库与练习
@@ -47,7 +48,7 @@
 
 ## 下一步动作
 
-开始搭建 Flask + 前端项目骨架。
+开始设计数据库表结构并编写 `backend/init_db.sql`。
 
 ## 重要文件路径
 
