@@ -238,19 +238,23 @@ function bindChat() {
         chat.scrollTop = chat.scrollHeight;
     }
 
-    function send() {
+    async function send() {
         if (!input) return;
         const value = input.value.trim();
         if (!value) return;
         addBubble(value, 'user');
         input.value = '';
-        setTimeout(() => {
-            if (currentQuestion) {
-                addBubble(`针对这道${currentQuestion.subject_name || ''}题，建议先定位题干关键词，再逐项排除偷换概念的选项。`, 'ai');
+
+        if (currentQuestion) {
+            const commentResult = await postComment(currentQuestion.id, value);
+            if (commentResult.ok && commentResult.data.success) {
+                addBubble('你的疑问已记录。针对这道题，建议先定位题干关键词，再逐项排除偷换概念的选项。', 'ai');
             } else {
-                addBubble('可以先定位题干关键词，再看选项是否偷换概念。后续可接入智能解析接口。', 'ai');
+                addBubble(`针对这道${currentQuestion.subject_name || ''}题，建议先定位题干关键词，再逐项排除偷换概念的选项。`, 'ai');
             }
-        }, 260);
+        } else {
+            addBubble('请先选择一道题目，再提交你的疑问。', 'ai');
+        }
     }
 
     if (btn) btn.addEventListener('click', send);

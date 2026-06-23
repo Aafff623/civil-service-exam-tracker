@@ -36,10 +36,10 @@
       </header>
       
 <section class="grid grid-4">
-  <div class="kpi"><div class="kpi-label">今日学习任务</div><div class="kpi-value">3/5 <small>项</small></div><div class="kpi-sub"><span class="up">+1</span> 比昨日多完成 1 项</div></div>
-  <div class="kpi"><div class="kpi-label">学习时长</div><div class="kpi-value">2.6 <small>h</small></div><div class="kpi-sub"><span class="up">+0.8h</span> 较昨日提升</div></div>
-  <div class="kpi"><div class="kpi-label">完成率</div><div class="kpi-value">62<small>%</small></div><div class="kpi-sub"><span class="up">+12%</span> 今日状态不错</div></div>
-  <div class="kpi"><div class="kpi-label">连续打卡</div><div class="kpi-value">7 <small>天</small></div><div class="kpi-sub">继续保持节奏</div></div>
+  <div class="kpi"><div class="kpi-label">今日学习任务</div><div class="kpi-value" id="kpi-tasks">—</div><div class="kpi-sub">来自今日学习计划</div></div>
+  <div class="kpi"><div class="kpi-label">学习时长</div><div class="kpi-value" id="kpi-hours">—</div><div class="kpi-sub">今日累计</div></div>
+  <div class="kpi"><div class="kpi-label">完成率</div><div class="kpi-value" id="kpi-rate">—</div><div class="kpi-sub">今日任务完成率</div></div>
+  <div class="kpi"><div class="kpi-label">连续打卡</div><div class="kpi-value" id="kpi-streak">—</div><div class="kpi-sub">继续保持节奏</div></div>
 </section>
 <section class="grid grid-3" style="margin-top:18px;">
   <div class="card span-2">
@@ -48,35 +48,25 @@
     <div class="grid grid-2" style="margin-top:18px;">
       <div class="card soft">
         <div class="card-title"><h3>今日任务清单</h3><a class="link" href="plan.html">查看计划</a></div>
-        <div class="task-list">
-          <div class="task-item"><span class="task-check done">✓</span><div class="task-text"><strong>行测 · 言语理解与表达</strong><span>45 分钟 · 已完成</span></div><span class="tag green">完成</span></div>
-          <div class="task-item"><span class="task-check done">✓</span><div class="task-text"><strong>申论 · 归纳概括题</strong><span>60 分钟 · 已完成</span></div><span class="tag green">完成</span></div>
-          <div class="task-item"><span class="task-check">3</span><div class="task-text"><strong>数量关系 · 基础练习</strong><span>45 分钟 · 待完成</span></div><span class="tag orange">重点</span></div>
-          <div class="task-item"><span class="task-check">4</span><div class="task-text"><strong>常识判断 · 每日一练</strong><span>20 分钟 · 待完成</span></div><span class="tag gray">日常</span></div>
-          <div class="task-item"><span class="task-check">5</span><div class="task-text"><strong>资料分析 · 专项训练</strong><span>40 分钟 · 待完成</span></div><span class="tag red">弱项</span></div>
-        </div>
+        <div class="task-list" id="dashboard-tasks"><p class="muted">加载中...</p></div>
       </div>
       <div class="card soft">
         <div class="card-title"><h3>弱项提醒</h3><span class="tag red">需加强</span></div>
-        <div class="bar-list">
-          <div class="bar-row"><span>资料分析</span><div class="progress orange"><span style="width:48%"></span></div><strong>48%</strong></div>
-          <div class="bar-row"><span>判断推理</span><div class="progress orange"><span style="width:53%"></span></div><strong>53%</strong></div>
-          <div class="bar-row"><span>数量关系</span><div class="progress orange"><span style="width:55%"></span></div><strong>55%</strong></div>
-        </div>
-        <div class="notice" style="margin-top:18px;">📘 建议今天优先完成“资料分析”专项训练。</div>
+        <div class="bar-list" id="dashboard-weak-bars"><p class="muted">加载中...</p></div>
+        <div class="notice" style="margin-top:18px;" id="dashboard-weak-tip">📘 加载弱项建议中...</div>
       </div>
     </div>
   </div>
   <div class="card">
-    <div class="card-title"><h2>国考倒计时</h2><span class="tag">2025</span></div>
-    <div class="countdown"><div class="num">162<small>天</small></div><div class="num">08<small>时</small></div><div class="num">36<small>分</small></div></div>
+    <div class="card-title"><h2>考试倒计时</h2><span class="tag" id="dashboard-exam-year">—</span></div>
+    <div class="countdown"><div class="num" id="dashboard-countdown-days">—</div></div>
     <div style="margin-top:18px;"><svg viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="完成率">
       <circle cx="60" cy="60" r="45" fill="none" stroke="#e8f1ff" stroke-width="12"/>
-      <circle cx="60" cy="60" r="45" fill="none" stroke="#0b66ff" stroke-width="12" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="107.5" transform="rotate(-90 60 60)"/>
+      <circle id="dashboard-progress-ring" cx="60" cy="60" r="45" fill="none" stroke="#0b66ff" stroke-width="12" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283" transform="rotate(-90 60 60)"/>
       <text x="60" y="54" text-anchor="middle" fill="#6e7f9a" font-size="12" font-weight="700">完成率</text>
-      <text x="60" y="78" text-anchor="middle" fill="#13213c" font-size="24" font-weight="900">62%</text>
+      <text id="dashboard-progress-text" x="60" y="78" text-anchor="middle" fill="#13213c" font-size="24" font-weight="900">—</text>
     </svg></div>
-    <p class="muted">当前总进度 62%，预计按照现有学习节奏可以完成 182 个学习任务。</p>
+    <p class="muted" id="dashboard-progress-desc">加载进度中...</p>
   </div>
 </section>
 <section class="grid grid-2" style="margin-top:18px;">
@@ -91,16 +81,17 @@
   </div>
   <div class="card">
     <div class="card-title"><h2>学习热力图</h2><small>近 30 天</small></div>
-    <div class="heatmap"><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span></div>
+    <div class="heatmap" id="dashboard-heatmap"><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span><span class="l2"></span><span class="l4"></span><span class="l1"></span><span class="l3"></span><span class="l0"></span></div>
     <p class="muted">颜色越深代表当天学习时长越高，用于快速观察学习连续性。</p>
   </div>
 </section>
 
-      <p class="footer-note">本页面为静态前端原型，文案与数据均为演示数据，可后续接入后端 API。</p>
+      <p class="footer-note">首页数据来自学习计划、进度统计与推荐模块。</p>
     </main>
   </div>
   <script src="assets/app.js"></script>
   <script src="js/api.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
 </body>
 </html>
