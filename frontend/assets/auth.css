@@ -40,9 +40,51 @@ body:has(.auth-page) {
   pointer-events: none;
 }
 
-.auth-brand > * {
+.auth-brand > *:not(.auth-brand-grid) {
   position: relative;
   z-index: 1;
+}
+
+.auth-brand-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  background-image:
+    linear-gradient(to right, rgba(248, 250, 252, 0.14) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(248, 250, 252, 0.14) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse 90% 80% at 30% 40%, #000 15%, transparent 70%);
+}
+
+.auth-quotes {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.auth-quote {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 6px;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.auth-quote p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(248, 250, 252, 0.92);
+}
+
+.auth-quote footer {
+  display: block;
+  margin-top: 8px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
 }
 
 .auth-brand-top {
@@ -230,6 +272,37 @@ body:has(.auth-page) {
   padding: clamp(32px, 5vw, 56px) clamp(28px, 4vw, 48px);
   background: var(--color-background);
   border-left: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.auth-grid-line {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(90deg, transparent, rgba(3, 105, 161, 0.22), transparent);
+}
+
+.auth-grid-line-h {
+  left: 12%;
+  right: 12%;
+  height: 1px;
+}
+
+.auth-grid-line-v {
+  top: 12%;
+  bottom: 12%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(3, 105, 161, 0.18), transparent);
+}
+
+.auth-grid-line-top { top: 28px; }
+.auth-grid-line-bottom { bottom: 28px; }
+.auth-grid-line-left { left: 28px; }
+.auth-grid-line-right { right: 28px; }
+
+.auth-form-panel > .auth-card {
+  position: relative;
+  z-index: 1;
 }
 
 .auth-card {
@@ -472,6 +545,14 @@ body:has(.auth-page) {
     border-left: 0;
     border-top: 1px solid #e2e8f0;
     padding: 32px 24px 48px;
+  }
+
+  .auth-quotes {
+    display: none;
+  }
+
+  .auth-grid-line {
+    display: none;
   }
 }
 

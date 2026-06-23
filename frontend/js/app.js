@@ -112,6 +112,7 @@ async function initApp() {
     syncNavActive();
     initPageTransitions();
     initSurfaceSpotlight();
+    initMobileNav();
     window.dispatchEvent(new Event('app:ready'));
     scheduleModuleReadyFallback();
 

@@ -3,6 +3,44 @@ function todayIso() {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
+const EXAM_TIMELINE = [
+    { date: '2026-10-14', label: '招考公告发布' },
+    { date: '2026-10-15', label: '网上报名开始' },
+    { date: '2026-10-24', label: '报名截止 · 缴费' },
+    { date: '2026-11-01', label: '打印准考证' },
+    { date: '2026-11-29', label: '公共科目笔试' },
+    { date: '2027-01-15', label: '成绩查询（预计）' }
+];
+
+function renderExamTimeline() {
+    const el = document.getElementById('exam-timeline');
+    if (!el) return;
+
+    const today = todayIso();
+    let currentMarked = false;
+
+    el.innerHTML = EXAM_TIMELINE.map(item => {
+        let state = 'is-upcoming';
+        if (item.date < today) {
+            state = 'is-past';
+        } else if (!currentMarked) {
+            state = 'is-current';
+            currentMarked = true;
+        }
+
+        const monthDay = item.date.slice(5).replace('-', '/');
+        return `
+            <div class="exam-timeline-item ${state}">
+                <span class="exam-timeline-marker" aria-hidden="true"></span>
+                <div class="exam-timeline-body">
+                    <time class="exam-timeline-date" datetime="${escapeHtml(item.date)}">${escapeHtml(monthDay)}</time>
+                    <p class="exam-timeline-label">${escapeHtml(item.label)}</p>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
 function daysUntil(dateStr) {
     if (!dateStr) return null;
     const target = new Date(dateStr + 'T00:00:00');
@@ -381,6 +419,7 @@ async function initDashboard() {
 
 function bootDashboard() {
     if (!document.getElementById('dashboard-tasks')) return;
+    renderExamTimeline();
     initDashboard();
 }
 if (document.body.classList.contains('app-ready')) {
