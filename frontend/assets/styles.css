@@ -1036,14 +1036,14 @@ button.task-check.is-popping {
 button.heatmap-cell { cursor: pointer; }
 .heatmap-cell.is-future { background: transparent; pointer-events: none; }
 .heatmap-cell.l0 { background: #e8ecf1; }
-.heatmap-cell.l1 { background: #dbeafe; }
-.heatmap-cell.l2 { background: #7dd3fc; }
-.heatmap-cell.l3 { background: #0284c7; }
-.heatmap-cell.l4 { background: #0d9488; }
+.heatmap-cell.l1 { background: #d6eaf5; }
+.heatmap-cell.l2 { background: #9ccfe8; }
+.heatmap-cell.l3 { background: #4da3d4; }
+.heatmap-cell.l4 { background: var(--color-accent); }
 .heatmap-cell:hover,
 .heatmap-cell:focus-visible {
   transform: scale(1.15);
-  box-shadow: 0 0 0 1px rgba(2, 132, 199, 0.45);
+  box-shadow: 0 0 0 1px rgba(3, 105, 161, 0.45);
   outline: none;
   z-index: 1;
   position: relative;
