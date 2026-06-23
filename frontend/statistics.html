@@ -55,9 +55,23 @@
     <div class="card-title"><h2>正确率趋势</h2><small>按天统计</small></div>
     <div class="mini-chart" id="accuracy-chart"></div>
   </div>
-  <div class="card">
-    <div class="card-title"><h2>打卡日历</h2><small id="calendar-title">本月</small></div>
-    <div class="calendar" id="calendar-grid"></div>
+  <div class="card calendar-panel surface-spotlight">
+    <div class="calendar-hero">
+      <img class="calendar-mascot" src="assets/images/mascot-welcome.png" alt="" width="44" height="44" loading="lazy" />
+      <div>
+        <div class="card-title" style="margin-bottom:0;"><h2>打卡日历</h2><small id="calendar-title">本月</small></div>
+        <p class="muted calendar-hero-sub" id="calendar-streak-hint">记录每日学习打卡，保持备考节奏。</p>
+      </div>
+      <div class="calendar-streak-badge" id="calendar-streak-badge">连续 — 天</div>
+    </div>
+    <div class="calendar-wrap">
+      <div class="calendar calendar-premium" id="calendar-grid"></div>
+    </div>
+    <div class="calendar-legend" aria-hidden="true">
+      <span><i class="dot dot-empty"></i>未打卡</span>
+      <span><i class="dot dot-checked"></i>已打卡</span>
+      <span><i class="dot dot-today"></i>今天</span>
+    </div>
   </div>
 </section>
 
