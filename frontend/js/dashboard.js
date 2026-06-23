@@ -17,24 +17,47 @@ function renderExamTimeline() {
     if (!el) return;
 
     const today = todayIso();
-    let currentMarked = false;
+    const todayLabel = today.slice(5).replace('-', '/');
+    const nodes = [];
 
-    el.innerHTML = EXAM_TIMELINE.map(item => {
-        let state = 'is-upcoming';
-        if (item.date < today) {
-            state = 'is-past';
-        } else if (!currentMarked) {
-            state = 'is-current';
-            currentMarked = true;
+    EXAM_TIMELINE.forEach((item, index) => {
+        if (today < item.date && (index === 0 || EXAM_TIMELINE[index - 1].date < today)) {
+            nodes.push({
+                kind: 'today',
+                date: today,
+                label: '今天 · 备考进行中',
+                state: 'is-today'
+            });
         }
 
-        const monthDay = item.date.slice(5).replace('-', '/');
+        let state = 'is-upcoming';
+        if (item.date < today) state = 'is-past';
+        else if (item.date === today) state = 'is-today';
+
+        nodes.push({ kind: 'event', ...item, state });
+    });
+
+    if (!nodes.some(n => n.date === today)) {
+        const insertAt = nodes.findIndex(n => n.kind === 'event' && n.date > today);
+        const todayNode = {
+            kind: 'today',
+            date: today,
+            label: '今天 · 备考进行中',
+            state: 'is-today'
+        };
+        if (insertAt === -1) nodes.push(todayNode);
+        else nodes.splice(insertAt, 0, todayNode);
+    }
+
+    el.innerHTML = nodes.map(node => {
+        const monthDay = node.date.slice(5).replace('-', '/');
+        const isToday = node.state === 'is-today';
         return `
-            <div class="exam-timeline-item ${state}">
+            <div class="exam-timeline-item ${node.state}" data-timeline-kind="${node.kind}">
                 <span class="exam-timeline-marker" aria-hidden="true"></span>
                 <div class="exam-timeline-body">
-                    <time class="exam-timeline-date" datetime="${escapeHtml(item.date)}">${escapeHtml(monthDay)}</time>
-                    <p class="exam-timeline-label">${escapeHtml(item.label)}</p>
+                    <time class="exam-timeline-date" datetime="${escapeHtml(node.date)}">${escapeHtml(isToday ? `今日 ${todayLabel}` : monthDay)}</time>
+                    <p class="exam-timeline-label">${escapeHtml(node.label)}</p>
                 </div>
             </div>
         `;

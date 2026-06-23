@@ -574,11 +574,11 @@ a.card.module-link.surface-spotlight {
   top: 18px;
   bottom: 0;
   width: 2px;
-  background: #e2e8f0;
+  background: linear-gradient(180deg, #bae6fd 0%, #e2e8f0 55%, #f1f5f9 100%);
 }
 
-.exam-timeline-item.is-past:not(:last-child)::before {
-  background: #bae6fd;
+.exam-timeline-item.is-upcoming:not(:last-child)::before {
+  background: linear-gradient(180deg, #cbd5e1 0%, #e2e8f0 40%, transparent 100%);
 }
 
 .exam-timeline-marker {
@@ -600,6 +600,45 @@ a.card.module-link.surface-spotlight {
   border-color: #0284c7;
   background: #fff;
   box-shadow: 0 0 0 4px rgba(3, 105, 161, 0.18);
+}
+
+.exam-timeline-item.is-today .exam-timeline-body {
+  padding: 10px 12px;
+  border-radius: var(--radius-control);
+  border: 1px solid #7dd3fc;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 55%, #fff 100%);
+  box-shadow: 0 2px 8px rgba(3, 105, 161, 0.1);
+}
+
+.exam-timeline-item.is-today .exam-timeline-marker {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  box-shadow: 0 0 0 4px rgba(3, 105, 161, 0.2);
+}
+
+.exam-timeline-item.is-today .exam-timeline-date {
+  color: #0369a1;
+  font-weight: 700;
+}
+
+.exam-timeline-item.is-upcoming {
+  opacity: 0.92;
+}
+
+.exam-timeline-item.is-upcoming .exam-timeline-body {
+  opacity: 0.78;
+}
+
+.exam-timeline-item.is-upcoming:nth-child(n+4) .exam-timeline-body {
+  opacity: 0.55;
+}
+
+.exam-timeline-item.is-upcoming:nth-child(n+6) .exam-timeline-body {
+  opacity: 0.38;
+}
+
+.exam-timeline-item.is-past .exam-timeline-label {
+  color: #64748b;
 }
 
 .exam-timeline-date {

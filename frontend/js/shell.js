@@ -118,6 +118,24 @@
         document.querySelectorAll('.topbar .icon-btn').forEach(el => el.remove());
     }
 
+    function ensureTopbarUser() {
+        document.querySelectorAll('.top-actions').forEach(actions => {
+            if (actions.querySelector('.topbar-user')) return;
+            const logout = actions.querySelector('#logout-btn');
+            const chip = document.createElement('div');
+            chip.className = 'topbar-user';
+            chip.id = actions.closest('.resource-detail-topbar') ? '' : 'topbar-user';
+            chip.innerHTML = `
+                <span class="topbar-user-avatar" data-avatar aria-hidden="true">U</span>
+                <span class="topbar-user-meta">
+                    <strong class="topbar-user-name" data-topbar-username>—</strong>
+                    <small class="topbar-user-role" data-topbar-role>学习者</small>
+                </span>`;
+            if (logout) actions.insertBefore(chip, logout);
+            else actions.appendChild(chip);
+        });
+    }
+
     function decoratePageTitle() {
         const page = (location.pathname.split('/').pop() || 'dashboard.html').toLowerCase();
         const emoji = PAGE_EMOJI[page];
@@ -198,6 +216,7 @@
         upgradeSidebarFooter();
         removeTitleBadges();
         trimTopbar();
+        ensureTopbarUser();
         decoratePageTitle();
         decorateKpiLabels();
         decorateHeadings();

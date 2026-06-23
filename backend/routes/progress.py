@@ -6,6 +6,39 @@ from models import as_date_str
 
 bp = Blueprint('progress', __name__, url_prefix='/api/progress')
 
+DEMO_SUBJECT_STATS = [
+    {'subject_name': '言语理解与表达', 'completed': 18, 'total': 25, 'completion_rate': 72},
+    {'subject_name': '数量关系', 'completed': 12, 'total': 20, 'completion_rate': 60},
+    {'subject_name': '判断推理', 'completed': 14, 'total': 22, 'completion_rate': 64},
+    {'subject_name': '资料分析', 'completed': 11, 'total': 20, 'completion_rate': 55},
+    {'subject_name': '常识判断', 'completed': 15, 'total': 20, 'completion_rate': 75},
+    {'subject_name': '申论', 'completed': 10, 'total': 15, 'completion_rate': 67},
+]
+
+
+def apply_demo_subject_stats(subject_stats, weak_rows, cursor):
+    if subject_stats and any(item.get('completion_rate', 0) > 0 for item in subject_stats):
+        return subject_stats
+
+    weak_by_name = {row['subject_name']: row for row in weak_rows}
+    cursor.execute("SELECT id, name FROM subjects ORDER BY id")
+    subject_ids = {row['name']: row['id'] for row in cursor.fetchall()}
+
+    demo = []
+    for row in DEMO_SUBJECT_STATS:
+        name = row['subject_name']
+        weak = weak_by_name.get(name)
+        demo.append({
+            'subject_id': subject_ids.get(name),
+            'subject_name': name,
+            'completion_rate': row['completion_rate'],
+            'completed': row['completed'],
+            'total': row['total'],
+            'accuracy': round(float(weak['accuracy']), 1) if weak else None,
+            'is_demo': True,
+        })
+    return demo
+
 
 def get_active_plan_id(cursor, user_id):
     cursor.execute("""
@@ -200,6 +233,8 @@ def get_progress_summary():
     for item in subject_stats:
         weak = weak_map.get(item['subject_id'])
         item['accuracy'] = round(weak['accuracy'], 1) if weak else None
+
+    subject_stats = apply_demo_subject_stats(subject_stats, weak_rows, cursor)
 
     if not subject_stats and weak_rows:
         for row in weak_rows:

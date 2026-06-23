@@ -56,6 +56,12 @@ function syncSidebarMeta(user) {
     document.querySelectorAll('[data-avatar]').forEach(el => {
         el.textContent = user.username.charAt(0).toUpperCase();
     });
+    document.querySelectorAll('[data-topbar-username]').forEach(el => {
+        el.textContent = user.username;
+    });
+    document.querySelectorAll('[data-topbar-role]').forEach(el => {
+        el.textContent = user.role === 'admin' ? '管理员' : '学习者';
+    });
 }
 
 function isInternalModuleLink(href) {
