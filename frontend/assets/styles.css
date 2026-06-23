@@ -753,7 +753,12 @@ button.task-check.is-popping {
 .weak-info { min-width: 0; }
 .weak-name { display: block; font-weight: var(--weight-semibold); font-size: 13px; }
 .weak-meta { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; }
-.weak-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.weak-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.weak-actions .btn { width: 100%; min-width: 0; }
 
 .plan-stats {
   display: grid;
@@ -2095,6 +2100,7 @@ body.app-ready .main-enter {
     padding-top: 12px;
     grid-template-columns: 1fr 1fr;
   }
+  .weak-actions { grid-template-columns: 1fr; }
   .overview-hero-split { grid-template-columns: 1fr; }
   .overview-hero-visual { order: -1; }
   .page-banner,
