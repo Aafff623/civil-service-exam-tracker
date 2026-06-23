@@ -22,19 +22,23 @@
       <div class="sidebar-footer">备考有迹可循<br/>计划 · 进度 · 练习</div>
     </aside>
     <main class="main">
-      <header class="topbar">
-        <div>
+      <header class="topbar topbar-dashboard">
+        <div class="topbar-intro">
           <div class="breadcrumb">备考跟踪 / 学习工作台</div>
           <h1 class="page-title">学习总览</h1>
-          <div class="muted" style="margin-top:8px; font-size:14px;">今日任务、学习时长、完成率、弱项提醒与考试倒计时。</div>
+          <p class="topbar-lead">今日任务、学习时长、完成率、弱项提醒与考试倒计时。</p>
         </div>
-        <div class="top-actions">
-          <div class="topbar-welcome">
-            <p class="topbar-greeting">你好，<span data-username>同学</span></p>
-            <p class="topbar-greeting-sub">按计划推进，保持每日学习节奏。</p>
-            <small class="topbar-greeting-date" data-today></small>
+        <div class="top-actions top-actions-dashboard">
+          <div class="topbar-profile">
+            <div class="topbar-profile-main">
+              <div class="topbar-welcome">
+                <p class="topbar-greeting">你好，<span data-username>同学</span></p>
+                <p class="topbar-greeting-sub">按计划推进，保持每日学习节奏。</p>
+                <time class="topbar-greeting-date" data-today></time>
+              </div>
+            </div>
           </div>
-          <button class="btn ghost" id="logout-btn" title="退出登录">退出</button>
+          <button class="btn ghost small" id="logout-btn" title="退出登录">退出</button>
         </div>
       </header>
       
