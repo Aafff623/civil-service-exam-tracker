@@ -113,8 +113,11 @@ async function initApp() {
     initPageTransitions();
     initSurfaceSpotlight();
     initMobileNav();
-    window.dispatchEvent(new Event('app:ready'));
     scheduleModuleReadyFallback();
+    // Defer so page modules (dashboard.js, plan.js, …) register listeners first
+    queueMicrotask(() => {
+        window.dispatchEvent(new Event('app:ready'));
+    });
 
     const meResult = await getMe();
     if (!meResult.ok || !meResult.data.success) {
