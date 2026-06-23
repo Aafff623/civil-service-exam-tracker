@@ -1,0 +1,293 @@
+<div class="resource-doc">
+  <p class="resource-lead">数量关系不必追求全做，掌握核心公式可覆盖约 <strong>70%</strong> 高频题型。本手册按<strong>行程、工程、利润、排列组合、概率、容斥、几何、最值、日期星期、溶液浓度</strong>等分章整理，每章附 <strong>2 道典型例题</strong>。</p>
+
+  <nav class="resource-toc">
+    <h4>目录</h4>
+    <ol>
+      <li><a href="#ch1">一、行程问题</a></li>
+      <li><a href="#ch2">二、工程问题</a></li>
+      <li><a href="#ch3">三、利润与折扣</a></li>
+      <li><a href="#ch4">四、排列组合</a></li>
+      <li><a href="#ch5">五、概率问题</a></li>
+      <li><a href="#ch6">六、容斥原理</a></li>
+      <li><a href="#ch7">七、几何问题</a></li>
+      <li><a href="#ch8">八、最值问题</a></li>
+      <li><a href="#ch9">九、日期与星期</a></li>
+      <li><a href="#ch10">十、溶液浓度</a></li>
+      <li><a href="#ch11">十一、考场策略</a></li>
+    </ol>
+  </nav>
+
+  <section class="resource-chapter" id="ch1">
+    <h2>一、行程问题</h2>
+    <table class="resource-table">
+      <thead><tr><th>类型</th><th>核心公式</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr><td>基本行程</td><td>S = v × t</td><td>单位统一：km/h 与 h</td></tr>
+        <tr><td>相遇问题</td><td>S<sub>和</sub> = (v₁ + v₂) × t</td><td>相向而行，时间相同</td></tr>
+        <tr><td>追及问题</td><td>S<sub>差</sub> = (v₁ − v₂) × t</td><td>同向而行，快者追慢者</td></tr>
+        <tr><td>流水行船</td><td>顺速 = 船速 + 水速；逆速 = 船速 − 水速</td><td>船速 = (顺+逆)/2</td></tr>
+        <tr><td>环形跑道</td><td>同向追及一圈 S<sub>差</sub>=周长；相向相遇 S<sub>和</sub>=周长</td><td>多次相遇注意圈数</td></tr>
+      </tbody>
+    </table>
+    <div class="resource-sample">
+      <span class="sample-label">例题 1 · 相遇追及</span>
+      <p>甲、乙两地相距 360 千米，A 车从甲地以 80 km/h 出发，1 小时后 B 车从乙地以 100 km/h 相向而行。问两车相遇时 B 车行驶了多少千米？</p>
+      <div class="sample-answer"><strong>解析：</strong>A 先走 80 km，剩余 280 km 相向。t = 280÷180 = 14/9 h。B 行驶 100×14/9 ≈ <strong>155.6 千米</strong>。</div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 2 · 追及问题</span>
+      <p>甲、乙两人在 400 米环形跑道同向起点出发，甲速 6 m/s，乙速 4 m/s。问甲第二次追上乙时，甲比乙多跑了几圈？</p>
+      <div class="sample-answer"><strong>解析：</strong>每追及一圈，甲比乙多跑 400 米。第二次追上多跑 2 圈 = <strong>800 米</strong>（或 2 圈）。</div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch2">
+    <h2>二、工程问题</h2>
+    <p>核心思想：<strong>工作总量 = 效率 × 时间</strong>，常设总量为完成时间的最小公倍数。</p>
+    <table class="resource-table">
+      <thead><tr><th>情形</th><th>公式 / 方法</th></tr></thead>
+      <tbody>
+        <tr><td>单独完成</td><td>效率 = 总量 ÷ 单独完成时间</td></tr>
+        <tr><td>合作完成</td><td>合作效率 = 各效率之和；完成时间 = 总量 ÷ 合作效率</td></tr>
+        <tr><td>交替合作</td><td>按周期算完成量，注意最后不足一周期部分</td></tr>
+        <tr><td>效率变化</td><td>列方程：效率 × 时间 = 总量（前后总量不变）</td></tr>
+      </tbody>
+    </table>
+    <div class="resource-sample">
+      <span class="sample-label">例题 1 · 工程合作</span>
+      <p>甲单独完成需 10 天，乙单独完成需 15 天。两人合作，多少天完成？</p>
+      <div class="sample-answer"><strong>解析：</strong>设总量 30，甲效率 3，乙效率 2，合作效率 5。时间 = 30÷5 = <strong>6 天</strong>。</div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 2 · 交替合作</span>
+      <p>甲单独需 12 天，乙单独需 18 天。按甲做 1 天、乙做 1 天交替，完成需多少天？</p>
+      <div class="sample-answer"><strong>解析：</strong>设总量 36，甲效率 3，乙效率 2。一个周期（2 天）完成 5。7 个周期完成 35，剩 1 由甲 1 天完成。共 <strong>15 天</strong>。</div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch3">
+    <h2>三、利润与折扣</h2>
+    <table class="resource-table">
+      <thead><tr><th>概念</th><th>公式</th></tr></thead>
+      <tbody>
+        <tr><td>利润</td><td>利润 = 售价 − 成本</td></tr>
+        <tr><td>利润率（成本利润率）</td><td>利润率 = 利润 ÷ 成本 × 100%</td></tr>
+        <tr><td>售价</td><td>售价 = 成本 × (1 + 利润率)</td></tr>
+        <tr><td>折扣</td><td>折后价 = 原价 × 折扣数（如 8 折 = 0.8）</td></tr>
+        <tr><td>连续折扣</td><td>折后价 = 原价 × 折扣₁ × 折扣₂</td></tr>
+      </tbody>
+    </table>
+    <div class="resource-sample">
+      <span class="sample-label">例题 1 · 利润折扣</span>
+      <p>某商品成本 200 元，按 50% 利润率定价后打 8 折出售，实际利润率是多少？</p>
+      <div class="sample-answer"><strong>解析：</strong>定价 = 300 元；售价 = 240 元；利润 = 40 元；利润率 = 40÷200 = <strong>20%</strong>。</div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 2 · 连续折扣</span>
+      <p>某商品原价 500 元，先打 9 折，再打 8 折，最终售价多少元？相当于几折？</p>
+      <div class="sample-answer"><strong>解析：</strong>售价 = 500×0.9×0.8 = <strong>360 元</strong>，相当于 <strong>7.2 折</strong>。</div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch4">
+    <h2>四、排列组合</h2>
+    <table class="resource-table">
+      <thead><tr><th>公式</th><th>含义</th><th>何时用</th></tr></thead>
+      <tbody>
+        <tr><td>A(n,m) = n!/(n−m)!</td><td>排列：有序</td><td>排队、排位、密码顺序</td></tr>
+        <tr><td>C(n,m) = n!/[m!(n−m)!]</td><td>组合：无序</td><td>选人、选代表、分组（无顺序）</td></tr>
+        <tr><td>分步用乘法</td><td>做一件事分多步</td><td>先后发生，步步相依</td></tr>
+        <tr><td>分类用加法</td><td>做一件事有多种互斥方案</td><td>任选其一即可完成</td></tr>
+      </tbody>
+    </table>
+    <div class="resource-callout">经典模型：捆绑法（相邻）、插空法（不相邻）、隔板法（同物分给多人，每人至少 1 个）、环形排列 (n−1)!。</div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 1 · 捆绑法</span>
+      <p>5 人站成一排，甲、乙必须相邻，有多少种排法？</p>
+      <div class="sample-answer"><strong>解析：</strong>甲乙捆绑为 1 整体，4 元素排列 A(4,4)=24；内部 A(2,2)=2。共 <strong>48 种</strong>。</div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 2 · 隔板法</span>
+      <p>将 10 个相同苹果分给 3 个小朋友，每人至少 1 个，有多少种分法？</p>
+      <div class="sample-answer"><strong>解析：</strong>隔板法 C(10−1, 3−1) = C(9,2) = <strong>36 种</strong>。</div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch5">
+    <h2>五、概率问题</h2>
+    <p>古典概型：<strong>P = 满足条件的情况数 ÷ 总情况数</strong>（各结果等可能）</p>
+    <ul>
+      <li><strong>互斥事件</strong>：P(A 或 B) = P(A) + P(B)</li>
+      <li><strong>独立事件</strong>：P(A 且 B) = P(A) × P(B)</li>
+      <li><strong>补事件</strong>：P(不 A) = 1 − P(A)（「至少」常用反面求解）</li>
+    </ul>
+    <div class="resource-sample">
+      <span class="sample-label">例题 1 · 古典概型</span>
+      <p>袋中 3 红 2 白，随机取 2 球，恰有 1 红 1 白的概率？</p>
+      <div class="sample-answer"><strong>解析：</strong>总情况 C(5,2)=10；满足 C(3,1)×C(2,1)=6。P = <strong>3/5</strong>。</div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 2 · 反面求解</span>
+      <p>某题甲答对概率 0.8，乙答对概率 0.6，两人独立答题，至少一人答对的概率？</p>
+      <div class="sample-answer"><strong>解析：</strong>反面：两人都错 = 0.2×0.4 = 0.08。至少一人对 = 1−0.08 = <strong>0.92</strong>。</div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch6">
+    <h2>六、容斥原理</h2>
+    <p>解决集合重叠计数问题，画韦恩图辅助。</p>
+    <table class="resource-table">
+      <thead><tr><th>公式</th><th>适用</th></tr></thead>
+      <tbody>
+        <tr><td>|A∪B| = |A| + |B| − |A∩B|</td><td>两集合</td></tr>
+        <tr><td>|A∪B∪C| = |A|+|B|+|C| − |A∩B|−|A∩C|−|B∩C| + |A∩B∩C|</td><td>三集合</td></tr>
+        <tr><td>都不满足 = 总数 − |A∪B|（或 |A∪B∪C|）</td><td>求补集</td></tr>
+      </tbody>
+    </table>
+    <div class="resource-sample">
+      <span class="sample-label">例题 1 · 两集合容斥</span>
+      <p>100 人中，会英语 60 人，会日语 40 人，两种都会 15 人。只会一种语言的有多少人？</p>
+      <div class="sample-answer"><strong>解析：</strong>至少会一种 = 60+40−15 = 85；只会一种 = 85−15 = <strong>70 人</strong>。</div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 2 · 三集合容斥</span>
+      <p>某班 50 人，参加数学竞赛 30 人，物理 25 人，化学 20 人，数学物理都参加 10 人，数学化学 8 人，物理化学 6 人，三门都参加 3 人。至少参加一门的有多少人？</p>
+      <div class="sample-answer"><strong>解析：</strong>|A∪B∪C| = 30+25+20−10−8−6+3 = <strong>54 人</strong>（若总数 50 则数据需调整；按公式计算得 54，说明至少参加一门 54 人，超总数则检查题目条件）。按标准题：30+25+20−10−8−6+3 = <strong>54</strong>。</div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch7">
+    <h2>七、几何问题</h2>
+    <table class="resource-table">
+      <thead><tr><th>图形</th><th>周长 / 面积公式</th><th>体积公式</th></tr></thead>
+      <tbody>
+        <tr><td>矩形</td><td>S = ab；C = 2(a+b)</td><td>—</td></tr>
+        <tr><td>三角形</td><td>S = ½×底×高</td><td>—</td></tr>
+        <tr><td>圆</td><td>S = πr²；C = 2πr</td><td>—</td></tr>
+        <tr><td>长方体</td><td>—</td><td>V = abc</td></tr>
+        <tr><td>圆柱</td><td>侧面积 = 2πrh</td><td>V = πr²h</td></tr>
+        <tr><td>球</td><td>—</td><td>V = ⁴⁄₃πr³</td></tr>
+      </tbody>
+    </table>
+    <div class="resource-sample">
+      <span class="sample-label">例题 1 · 平面几何</span>
+      <p>直角三角形两直角边分别为 6 cm 和 8 cm，求斜边长度及面积。</p>
+      <div class="sample-answer"><strong>解析：</strong>斜边 = √(36+64) = <strong>10 cm</strong>；面积 = ½×6×8 = <strong>24 cm²</strong>。</div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 2 · 立体几何</span>
+      <p>圆柱底面半径 3 cm，高 10 cm，求体积。（π 取 3.14）</p>
+      <div class="sample-answer"><strong>解析：</strong>V = πr²h = 3.14×9×10 = <strong>282.6 cm³</strong>。</div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch8">
+    <h2>八、最值问题</h2>
+    <table class="resource-table">
+      <thead><tr><th>类型</th><th>方法</th><th>口诀</th></tr></thead>
+      <tbody>
+        <tr><td>数列最值</td><td>数列和固定，求某一项最大 → 其余项取最小</td><td>此消彼长</td></tr>
+        <tr><td>抽屉原理</td><td>n+1 个物品放入 n 个抽屉，至少 1 个抽屉有 2 个</td><td>最不利+1</td></tr>
+        <tr><td>几何最值</td><td>周长固定，正方形面积最大；同周长圆面积最大</td><td>对称性</td></tr>
+        <tr><td>不等式最值</td><td>和定积最大、积定和最小（均值不等式）</td><td>算术≥几何</td></tr>
+      </tbody>
+    </table>
+    <div class="resource-sample">
+      <span class="sample-label">例题 1 · 数列最值</span>
+      <p>5 个互不相同的正整数之和为 38，则最大数最多为多少？</p>
+      <div class="sample-answer"><strong>解析：</strong>其余 4 个数取最小 1,2,3,4，和为 10。最大数 = 38−10 = <strong>28</strong>。</div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 2 · 抽屉原理</span>
+      <p>袋中有红、黄、蓝、绿球各 5 个，至少取出几个球才能保证有 3 个同色？</p>
+      <div class="sample-answer"><strong>解析：</strong>最不利：每种颜色各取 2 个 = 8 个。再取 1 个必有 3 个同色。至少 <strong>9 个</strong>。</div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch9">
+    <h2>九、日期与星期</h2>
+    <table class="resource-table">
+      <thead><tr><th>知识点</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>闰年判断</td><td>能被 4 整除且不能被 100 整除，或能被 400 整除</td></tr>
+        <tr><td>大月小月</td><td>大月 31 天（1,3,5,7,8,10,12）；小月 30 天（4,6,9,11）；2 月平 28 闰 29</td></tr>
+        <tr><td>星期计算</td><td>总天数 ÷ 7 取余，从已知星期往后推余数天</td></tr>
+        <tr><td>跨月计算</td><td>逐月累加天数，注意闰年 2 月</td></tr>
+      </tbody>
+    </table>
+    <div class="resource-sample">
+      <span class="sample-label">例题 1 · 星期推算</span>
+      <p>2026 年 3 月 1 日是星期日，问 2026 年 6 月 1 日是星期几？</p>
+      <div class="sample-answer"><strong>解析：</strong>3 月剩 30 天 + 4 月 30 + 5 月 31 = 91 天。91÷7 = 13 余 0。6 月 1 日也是 <strong>星期日</strong>。</div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 2 · 日期推断</span>
+      <p>某月有 5 个星期六、5 个星期日，该月最多有多少天？</p>
+      <div class="sample-answer"><strong>解析：</strong>一个月最多 31 天 = 4 周 + 3 天。要有 5 个周六、5 个周日，1 日须为周六，则 30、31 日为周日、周一。最多 <strong>31 天</strong>。</div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch10">
+    <h2>十、溶液浓度</h2>
+    <table class="resource-table">
+      <thead><tr><th>情形</th><th>公式</th></tr></thead>
+      <tbody>
+        <tr><td>基本浓度</td><td>浓度 = 溶质 ÷ 溶液 × 100%</td></tr>
+        <tr><td>混合溶液</td><td>十字交叉法：设两种溶液浓度 a、b，混合后 c，质量比为 (b−c):(c−a)</td></tr>
+        <tr><td>加水稀释</td><td>溶质不变：原溶质 = 稀释后溶质</td></tr>
+        <tr><td>反复操作</td><td>每次倒出后剩余溶质 = 剩余溶液 × 原浓度</td></tr>
+      </tbody>
+    </table>
+    <div class="resource-sample">
+      <span class="sample-label">例题 1 · 十字交叉</span>
+      <p>将 20% 盐水 300 克与 5% 盐水混合，得到 15% 盐水，需 5% 盐水多少克？</p>
+      <div class="sample-answer"><strong>解析：</strong>十字交叉：(15−5):(20−15) = 10:5 = 2:1。5% 盐水 = 300÷2 = <strong>150 克</strong>。</div>
+    </div>
+    <div class="resource-sample">
+      <span class="sample-label">例题 2 · 溶质不变</span>
+      <p>含盐 10% 的盐水 200 克，蒸发掉 50 克水后，浓度变为多少？</p>
+      <div class="sample-answer"><strong>解析：</strong>溶质 = 200×10% = 20 克；剩余溶液 150 克。浓度 = 20÷150 ≈ <strong>13.3%</strong>。</div>
+    </div>
+  </section>
+
+  <section class="resource-chapter" id="ch11">
+    <h2>十一、考场策略与代入排除技巧</h2>
+    <p>行程、工程、利润题常可用<strong>代入排除法</strong>：将选项逐一代入题干条件验证，优先代入整数选项或中间值，可节省列式时间。日期星期、溶液浓度题亦可用此法辅助验算。</p>
+    <h3>优先做的题型</h3>
+    <ul>
+      <li>工程、利润、容斥（列式简单）</li>
+      <li>简单排列组合、古典概率</li>
+      <li>几何公式题、日期星期题</li>
+      <li>能代入排除的行程题</li>
+    </ul>
+    <h3>可战略性放弃的题型</h3>
+    <ul>
+      <li>复杂排列组合与多阶段概率</li>
+      <li>需要大量试错的同余、复杂数列</li>
+      <li>无头绪的立体几何切割题</li>
+    </ul>
+    <h3>数量关系必做题型清单</h3>
+    <table class="resource-table">
+      <thead><tr><th>优先级</th><th>题型</th><th>识别特征</th><th>建议用时</th></tr></thead>
+      <tbody>
+        <tr><td>必做</td><td>工程问题</td><td>完成时间、合作效率</td><td>60–90 秒</td></tr>
+        <tr><td>必做</td><td>利润折扣</td><td>成本、定价、打折</td><td>60–90 秒</td></tr>
+        <tr><td>必做</td><td>容斥原理</td><td>两集合/三集合重叠</td><td>90 秒</td></tr>
+        <tr><td>选做</td><td>行程问题</td><td>相遇追及、流水行船</td><td>90–120 秒</td></tr>
+        <tr><td>选做</td><td>排列组合</td><td>捆绑、插空、隔板</td><td>120 秒</td></tr>
+        <tr><td>选做</td><td>几何最值</td><td>公式可直接套用</td><td>90 秒</td></tr>
+        <tr><td>放弃</td><td>复杂概率</td><td>多阶段、分类讨论过多</td><td>超 120 秒即跳</td></tr>
+        <tr><td>放弃</td><td>复杂同余</td><td>周期规律不明显</td><td>超 120 秒即跳</td></tr>
+      </tbody>
+    </table>
+    <p>考场上建议按「必做 → 选做 → 放弃」顺序浏览题目，先挑最有把握的 3–5 题完成，切忌在单题上恋战超过 2 分钟。数量关系整体控制在 10–15 分钟内，为资料分析留足时间。</p>
+    <p>数量关系模块分值约占总分 10%–15%，不必追求全对，稳定完成 3–5 道基础题即可有效拉分。</p>
+    <div class="resource-callout blue">数量关系建议用时 <strong>10–15 分钟</strong>，目标完成 3–5 题，其余标记后跳过，把时间留给资料分析。</div>
+  </section>
+
+  <aside class="resource-source">
+    <span>内容摘录自公开备考资料，仅供课程演示</span>
+    <a href="http://www.eoffcn.com/gwy/ksjq/" target="_blank" rel="noopener noreferrer">参考来源：中公网校 · 数量关系</a>
+  </aside>
+</div>

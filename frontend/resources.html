@@ -10,8 +10,8 @@
   <div class="app">
     <aside class="sidebar">
       <a class="logo" href="dashboard.html" aria-label="返回总览">
-        <span class="logo-mark">公</span>
-        <span class="logo-text"><strong>公考学习系统</strong><span>学习跟踪原型</span></span>
+        <span class="logo-mark"><img src="assets/brand-mark.svg" width="36" height="36" alt="" /></span>
+        <span class="logo-text"><strong>备考跟踪</strong><span>学习进度管理</span></span>
       </a>
       <nav class="nav"><a class="" href="dashboard.html"><span class="nav-icon">⌂</span><span>首页</span></a>
 <a class="active" href="resources.html"><span class="nav-icon">▣</span><span>考试与资源</span></a>
@@ -19,12 +19,12 @@
 <a class="" href="recommendations.html"><span class="nav-icon">✦</span><span>学习推荐</span></a>
 <a class="" href="statistics.html"><span class="nav-icon">◫</span><span>学习统计</span></a>
 <a class="" href="qa.html"><span class="nav-icon">?</span><span>题库与答疑</span></a></nav>
-      <div class="sidebar-footer">蓝白风格 · 简洁实用 · 前端静态原型<br/>适合小学期课程设计展示</div>
+      <div class="sidebar-footer">备考跟踪 · Flask + MySQL<br/>课程设计演示系统</div>
     </aside>
     <main class="main">
       <header class="topbar">
         <div>
-          <div class="breadcrumb">公务员考试学习跟踪系统 / 方案 A</div>
+          <div class="breadcrumb">备考跟踪 / 学习工作台</div>
           <h1 class="page-title"><span class="title-badge">2</span>考试信息与资源管理</h1>
           <div class="muted" style="margin-top:8px; font-size:14px;">整理考试大纲、历年试题、备考资料与政策公告，支持搜索筛选和收藏。</div>
         </div>
@@ -36,9 +36,18 @@
       </header>
       
 <section class="card">
-  <div class="tabs"><button class="tab">考试大纲</button><button class="tab">历年试题</button><button class="tab active">备考资料</button><button class="tab">政策公告</button></div>
-  <div class="filter-row"><label class="search" style="width:360px;"><span>⌕</span><input placeholder="搜索资料名称、关键词" /></label><span class="filter-label">资料类型</span><span class="tag">全部</span><span class="tag gray">课程</span><span class="tag gray">讲义</span><span class="tag gray">题库</span><span class="tag gray">电子书</span><button class="btn ghost small">最新发布</button></div>
-  <div class="filter-row"><span class="filter-label">科目</span><span class="tag">全部</span><span class="tag gray">行测</span><span class="tag gray">申论</span><span class="tag gray">面试</span><span class="tag gray">公基</span><span class="filter-label">难度</span><span class="tag">全部</span><span class="tag gray">基础</span><span class="tag gray">提高</span><span class="tag gray">冲刺</span></div>
+  <div class="tabs" id="resource-tabs">
+    <button type="button" class="tab" data-tab="考试大纲">考试大纲</button>
+    <button type="button" class="tab" data-tab="历年试题">历年试题</button>
+    <button type="button" class="tab active" data-tab="备考资料">备考资料</button>
+    <button type="button" class="tab" data-tab="政策公告">政策公告</button>
+  </div>
+  <div class="filter-row">
+    <label class="search" style="width:360px;"><span>⌕</span><input id="resource-search" placeholder="搜索资料名称、关键词" /></label>
+    <span class="filter-label">科目</span>
+    <span id="resource-subject-tags" class="filter-tags"><span class="tag active" data-subject="">全部</span></span>
+    <span class="muted" id="resource-count" style="margin-left:auto;font-size:13px;"></span>
+  </div>
 </section>
 <section class="grid grid-3" id="resource-list" style="margin-top:18px;">
   <p class="muted">加载中...</p>
@@ -48,11 +57,11 @@
   <div class="card"><div class="card-title"><h2>资源管理入口</h2><small>管理员视图</small></div><div class="grid grid-3"><button class="btn primary">上传资源</button><button class="btn ghost">新建分类</button><button class="btn ghost">批量管理</button></div><p class="muted">该区域可作为课程项目中的资源增删改查入口。</p></div>
 </section>
 
-      <p class="footer-note">本页面为静态前端原型，文案与数据均为演示数据，可后续接入后端 API。</p>
+      <p class="footer-note">资源数据来自后端 API，切换标签可筛选大纲、真题、资料与政策公告。</p>
     </main>
   </div>
-  <script src="assets/app.js"></script>
   <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
