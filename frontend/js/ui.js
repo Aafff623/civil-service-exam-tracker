@@ -122,6 +122,18 @@ function notifyModuleReady() {
     } catch (_) { /* ignore */ }
 }
 
+function initSurfaceSpotlight() {
+    document.querySelectorAll('.surface-spotlight').forEach(el => {
+        if (el.dataset.spotlightBound) return;
+        el.dataset.spotlightBound = '1';
+        el.addEventListener('mousemove', e => {
+            const rect = el.getBoundingClientRect();
+            el.style.setProperty('--spot-x', `${e.clientX - rect.left}px`);
+            el.style.setProperty('--spot-y', `${e.clientY - rect.top}px`);
+        });
+    });
+}
+
 function navigateToModule(href) {
     const target = (href || '').split('?')[0].toLowerCase();
     const current = (location.pathname.split('/').pop() || '').toLowerCase();

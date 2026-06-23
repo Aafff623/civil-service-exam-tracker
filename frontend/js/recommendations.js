@@ -86,7 +86,7 @@ function renderRecommendations(items) {
         const btnClass = item.type === 'resource' ? 'ghost' : 'primary';
         const btnText = item.type === 'resource' ? '查看资料' : '去学习';
         return `
-            <article class="reco-card">
+            <article class="reco-card surface-spotlight">
                 <div class="reco-thumb ${thumbClass}">${escapeHtml(item.subject_name)}<br/>${escapeHtml(item.subtitle || '')}</div>
                 <div class="reco-body">
                     <h3>${escapeHtml(item.title)}</h3>
@@ -97,6 +97,7 @@ function renderRecommendations(items) {
             </article>
         `;
     }).join('');
+    initSurfaceSpotlight();
 }
 
 async function initRecommendations() {

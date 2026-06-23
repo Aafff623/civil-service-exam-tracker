@@ -1,0 +1,413 @@
+/* Aceternity-inspired surfaces — ported for vanilla CSS (exam tracker) */
+
+:root {
+  --shell-bg: #eef2f6;
+  --shell-border: rgba(15, 23, 42, 0.08);
+  --surface-elevated: #ffffff;
+  --surface-muted: #f8fafc;
+  --radius-shell: 16px;
+  --radius-control: 8px;
+  --radius-chip: 6px;
+  --beam-sky: rgba(3, 105, 161, 0.55);
+}
+
+body {
+  background: var(--shell-bg);
+}
+
+.app {
+  background: var(--shell-bg);
+}
+
+/* Shell: sidebar + inset main panel (Aceternity dashboard frame) */
+.sidebar {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  border-right: 1px solid var(--shell-border);
+  box-shadow: none;
+}
+
+.main {
+  margin: 10px 10px 10px 0;
+  padding: 20px 24px 36px;
+  border: 1px solid var(--shell-border);
+  border-radius: var(--radius-shell) 0 0 var(--radius-shell);
+  background: var(--surface-elevated);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 8px 24px rgba(15, 23, 42, 0.04);
+  min-height: calc(100vh - 20px);
+}
+
+.main-resource-detail {
+  margin-top: 10px;
+}
+
+.logo {
+  border-bottom-color: var(--shell-border);
+}
+
+.nav a {
+  position: relative;
+  height: 40px;
+  border-radius: var(--radius-control);
+  color: #475569;
+  font-size: 13px;
+  border: 1px solid transparent;
+}
+
+.nav a .nav-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: transparent;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.nav a:hover {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: var(--shell-border);
+  color: #0f172a;
+}
+
+.nav a.active {
+  color: #0c4a6e;
+  background: #fff;
+  border-color: var(--shell-border);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+.nav a.active::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #38bdf8, var(--color-accent));
+}
+
+.nav a.active .nav-icon {
+  background: rgba(3, 105, 161, 0.1);
+  color: var(--color-accent);
+}
+
+.sidebar-footer {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: var(--shell-border);
+}
+
+/* Cards — neutral surfaces, no rainbow washes */
+.card {
+  border-radius: var(--radius-shell);
+  border-color: var(--shell-border);
+  background: var(--surface-elevated);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  padding: 16px 18px;
+}
+
+.card.soft {
+  background: var(--surface-muted);
+  border-color: #e8edf3;
+}
+
+.card .card,
+.card .card.soft {
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.grid-4 > .card:nth-child(n),
+.grid-4 > .kpi:nth-child(n),
+.grid-5 > .kpi:nth-child(n) {
+  border-top: 1px solid var(--shell-border);
+  background: var(--surface-elevated);
+}
+
+/* KPI — stats strip, single accent family */
+.kpi {
+  min-height: 108px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--shell-border);
+  border-top: 1px solid var(--shell-border);
+  background: var(--surface-elevated);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.kpi::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.12);
+}
+
+.grid-4 > .kpi:nth-child(2)::before { background: #0d9488; box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12); }
+.grid-4 > .kpi:nth-child(3)::before { background: #4338ca; box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.12); }
+.grid-4 > .kpi:nth-child(4)::before { background: #b45309; box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.12); }
+
+.kpi-value {
+  font-size: 28px;
+}
+
+/* Spotlight card (Aceternity hover glow) */
+.surface-spotlight {
+  position: relative;
+  overflow: hidden;
+  --spot-x: 50%;
+  --spot-y: 50%;
+}
+
+.surface-spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  background: radial-gradient(
+    420px circle at var(--spot-x) var(--spot-y),
+    rgba(3, 105, 161, 0.09),
+    transparent 42%
+  );
+}
+
+.surface-spotlight::after {
+  content: '';
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 0;
+  height: 1px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  background: linear-gradient(90deg, transparent, var(--beam-sky), transparent);
+}
+
+.surface-spotlight:hover::before,
+.surface-spotlight:focus-within::before,
+.surface-spotlight:hover::after,
+.surface-spotlight:focus-within::after {
+  opacity: 1;
+}
+
+.surface-spotlight > * {
+  position: relative;
+  z-index: 1;
+}
+
+.resource-card {
+  border-radius: 14px;
+  min-height: 156px;
+  padding: 14px 16px;
+  gap: 12px;
+  border-color: var(--shell-border);
+  background: var(--surface-elevated);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.resource-card:hover {
+  transform: translateY(-1px);
+  border-color: #cbd5e1;
+  box-shadow:
+    0 4px 16px rgba(15, 23, 42, 0.06),
+    0 0 0 1px rgba(3, 105, 161, 0.06);
+}
+
+.reco-card {
+  border-radius: 14px;
+  border-color: var(--shell-border);
+  background: var(--surface-elevated);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reco-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+}
+
+/* Buttons — gradient CTA + beam underline */
+.btn {
+  border-radius: var(--radius-control);
+  font-size: 13px;
+}
+
+.btn.primary {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #075985;
+  background: linear-gradient(180deg, #0284c7 0%, var(--color-accent) 48%, #075985 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 1px 2px rgba(3, 105, 161, 0.28);
+}
+
+.btn.primary::after {
+  content: '';
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.9), transparent);
+  opacity: 0.85;
+}
+
+.btn.primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #0ea5e9 0%, #0284c7 50%, var(--color-accent-hover) 100%);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 6px 16px rgba(3, 105, 161, 0.22);
+}
+
+.btn.ghost {
+  border-color: var(--shell-border);
+  background: #fff;
+  color: #334155;
+}
+
+.btn.ghost:hover:not(:disabled) {
+  background: var(--surface-muted);
+  border-color: #cbd5e1;
+}
+
+/* Tabs — segmented control track */
+.tabs {
+  gap: 0;
+  padding: 3px;
+  border-radius: 10px;
+  border: 1px solid var(--shell-border);
+  background: var(--surface-muted);
+  width: fit-content;
+  max-width: 100%;
+}
+
+.tab {
+  border-radius: 7px;
+  padding: 8px 14px;
+  margin: 0;
+}
+
+.tab.active {
+  color: #0f172a;
+  background: #fff;
+  border-color: var(--shell-border);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+}
+
+/* Tags — chips not pills */
+.tag {
+  min-height: 22px;
+  padding: 2px 8px;
+  border-radius: var(--radius-chip);
+  font-size: 11px;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+}
+
+.tag.green { border-color: #a7f3d0; }
+.tag.orange { border-color: #fde68a; }
+.tag.red { border-color: #fecaca; }
+.tag.gray { border-color: #e2e8f0; }
+.tag.blue { border-color: #bfdbfe; }
+
+/* Task / list rows */
+.task-item,
+.list-item {
+  border-radius: 10px;
+  border-color: #e8edf3;
+  padding: 10px 12px;
+  background: #fff;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.task-item:hover,
+.list-item:hover {
+  background: var(--surface-muted);
+  border-color: #dbe3ec;
+}
+
+/* Countdown — restrained accent */
+.countdown-card {
+  background: var(--surface-elevated);
+  border-color: var(--shell-border);
+}
+
+.weak-panel,
+.plan-stat-card,
+.upcoming-day {
+  background: var(--surface-muted);
+  border-color: #e8edf3;
+}
+
+/* Topbar */
+.topbar {
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.page-title {
+  font-size: 22px;
+}
+
+/* Search */
+.search {
+  height: 38px;
+  border-radius: var(--radius-control);
+  border-color: var(--shell-border);
+  background: var(--surface-muted);
+}
+
+/* Progress bars — solid fills, no rainbow rotation */
+.progress > span {
+  background: var(--color-accent);
+}
+
+.progress.blue > span,
+.bar-list .bar-row:nth-child(3n+1) .progress:not(.orange):not(.red):not(.green) > span {
+  background: var(--color-accent);
+}
+
+.progress.teal > span,
+.bar-list .bar-row:nth-child(3n+2) .progress:not(.orange):not(.red):not(.green) > span {
+  background: #0d9488;
+}
+
+.progress.indigo > span,
+.bar-list .bar-row:nth-child(3n) .progress:not(.orange):not(.red):not(.green) > span {
+  background: #4338ca;
+}
+
+.batch-toolbar {
+  border-radius: 10px;
+  background: var(--surface-muted);
+  border-color: var(--shell-border);
+}
+
+.resource-detail-card {
+  border-color: var(--shell-border);
+  box-shadow: none;
+}
+
+@media (max-width: 860px) {
+  .main {
+    margin: 0;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    min-height: auto;
+  }
+
+  .tabs {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
