@@ -119,7 +119,11 @@ async function initRecommendations() {
 }
 
 function bootRecommendations() {
-    if (document.getElementById('reco-list')) initRecommendations();
+    if (!document.getElementById('reco-list')) {
+        notifyModuleReady();
+        return;
+    }
+    initRecommendations().finally(() => notifyModuleReady());
 }
 if (document.body.classList.contains('app-ready')) {
     bootRecommendations();

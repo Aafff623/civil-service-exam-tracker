@@ -380,7 +380,11 @@ async function initDashboard() {
 }
 
 function bootDashboard() {
-    if (document.getElementById('dashboard-tasks')) initDashboard();
+    if (!document.getElementById('dashboard-tasks')) {
+        notifyModuleReady();
+        return;
+    }
+    initDashboard().finally(() => notifyModuleReady());
 }
 if (document.body.classList.contains('app-ready')) {
     bootDashboard();

@@ -367,7 +367,11 @@ async function loadWeekSchedule() {
 }
 
 function bootPlan() {
-    if (document.getElementById('plan-generate-btn')) initPlan();
+    if (!document.getElementById('plan-generate-btn')) {
+        notifyModuleReady();
+        return;
+    }
+    initPlan().finally(() => notifyModuleReady());
 }
 if (document.body.classList.contains('app-ready')) {
     bootPlan();

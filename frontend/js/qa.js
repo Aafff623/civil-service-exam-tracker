@@ -413,7 +413,11 @@ function bindChat() {
 }
 
 function bootQA() {
-    if (document.getElementById('question-detail')) initQA();
+    if (!document.getElementById('question-detail')) {
+        notifyModuleReady();
+        return;
+    }
+    initQA().finally(() => notifyModuleReady());
 }
 if (document.body.classList.contains('app-ready')) {
     bootQA();

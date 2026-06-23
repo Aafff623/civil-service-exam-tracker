@@ -1500,9 +1500,15 @@ body.modal-open { overflow: hidden; }
   justify-content: center;
   background: rgba(245, 248, 255, 0.92);
   backdrop-filter: blur(6px);
-  transition: opacity .28s ease;
+  opacity: 0;
+  transition: opacity .32s ease;
+  pointer-events: none;
 }
-.app-veil.is-hidden { opacity: 0; }
+.app-veil.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.app-veil.is-hidden { opacity: 0; pointer-events: none; }
 .app-veil-inner {
   display: flex;
   align-items: center;
@@ -1516,25 +1522,47 @@ body.modal-open { overflow: hidden; }
   font-size: 14px;
   font-weight: 600;
 }
-body.app-pending .app { visibility: hidden; }
+body.app-pending .main {
+  opacity: 0;
+  visibility: hidden;
+}
 .main {
-  transition: opacity .14s ease, transform .14s ease;
+  transition: opacity .28s ease, transform .28s ease, visibility .28s ease;
 }
 body.page-leaving .main {
   opacity: 0;
-  transform: translateY(-5px);
+  transform: translateY(-8px);
   pointer-events: none;
 }
 body.app-ready .main-enter {
-  animation: mainEnter .22s cubic-bezier(.22, 1, .36, 1) both;
+  visibility: visible;
+  animation: mainEnter .36s cubic-bezier(.22, 1, .36, 1) both;
 }
 @keyframes mainEnter {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.content-leaving {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .18s ease, transform .18s ease;
+}
+.content-entering {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.content-entered {
+  animation: contentEnter .28s cubic-bezier(.22, 1, .36, 1) both;
+}
+@keyframes contentEnter {
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 @media (prefers-reduced-motion: reduce) {
+  .app-veil { transition: none; }
   .main, body.page-leaving .main { transition: none; }
   body.app-ready .main-enter { animation: none; }
+  .content-leaving, .content-entered { transition: none; animation: none; }
   .heatmap-cell { transition: none; }
   button.task-check.is-popping { animation: none; }
   .task-item { transition: none !important; }
