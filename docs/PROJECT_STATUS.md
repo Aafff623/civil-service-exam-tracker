@@ -20,20 +20,20 @@
 - [x] 搭建 Flask + 前端项目骨架（含健康检查 API）
 - [x] 配置 `.gitignore`
 - [x] 设计数据库表结构并写 `backend/init_db.sql`
+- [x] 用户与账户模块（注册、登录、登出、个人信息）
 
 ## 进行中
 
-- [ ] 用户与账户模块
+- [ ] 考试资源管理模块
 
 ## 下一步
 
-1. 实现用户与账户模块（注册、登录、登出、个人信息）
-2. 考试资源管理模块
-3. 题库与练习模块
-4. 智能学习计划生成模块
-5. 学习进度跟踪模块
-6. 个性化推荐模块
-7. 题目解析与答疑模块
+1. 实现考试资源管理模块（资源列表、分类、详情）
+2. 题库与练习模块
+3. 智能学习计划生成模块
+4. 学习进度跟踪模块
+5. 个性化推荐模块
+6. 题目解析与答疑模块
 
 ## 关键决策
 
@@ -43,6 +43,8 @@
 | Triage labels | 默认 | `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix` |
 | Domain docs | Single-context | 根目录 `CONTEXT.md` + `docs/adr/` |
 | Git remote | GitHub private | https://github.com/Aafff623/civil-service-exam-tracker |
+| Backend port | 5001 | 避免与本地其他服务冲突 |
+| Frontend server | 8080 | 本地 HTTP 服务器供前端演示 |
 
 ## 备注
 
