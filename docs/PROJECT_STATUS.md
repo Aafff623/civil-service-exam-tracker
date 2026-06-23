@@ -14,18 +14,20 @@
 - [x] 安装项目级 skills：ui-ux-pro-max、ppt-master、matt-pocock
 - [x] 运行 `/setup-matt-pocock-skills`
 - [x] 创建 `CLAUDE.md`、`docs/agents/issue-tracker.md`、`docs/agents/triage-labels.md`、`docs/agents/domain.md`
+- [x] 编写 `CONTEXT.md`
 - [x] 初始化 Git 仓库
 - [x] 创建 GitHub private 仓库并推送初始提交
+- [x] 搭建 Flask + 前端项目骨架（含健康检查 API）
+- [x] 配置 `.gitignore`
 
 ## 进行中
 
-- [ ] 搭建 Flask + 前端项目骨架
+- [ ] 设计数据库表结构
 
 ## 下一步
 
-1. 搭建 Flask + 前端项目骨架
-2. 设计数据库表结构并写 `init_db.sql`
-3. 按模块逐个实现功能（用户 → 资源 → 题库 → 计划 → 进度 → 推荐 → 答疑）
+1. 设计数据库表结构并写 `backend/init_db.sql`
+2. 按模块逐个实现功能（用户 → 资源 → 题库 → 计划 → 进度 → 推荐 → 答疑）
 
 ## 关键决策
 
