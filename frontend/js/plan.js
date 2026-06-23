@@ -1,13 +1,17 @@
 const WEEKDAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
+function formatLocalDate(d) {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
 function defaultStartDate() {
-    return new Date().toISOString().slice(0, 10);
+    return formatLocalDate(new Date());
 }
 
 function defaultExamDate() {
     const d = new Date();
     d.setMonth(d.getMonth() + 6);
-    return d.toISOString().slice(0, 10);
+    return formatLocalDate(d);
 }
 
 function getGoalFromForm() {
@@ -160,8 +164,8 @@ function weekRange() {
     sunday.setDate(monday.getDate() + 6);
 
     return {
-        from: monday.toISOString().slice(0, 10),
-        to: sunday.toISOString().slice(0, 10)
+        from: formatLocalDate(monday),
+        to: formatLocalDate(sunday)
     };
 }
 

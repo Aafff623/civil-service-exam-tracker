@@ -80,9 +80,9 @@
 | `answers` | `/api/answers` | 是 | `POST /`, `GET /history` | ✅ |
 | `plans` | `/api/plans` | 是 | `GET/POST /goal`, `GET /`, `POST /generate`, `GET /items`, `PATCH /items/<id>`, `GET /subjects` | ✅ |
 | `progress` | `/api/progress` | 是 | `GET /` | ✅ |
-| `recommendations` | `/api/recommendations` | — | — | ❌ 待实现 |
+| `recommendations` | `/api/recommendations` | 是 | `GET /` | ✅ |
 | `goals` | `/api/goals` | — | — | ❌ 待实现 |
-| `comments` | `/api/comments` | — | — | ❌ 待实现 |
+| `comments` | `/api/comments` | 是 | `GET /`, `POST /` | ✅ |
 
 认证方式：Flask Session + Cookie，`login_required` 装饰器（`routes/auth.py`）。
 
@@ -91,12 +91,12 @@
 | 页面 | 路径 | API 接入 | 脚本引用 |
 |------|------|----------|----------|
 | 项目总览 | `index.html` | 无 | `assets/app.js` |
-| 首页/仪表盘 | `dashboard.html` | `/auth/me` | `api.js` + `app.js` |
+| 首页/仪表盘 | `dashboard.html` | `/auth/me` + 计划/进度/推荐 | `api.js` + `app.js` + `dashboard.js` |
 | 登录/注册 | `login.html`, `register.html` | `/auth/*` | `api.js` + `auth.js` |
 | 资源库 | `resources.html` | `/resources/`, `/subjects/` | `api.js` + `app.js` |
 | 题库练习 | `qa.html` | `/questions/`, `/answers/` | `api.js` + `app.js` + `qa.js` |
 | 学习计划 | `plan.html` | `/plans/*` | `api.js` + `app.js` + `plan.js` |
-| 学习推荐 | `recommendations.html` | 无（静态） | 仅 `assets/app.js` |
+| 学习推荐 | `recommendations.html` | `/recommendations/` | `api.js` + `app.js` + `recommendations.js` |
 | 学习统计 | `statistics.html` | `/progress/` | `api.js` + `app.js` + `statistics.js` |
 
 **已接入页面**需引用 `js/api.js` + `js/app.js`（`app.js` 含登录检查和退出按钮）。
@@ -133,18 +133,20 @@
 4. GPT 前端设计资产集成
 5. 智能学习计划生成
 6. 学习进度跟踪与统计
+7. 个性化推荐
+8. Dashboard 接入 + 答疑留言 API
 
 ### 进行中 / 待办（按优先级）
 
-1. **个性化推荐** — `routes/recommendations.py` + `recommendations.html` 接入
-4. **题目答疑** — `comments` API；AI 答疑目前为模拟
+1. **集中 Review** — 用户主导排 bug
+2. **可选优化** — AI 答疑 LLM、考试时间线、SVG 图标
 
 ### 已知技术债
 
-- `plan.html` / `recommendations.html` / `statistics.html` 未挂 `app.js`，无登录守卫
-- `docs/ROADMAP.md` 勾选状态滞后，以 `PROJECT_STATUS.md` 为准
+- AI 答疑为规则演示；考试时间线仍为静态
+- `docs/ROADMAP.md` 勾选状态滞后
 - 种子题仅 4 道；emoji 图标未替换 SVG
-- 无 `docs/adr/` 记录；题库模块无 `.scratch/questions-module/` Issue 文件
+- 无 favicon（404 不影响功能）
 
 ## 接续开发检查清单
 
