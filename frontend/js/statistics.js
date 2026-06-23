@@ -168,12 +168,12 @@ async function initStatistics() {
     renderCalendar(cal.year, cal.month, cal.checked_dates);
 }
 
+let statisticsBooted = false;
+
 function bootStatistics() {
-    if (!document.getElementById('kpi-hours')) return;
+    if (statisticsBooted || !document.getElementById('kpi-hours')) return;
+    statisticsBooted = true;
     initStatistics();
 }
-if (document.body.classList.contains('app-ready')) {
-    bootStatistics();
-} else {
-    window.addEventListener('app:ready', bootStatistics, { once: true });
-}
+window.addEventListener('app:ready', bootStatistics, { once: true });
+bootStatistics();

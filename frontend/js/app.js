@@ -115,9 +115,9 @@ async function initApp() {
     initMobileNav();
     scheduleModuleReadyFallback();
     // Defer so page modules (dashboard.js, plan.js, …) register listeners first
-    queueMicrotask(() => {
+    setTimeout(() => {
         window.dispatchEvent(new Event('app:ready'));
-    });
+    }, 0);
 
     const meResult = await getMe();
     if (!meResult.ok || !meResult.data.success) {

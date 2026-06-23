@@ -366,12 +366,12 @@ async function loadWeekSchedule() {
     });
 }
 
+let planBooted = false;
+
 function bootPlan() {
-    if (!document.getElementById('plan-generate-btn')) return;
+    if (planBooted || !document.getElementById('plan-generate-btn')) return;
+    planBooted = true;
     initPlan();
 }
-if (document.body.classList.contains('app-ready')) {
-    bootPlan();
-} else {
-    window.addEventListener('app:ready', bootPlan, { once: true });
-}
+window.addEventListener('app:ready', bootPlan, { once: true });
+bootPlan();

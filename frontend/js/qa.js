@@ -412,12 +412,12 @@ function bindChat() {
     if (input) input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
 }
 
+let qaBooted = false;
+
 function bootQA() {
-    if (!document.getElementById('question-detail')) return;
+    if (qaBooted || !document.getElementById('question-detail')) return;
+    qaBooted = true;
     initQA();
 }
-if (document.body.classList.contains('app-ready')) {
-    bootQA();
-} else {
-    window.addEventListener('app:ready', bootQA, { once: true });
-}
+window.addEventListener('app:ready', bootQA, { once: true });
+bootQA();

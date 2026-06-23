@@ -119,12 +119,12 @@ async function initRecommendations() {
     renderRecommendations(data.items || []);
 }
 
+let recommendationsBooted = false;
+
 function bootRecommendations() {
-    if (!document.getElementById('reco-list')) return;
+    if (recommendationsBooted || !document.getElementById('reco-list')) return;
+    recommendationsBooted = true;
     initRecommendations();
 }
-if (document.body.classList.contains('app-ready')) {
-    bootRecommendations();
-} else {
-    window.addEventListener('app:ready', bootRecommendations, { once: true });
-}
+window.addEventListener('app:ready', bootRecommendations, { once: true });
+bootRecommendations();

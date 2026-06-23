@@ -434,6 +434,4 @@ function bootDashboard() {
 }
 
 window.addEventListener('app:ready', bootDashboard, { once: true });
-if (document.body.classList.contains('app-ready')) {
-    bootDashboard();
-}
+bootDashboard();
