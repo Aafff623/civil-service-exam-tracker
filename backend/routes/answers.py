@@ -1,4 +1,5 @@
 import json
+from datetime import date
 from flask import Blueprint, jsonify, request, session
 from routes.auth import login_required
 
@@ -68,6 +69,22 @@ def submit_answer():
             SET accuracy = ?, total_answers = ?, updated_at = CURRENT_TIMESTAMP
             WHERE id = ?
         """, (new_accuracy, total, weak['id']))
+
+    today = date.today().isoformat()
+    cursor.execute("""
+        SELECT id FROM progress WHERE user_id = ? AND record_date = ?
+    """, (user_id, today))
+    progress_row = cursor.fetchone()
+    if progress_row is None:
+        cursor.execute("""
+            INSERT INTO progress (user_id, record_date, answer_count)
+            VALUES (?, ?, 1)
+        """, (user_id, today))
+    else:
+        cursor.execute("""
+            UPDATE progress SET answer_count = answer_count + 1 WHERE id = ?
+        """, (progress_row['id'],))
+
     conn.commit()
     conn.close()
 

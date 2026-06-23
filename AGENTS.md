@@ -79,7 +79,7 @@
 | `questions` | `/api/questions` | 是 | `GET /`, `GET /<id>` | ✅ |
 | `answers` | `/api/answers` | 是 | `POST /`, `GET /history` | ✅ |
 | `plans` | `/api/plans` | 是 | `GET/POST /goal`, `GET /`, `POST /generate`, `GET /items`, `PATCH /items/<id>`, `GET /subjects` | ✅ |
-| `progress` | `/api/progress` | — | — | ❌ 待实现 |
+| `progress` | `/api/progress` | 是 | `GET /` | ✅ |
 | `recommendations` | `/api/recommendations` | — | — | ❌ 待实现 |
 | `goals` | `/api/goals` | — | — | ❌ 待实现 |
 | `comments` | `/api/comments` | — | — | ❌ 待实现 |
@@ -97,7 +97,7 @@
 | 题库练习 | `qa.html` | `/questions/`, `/answers/` | `api.js` + `app.js` + `qa.js` |
 | 学习计划 | `plan.html` | `/plans/*` | `api.js` + `app.js` + `plan.js` |
 | 学习推荐 | `recommendations.html` | 无（静态） | 仅 `assets/app.js` |
-| 学习统计 | `statistics.html` | 无（静态） | 仅 `assets/app.js` |
+| 学习统计 | `statistics.html` | `/progress/` | `api.js` + `app.js` + `statistics.js` |
 
 **已接入页面**需引用 `js/api.js` + `js/app.js`（`app.js` 含登录检查和退出按钮）。
 
@@ -132,11 +132,11 @@
 3. 题库与练习（题目列表、答题、历史、弱项统计）
 4. GPT 前端设计资产集成
 5. 智能学习计划生成
+6. 学习进度跟踪与统计
 
 ### 进行中 / 待办（按优先级）
 
-1. **学习进度统计** — `routes/progress.py` + `statistics.html` 接入
-3. **个性化推荐** — `routes/recommendations.py` + `recommendations.html` 接入
+1. **个性化推荐** — `routes/recommendations.py` + `recommendations.html` 接入
 4. **题目答疑** — `comments` API；AI 答疑目前为模拟
 
 ### 已知技术债

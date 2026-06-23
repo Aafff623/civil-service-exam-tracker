@@ -5,68 +5,62 @@
 ## 最近一次更新
 
 - **时间**：2026-06-23
-- **会话动作**：实现智能学习计划生成模块（后端 API + plan.html 接入）
+- **会话动作**：实现学习进度跟踪模块（后端 API + statistics.html 接入）
 - **执行者**：Grok Agent
 
 ## 当前上下文
 
-- 用户与账户、考试资源、题库与练习、学习计划模块均已完成。
-- `plan.html` 已接入后端，支持生成计划、查看本周安排、标记任务完成。
-- 下一步优先：学习进度统计（`statistics.html`）。
+- 用户与账户、考试资源、题库与练习、学习计划、学习进度统计模块均已完成。
+- `statistics.html` 已接入后端，展示 KPI、学习时长趋势、科目完成度、正确率趋势、打卡日历。
+- 下一步优先：个性化推荐（`recommendations.html`）。
 
 ## 已完成（本次会话）
 
-### 后端学习计划 API
+### 后端进度统计 API
 
-- `backend/routes/plans.py`：
-  - `GET/POST /api/plans/goal` — 获取/保存学习目标
-  - `GET /api/plans/` — 获取当前计划摘要（阶段、任务数）
-  - `POST /api/plans/generate` — 根据目标生成计划（覆盖旧计划）
-  - `GET /api/plans/items` — 查询计划项（支持 `date` / `from`+`to`）
-  - `PATCH /api/plans/items/<id>` — 标记完成/取消，同步 `progress` 表
-  - `GET /api/plans/subjects` — 科目权重/难易度表
-- 已在 `app.py` 注册 `plans` blueprint
+- `backend/routes/progress.py`：
+  - `GET /api/progress/` — 汇总统计（支持 `days`、`year`、`month` 参数）
+  - 返回：overview KPI、每日学习时长、科目完成度、正确率趋势、打卡日历
+- `backend/routes/answers.py`：答题时同步 `progress.answer_count`
+- 已在 `app.py` 注册 `progress` blueprint
 
-### 前端学习计划页
+### 前端统计页
 
-- `frontend/js/api.js`：新增 plan 相关 API 方法
-- `frontend/js/plan.js`（新建）：表单、生成计划、结果预览、本周安排、任务完成切换
-- `frontend/plan.html`：接入 `api.js` + `app.js` + `plan.js`，添加登录守卫
-- `frontend/assets/styles.css`：补充 `.hidden` 工具类
+- `frontend/js/api.js`：新增 `getProgress()`
+- `frontend/js/statistics.js`（新建）：KPI、SVG 趋势图、科目进度条、打卡日历
+- `frontend/statistics.html`：接入 `api.js` + `app.js` + `statistics.js`，添加登录守卫
 
 ### 验证结果
 
-- 60 天计划生成 305 个任务项 ✓
-- 科目表返回 6 个叶子科目（含申论）✓
-- 标记任务完成写入 `progress` 表 ✓
+- `GET /api/progress/` 返回 overview + 7 天趋势 ✓
+- 科目完成度来自 `plan_items` ✓
+- 打卡日期来自 `progress` + `answers` ✓
 
 ## 待办事项（按优先级）
 
-1. **学习进度统计** — `routes/progress.py` + `statistics.html`
-2. **个性化推荐** — `routes/recommendations.py` + `recommendations.html`
-3. **Dashboard 今日任务** — 从 `/api/plans/items?date=today` 动态加载
-4. **题目答疑** — `comments` API；AI 答疑仍为模拟
+1. **个性化推荐** — `routes/recommendations.py` + `recommendations.html`
+2. **Dashboard 今日任务** — 从 `/api/plans/items?date=today` 动态加载
+3. **题目答疑** — `comments` API；AI 答疑仍为模拟
 
 ## 已知问题 / 注意事项
 
-- `recommendations.html`、`statistics.html` 仍为静态，未挂登录守卫
-- 重新生成计划会删除旧计划及全部任务项
-- 雷达图仍为静态展示，未接入弱项实时数据
+- `recommendations.html` 仍为静态，未挂登录守卫
+- 模考平均分已改为「答题总数」（无模考数据表）
+- 计划完成率在大计划下可能显示为小数（如 0.3%）
 
 ## 下一步动作
 
 由下一个 Agent 继续：
-1. 实现 `/api/progress` 统计 API
-2. 接入 `statistics.html` 展示学习进度与正确率
+1. 实现 `/api/recommendations` 推荐 API（基于 `weak_points` 规则）
+2. 接入 `recommendations.html`
 
 ## 运行方式
 
-1. `cd backend && python init_db.py`（可选，重置数据库）
-2. `cd backend && python app.py`（端口 5001）
-3. `cd frontend && python -m http.server 8080`
-4. 访问 http://localhost:8080/plan.html
+1. `cd backend && python app.py`（端口 5001）
+2. `cd frontend && python -m http.server 8080`
+3. 访问 http://localhost:8080/statistics.html
 
 ## 提交记录
 
-- `feat(questions): implement question bank API and practice page`
-- 学习计划模块（待提交）：`feat(plans): implement study plan generation and plan page`
+- `feat(plans): implement study plan generation and plan page`
+- 进度统计模块（待提交）：`feat(progress): implement learning statistics API and statistics page`
