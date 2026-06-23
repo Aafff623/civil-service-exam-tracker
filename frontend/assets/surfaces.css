@@ -118,11 +118,47 @@ body {
   box-shadow: none;
 }
 
-.grid-4 > .card:nth-child(n),
-.grid-4 > .kpi:nth-child(n),
-.grid-5 > .kpi:nth-child(n) {
+.grid-4 > .card:nth-child(n) {
   border-top: 1px solid var(--shell-border);
   background: var(--surface-elevated);
+}
+
+/* KPI strip — unified stats band (stats-sections/2) */
+.kpi-strip {
+  position: relative;
+  overflow: hidden;
+  gap: 0;
+  border: 1px solid var(--shell-border);
+  border-radius: var(--radius-shell);
+  background: var(--surface-elevated);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.kpi-strip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.32;
+  background-image:
+    linear-gradient(to right, rgba(15, 23, 42, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.045) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: radial-gradient(ellipse 85% 70% at 50% 0%, #000 20%, transparent 72%);
+}
+
+.kpi-strip > .kpi {
+  position: relative;
+  z-index: 1;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.kpi-strip.grid-4 > .kpi:not(:last-child),
+.kpi-strip.grid-5 > .kpi:not(:last-child) {
+  border-right: 1px solid var(--shell-border);
 }
 
 /* KPI — stats strip, single accent family */
@@ -147,9 +183,13 @@ body {
   box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.12);
 }
 
+.kpi-strip > .kpi:nth-child(2)::before,
 .grid-4 > .kpi:nth-child(2)::before { background: #0d9488; box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12); }
+.kpi-strip > .kpi:nth-child(3)::before,
 .grid-4 > .kpi:nth-child(3)::before { background: #4338ca; box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.12); }
+.kpi-strip > .kpi:nth-child(4)::before,
 .grid-4 > .kpi:nth-child(4)::before { background: #b45309; box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.12); }
+.kpi-strip.grid-5 > .kpi:nth-child(5)::before { background: #be185d; box-shadow: 0 0 0 3px rgba(190, 24, 93, 0.12); }
 
 .kpi-value {
   font-size: 28px;
@@ -349,9 +389,21 @@ body {
 
 /* Topbar */
 .topbar {
+  position: relative;
   margin-bottom: 18px;
   padding-bottom: 14px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid #e8edf3;
+}
+
+.topbar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent 5%, rgba(3, 105, 161, 0.22) 50%, transparent 95%);
 }
 
 .page-title {
@@ -397,6 +449,22 @@ body {
   box-shadow: none;
 }
 
+/* Form focus rings */
+.input:focus-visible,
+.select:focus-visible,
+.textarea:focus-visible,
+.search:focus-visible {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.14);
+  outline: none;
+}
+
+a.card.module-link.surface-spotlight {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
 @media (max-width: 860px) {
   .main {
     margin: 0;
@@ -409,5 +477,16 @@ body {
   .tabs {
     width: 100%;
     flex-wrap: wrap;
+  }
+
+  .kpi-strip.grid-4 > .kpi,
+  .kpi-strip.grid-5 > .kpi {
+    border-right: none;
+    border-bottom: 1px solid var(--shell-border);
+  }
+
+  .kpi-strip.grid-4 > .kpi:last-child,
+  .kpi-strip.grid-5 > .kpi:last-child {
+    border-bottom: none;
   }
 }
