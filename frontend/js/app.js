@@ -135,8 +135,11 @@ async function initApp() {
     currentUser = user;
     syncSidebarMeta(user);
 
+    const now = new Date();
+    const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    const todayLabel = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日 ${weekdays[now.getDay()]}`;
     document.querySelectorAll('[data-today]').forEach(el => {
-        el.textContent = new Date().toLocaleDateString('zh-CN');
+        el.textContent = todayLabel;
     });
 
     const logoutBtn = document.getElementById('logout-btn');

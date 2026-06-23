@@ -131,9 +131,14 @@
                     <strong class="topbar-user-name" data-topbar-username>—</strong>
                     <small class="topbar-user-role" data-topbar-role>学习者</small>
                 </span>`;
-            const anchor = actions.querySelector('.topbar-welcome') || logout;
-            if (anchor) actions.insertBefore(chip, anchor);
-            else actions.appendChild(chip);
+            const profileMain = actions.querySelector('.topbar-profile-main');
+            if (profileMain) {
+                profileMain.insertBefore(chip, profileMain.firstChild);
+            } else {
+                const anchor = actions.querySelector('.topbar-welcome') || logout;
+                if (anchor) actions.insertBefore(chip, anchor);
+                else actions.appendChild(chip);
+            }
         });
     }
 
