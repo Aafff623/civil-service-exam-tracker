@@ -6,8 +6,9 @@
   --surface-elevated: #ffffff;
   --surface-muted: #f8fafc;
   --radius-shell: 16px;
-  --radius-control: 8px;
-  --radius-chip: 6px;
+  --radius-button: 8px;
+  --radius-control: 6px;
+  --radius-chip: 4px;
   --beam-sky: rgba(3, 105, 161, 0.55);
 }
 
@@ -274,8 +275,12 @@ body {
 
 /* Buttons — gradient CTA + beam underline */
 .btn {
-  border-radius: var(--radius-control);
+  border-radius: var(--radius-button);
   font-size: 13px;
+}
+
+.btn.small {
+  border-radius: var(--radius-control);
 }
 
 .btn.primary {

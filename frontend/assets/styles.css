@@ -26,6 +26,11 @@
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.08);
 
+  --radius-control: 6px;
+  --radius-button: 8px;
+  --radius-chip: 4px;
+  --shell-border: rgba(15, 23, 42, 0.08);
+
   --font-heading: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   --font-body: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
@@ -166,29 +171,30 @@ button { cursor: pointer; }
 }
 .logo-text strong { display: block; font-family: var(--font-heading); font-size: 15px; letter-spacing: .02em; }
 .logo-text span { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
-.nav { display: grid; gap: 6px; }
+.nav { display: grid; gap: 4px; }
 .nav a {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
-  height: 42px;
+  height: 40px;
   padding: 0 12px;
-  border-radius: 12px;
-  color: #53647f;
+  border-radius: var(--radius-control);
+  border: 1px solid transparent;
+  color: #475569;
   font-weight: var(--weight-medium);
-  font-size: 14px;
-  transition: background .16s ease, color .16s ease, transform .12s ease, box-shadow .16s ease;
+  font-size: 13px;
+  transition: background .16s ease, color .16s ease, border-color .16s ease, box-shadow .16s ease;
 }
-.nav a.active { font-weight: var(--weight-semibold); }
 .nav a .nav-icon {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   display: grid;
   place-items: center;
-  border-radius: 8px;
-  background: var(--color-muted-bg);
-  color: var(--color-secondary);
-  font-size: 13px;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: #64748b;
+  font-size: 12px;
 }
 .nav a .nav-icon .icon {
   width: 16px;
@@ -196,21 +202,40 @@ button { cursor: pointer; }
   display: block;
   fill: currentColor;
 }
-.nav a:hover { background: var(--panel-soft); color: var(--primary-600); }
-.nav a:active { transform: scale(0.98); }
-.nav a.active {
-  color: var(--color-on-primary);
-  background: var(--color-accent);
-  box-shadow: var(--shadow-sm);
+.nav a:hover {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: var(--shell-border);
+  color: #0f172a;
 }
-.nav a.active .nav-icon { background: rgba(255,255,255,.18); color: white; }
+.nav a:active { transform: scale(0.99); }
+.nav a.active {
+  color: #0c4a6e;
+  background: #fff;
+  border-color: var(--shell-border);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  font-weight: var(--weight-semibold);
+}
+.nav a.active::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #38bdf8, var(--color-accent));
+}
+.nav a.active .nav-icon {
+  background: rgba(3, 105, 161, 0.1);
+  color: var(--color-accent);
+}
 .sidebar-footer {
   position: absolute;
   left: 16px;
   right: 16px;
   bottom: 18px;
   padding: 12px;
-  border-radius: 10px;
+  border-radius: var(--radius-control);
   background: var(--panel-soft);
   border: 1px solid var(--line);
   color: var(--muted);
@@ -288,7 +313,7 @@ button { cursor: pointer; }
 .icon-btn {
   width: 42px;
   height: 42px;
-  border-radius: 14px;
+  border-radius: var(--radius-button);
   border: 1px solid var(--line);
   background: white;
   color: #53647f;
@@ -377,7 +402,7 @@ button { cursor: pointer; }
 .btn {
   height: 40px;
   padding: 0 16px;
-  border-radius: 12px;
+  border-radius: var(--radius-button);
   border: 1px solid transparent;
   display: inline-flex;
   align-items: center;
@@ -396,7 +421,7 @@ button { cursor: pointer; }
   background: var(--color-accent-hover);
 }
 .btn.ghost { border-color: var(--line); color: var(--primary-600); background: var(--panel-soft); }
-.btn.small { height: 32px; padding: 0 11px; border-radius: 10px; font-size: 12px; }
+.btn.small { height: 32px; padding: 0 11px; border-radius: var(--radius-control); font-size: 12px; }
 .btn {
   transition: transform .12s ease, box-shadow .12s ease, background .12s ease, opacity .12s ease;
 }
@@ -481,9 +506,10 @@ button.task-check.is-popping {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 24px;
-  padding: 3px 9px;
-  border-radius: 999px;
+  min-height: 22px;
+  padding: 2px 8px;
+  border-radius: var(--radius-chip);
+  border: 1px solid transparent;
   background: var(--color-muted-bg);
   color: var(--primary-600);
   font-size: 12px;
@@ -550,24 +576,36 @@ button.task-check.is-popping {
 }
 .countdown .num small { display:block; color: var(--muted); font-size: 11px; font-weight: var(--weight-medium); margin-top: 2px; }
 
-.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.tabs {
+  display: flex;
+  gap: 0;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  padding: 3px;
+  border-radius: var(--radius-button);
+  border: 1px solid var(--shell-border);
+  background: var(--color-background);
+  width: fit-content;
+  max-width: 100%;
+}
 .tab {
-  padding: 9px 12px;
-  border-radius: 12px;
+  padding: 8px 14px;
+  border-radius: var(--radius-control);
   color: var(--muted);
   font-weight: var(--weight-medium);
   font-size: 13px;
   background: transparent;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: background .15s ease, color .15s ease, border-color .15s ease;
+  margin: 0;
+  transition: background .15s ease, color .15s ease, border-color .15s ease, box-shadow .15s ease;
 }
-.tab:hover:not(.active) { background: var(--panel-soft); border-color: var(--line); color: var(--text); }
+.tab:hover:not(.active) { background: rgba(255, 255, 255, 0.6); color: var(--text); }
 .tab.active {
-  color: var(--primary-700);
-  background: var(--color-muted-bg);
-  border-color: var(--line);
-  box-shadow: inset 0 0 0 1px rgba(3, 105, 161, 0.08);
+  color: #0f172a;
+  background: #fff;
+  border-color: var(--shell-border);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
   font-weight: var(--weight-semibold);
 }
 .tag.active { color: var(--primary-700); background: var(--color-muted-bg); border: 1px solid var(--line); }
