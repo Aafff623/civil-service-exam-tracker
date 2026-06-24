@@ -6,6 +6,22 @@
 
 - **时间**：2026-06-24
 - **会话动作**：
+  - 重新明确需求：共需 **3 个独立 PPT**，分别对应 Week 1 / Week 2 / Week 3 阶段汇报
+  - 每个 PPT 只呈现到该 Week 为止已完成内容，未完成的在「后续计划」中说明
+  - 改为 **纯文字排版**，不嵌入系统截图 / 模块图
+  - 使用 `python-pptx` 直接生成原生可编辑 PPTX，避免兼容版中文渲染成方框的问题
+  - 生成文件：
+    - `docs/ppt/Week1_公务员考试学习跟踪系统_阶段汇报.pptx`（10 页）
+    - `docs/ppt/Week2_公务员考试学习跟踪系统_阶段汇报.pptx`（12 页）
+    - `docs/ppt/Week3_公务员考试学习跟踪系统_答辩.pptx`（14 页）
+  - 生成脚本：`.scratch/generate_weekly_ppts.py`
+  - 更新 `docs/PPT_PRODUCTION_PLAN.md`、`docs/PPT_CHECKLIST.md`
+- **执行者**：Claude Fable 5
+
+## 上一次更新
+
+- **时间**：2026-06-24
+- **会话动作**：
   - 新增 `docs/PPT_PRODUCTION_PLAN.md` 与 `docs/PPT_CHECKLIST.md`
   - 选定 `ppt-master` 模板：`academic_defense`
   - 初始化 ppt-master 项目：`civil_service_defense_ppt169_20260624`
