@@ -107,9 +107,10 @@
 
 | 输出物 | 路径 | 说明 |
 |--------|------|------|
-| PPT 源文件 | `assets/ppt/公务员考试学习跟踪系统答辩.pptx` | 原生可编辑形状版 |
-| 兼容版 PPT | `assets/ppt/公务员考试学习跟踪系统答辩_兼容版.pptx` | Office 兼容模式（PNG+SVG） |
-| PDF 版本 | `assets/ppt/公务员考试学习跟踪系统答辩.pdf` | 需从 PPT 另存为 PDF（待补充） |
+| PPT 源文件 | `docs/ppt/公务员考试学习跟踪系统答辩.pptx` | 原生可编辑形状版 |
+| 兼容版 PPT | `docs/ppt/公务员考试学习跟踪系统答辩_兼容版.pptx` | Office 兼容模式（PNG+SVG） |
+| PDF 版本 | `docs/ppt/公务员考试学习跟踪系统答辩.pdf` | 需从 PPT 另存为 PDF（待补充） |
+| 截图素材 | `docs/ppt/screenshots/*.png` | 系统运行截图 |
 | ppt-master 项目 | `C:\Users\Lenovo\.claude\skills\ppt-master\projects\civil_service_defense_ppt169_20260624` | 含 design_spec、SVG、讲稿 |
 | 制作清单 | `docs/PPT_CHECKLIST.md` | 本规划的配套 checklist |
 

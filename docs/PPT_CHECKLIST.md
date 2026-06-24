@@ -59,14 +59,14 @@
 | # | 检查项 | 状态 | 备注 |
 |---|--------|:----:|------|
 | 4.1 | 截图来源为实际运行系统 | ✅ | 已用 Playwright 截取 |
-| 4.2 | 登录页截图 | ✅ | `assets/ppt/screenshots/login.png` |
-| 4.3 | Dashboard 截图 | ✅ | `assets/ppt/screenshots/dashboard.png` |
-| 4.4 | 资源列表 / 资源详情截图 | ✅ | `assets/ppt/screenshots/resources.png` |
-| 4.5 | 题库练习页截图 | ✅ | `assets/ppt/screenshots/qa.png` 含单选/多选/判断筛选 |
-| 4.6 | 统计页截图 | ✅ | `assets/ppt/screenshots/statistics.png` |
-| 4.7 | 推荐页截图 | ✅ | `assets/ppt/screenshots/recommendations.png` |
-| 4.8 | 学习计划页截图 | ✅ | `assets/ppt/screenshots/plan.png` |
-| 4.9 | 个人资料页截图 | ✅ | `assets/ppt/screenshots/profile.png` |
+| 4.2 | 登录页截图 | ✅ | `docs/ppt/screenshots/login.png` |
+| 4.3 | Dashboard 截图 | ✅ | `docs/ppt/screenshots/dashboard.png` |
+| 4.4 | 资源列表 / 资源详情截图 | ✅ | `docs/ppt/screenshots/resources.png` |
+| 4.5 | 题库练习页截图 | ✅ | `docs/ppt/screenshots/qa.png` 含单选/多选/判断筛选 |
+| 4.6 | 统计页截图 | ✅ | `docs/ppt/screenshots/statistics.png` |
+| 4.7 | 推荐页截图 | ✅ | `docs/ppt/screenshots/recommendations.png` |
+| 4.8 | 学习计划页截图 | ✅ | `docs/ppt/screenshots/plan.png` |
+| 4.9 | 个人资料页截图 | ✅ | `docs/ppt/screenshots/profile.png` |
 | 4.10 | 图表清晰可读（架构图、ER 图、算法流程图） | ✅ | 当前为简化 SVG 图表，截图已嵌入对应页 |
 
 ---

@@ -12,13 +12,13 @@
   - 汇总 Week 1-3 调研报告为 `SOURCE_ALL.md` 并导入项目
   - 生成 `design_spec.md` 与 18 页 SVG 幻灯片
   - 完成 ppt-master 后处理，导出原生可编辑 PPTX
-  - 将 `公务员考试学习跟踪系统答辩.pptx` 复制到 `assets/ppt/`
+  - 将 `公务员考试学习跟踪系统答辩.pptx` 复制到 `docs/ppt/`
 - **执行者**：Claude Fable 5
 
 ## 补充（同次会话后续）
 
 - 截取 8 张系统运行截图（登录 / Dashboard / 资源 / 题库 / 统计 / 推荐 / 计划 / 个人资料）
-- 将截图嵌入 `assets/ppt/公务员考试学习跟踪系统答辩.pptx`
+- 将截图嵌入 `docs/ppt/公务员考试学习跟踪系统答辩.pptx`
 - PDF 导出因环境缺少 LibreOffice / PowerPoint COM 未自动完成，需手动另存为 PDF
 
 ## 上一次更新
