@@ -323,7 +323,7 @@ curl.exe -b cookies.txt http://localhost:5001/api/questions
 | [`AGENTS.md`](AGENTS.md) | Agent 协作与 API 路由地图 |
 | [`docs/PROJECT_STATUS.md`](docs/PROJECT_STATUS.md) | 项目状态与关键决策 |
 | [`docs/HANDOFF.md`](docs/HANDOFF.md) | 交接记录 |
-| [`docs/ROADMAP.md`](docs/ROADMAP.md) | 路线图 |
+| [`docs/三周功能完成清单.md`](docs/三周功能完成清单.md) | 三周功能完成清单 |
 | [`docs/PROJECT_GUIDE.md`](docs/PROJECT_GUIDE.md) | 项目指南 |
 | [`docs/ppt/`](docs/ppt/) | 阶段汇报与答辩 PPT |
 

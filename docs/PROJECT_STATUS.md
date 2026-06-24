@@ -28,6 +28,7 @@
 - [x] 代码 Review 通过：判分逻辑三题型 + 多选乱序运行时实测全对；11 路由全部参数化（无 SQLite 残留、无注入）；11 个前端页面均返回 200
 - [x] 删除死代码 `backend/routes/users.py`（从未注册的空壳蓝图，资料功能实由 `/api/auth/me` 提供）
 - [x] 精炼 `docs/` 目录：合并 3 个 PPT 过程文档为 `docs/archive/ppt-production.md`、归档过时 `frontend-design-review.md`、新增 `docs/README.md` 导航索引与 `docs/adr/README.md` 占位
+- [x] 替换三周规划文档：删除 `docs/ROADMAP.md`，新增 `docs/三周功能完成清单.md`，并同步全部入站引用
 
 ## 进行中
 
@@ -38,8 +39,7 @@
 1. Dashboard 考试时间线接入资源 API
 2. AI 答疑接入真实 LLM
 3. emoji 图标替换 SVG
-4. 同步更新 `docs/ROADMAP.md` 勾选状态
-5. 异常路径连接关闭：`register()` / `create_subject()` 的 `except` 分支补 try/finally（Review 标记，演示负载下无感，低优先）
+4. 异常路径连接关闭：`register()` / `create_subject()` 的 `except` 分支补 try/finally（Review 标记，演示负载下无感，低优先）
 
 ## 关键决策
 

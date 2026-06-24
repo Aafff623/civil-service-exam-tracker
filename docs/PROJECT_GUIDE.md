@@ -376,7 +376,7 @@ mysql -u root -p civil_service_exam < backup.sql
 | `docs/DEPLOY_FROM_ZIP.md` | 压缩包换机启动指南（非 git clone，含 .env / venv 等坑） |
 | `docs/PROJECT_STATUS.md` | 项目完成度跟踪 |
 | `docs/HANDOFF.md` | 会话交接上下文 |
-| `docs/ROADMAP.md` | 三周线性开发计划 |
+| `docs/三周功能完成清单.md` | 三周计划：各周主要任务、完成内容、阶段交付物 |
 | `docs/DEVELOPMENT_TIMELINE.md` | 实际开发进度与三周对应关系 |
 | `PRD-civil-service-exam-tracker.md` | 产品需求文档 |
 | `CONTEXT.md` | 领域词汇与业务规则 |

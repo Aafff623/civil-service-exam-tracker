@@ -17,7 +17,7 @@
 | 文档 | 什么时候看 |
 |------|-----------|
 | [PROJECT_STATUS.md](PROJECT_STATUS.md) | 完成度看板：已完成清单、进行中、可选优化、关键决策 |
-| [ROADMAP.md](ROADMAP.md) | 原始三周计划（Day 1–15 任务分解） |
+| [三周功能完成清单.md](三周功能完成清单.md) | 三周计划：各周主要任务、完成内容、阶段交付物 |
 | [DEVELOPMENT_TIMELINE.md](DEVELOPMENT_TIMELINE.md) | 三周实际开发进度，以及与计划的对应关系（含 PPT 关键数据） |
 
 ## 🤝 交接

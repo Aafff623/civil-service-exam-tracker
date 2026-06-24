@@ -2,7 +2,23 @@
 
 > **用途**：记录当前会话的上下文、已完成工作、待办事项和下一步动作，方便后续继续或交接给其他 agent。
 
-## 最近一次更新（docs 目录精炼整理）
+## 最近一次更新（三周规划文档替换）
+
+- **时间**：2026-06-24
+- **执行者**：Claude（kimi-for-coding）
+- **主题**：用新的「三周功能完成清单」替换原 `ROADMAP.md`，并维护相关引用
+
+### 本次完成
+
+1. **替换三周规划文档**：删除 `docs/ROADMAP.md`（英文、Day 1–15 勾选清单），新增 `docs/三周功能完成清单.md`（按 Week 1/2/3 列主要任务 / 完成内容 / 阶段交付物 + 总体完成表 + 推荐演示流程）
+2. **维护入站引用**：`README.md`、`.cursorrules`、`docs/README.md`、`docs/PROJECT_GUIDE.md`、`docs/DEVELOPMENT_TIMELINE.md`（Day 1 文档名 + 「初始计划」路径）、`docs/archive/ppt-production.md` 全部改指新文件名；过时描述（Day 1–15）一并修正
+3. **PROJECT_STATUS.md**：移除已失效的可选项「同步更新 ROADMAP 勾选状态」（新文档已全部标记完成）
+
+> 范围仅 `docs/` 与根目录引用文件；`docs/ppt/*.pptx` 与 `frontend/assets/auth.css` 的既有未提交改动仍未提交。
+
+---
+
+## 上一次更新（docs 目录精炼整理）
 
 - **时间**：2026-06-24
 - **执行者**：Claude（kimi-for-coding）
@@ -23,7 +39,7 @@
 docs/
 ├─ README.md              导航索引（总入口）
 ├─ PROJECT_GUIDE.md / DEPLOY_FROM_ZIP.md                    上手与部署
-├─ PROJECT_STATUS.md / ROADMAP.md / DEVELOPMENT_TIMELINE.md  进度与计划
+├─ PROJECT_STATUS.md / 三周功能完成清单.md / DEVELOPMENT_TIMELINE.md  进度与计划
 ├─ HANDOFF.md             交接日志
 ├─ banner.png             README 横幅
 ├─ adr/(README.md) · agents/(4 规范)                        协作规范
@@ -168,7 +184,7 @@ docs/
   - 补全 `.gitignore`
   - 新增 `docs/PROJECT_GUIDE.md` 详细项目使用指南
   - 新增 `docs/DEVELOPMENT_TIMELINE.md` 梳理三周开发进度
-  - 更新 `docs/ROADMAP.md` 全部任务标记为完成
+  - 更新 `docs/ROADMAP.md` 全部任务标记为完成（该文件后于 2026-06-24 替换为 `docs/三周功能完成清单.md`）
   - 新增 `docs/PPT_RESEARCH_PLAN.md`，为 Week 1/2/3 PPT 调研分配任务和资料来源（已合并入 `docs/archive/ppt-production.md`）
 - **执行者**：Claude Fable 5
 

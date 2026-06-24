@@ -97,7 +97,7 @@
 
 ## 五、调研方法（素材如何收集）
 
-阶段 PPT 文案由 3 个调研 agent 并行产出（Week 1/2/3 各一），最终汇总为答辩稿。每个 agent 先通读全局文档（`PRD`、`CONTEXT.md`、`docs/PROJECT_STATUS.md`、`docs/DEVELOPMENT_TIMELINE.md`、`docs/ROADMAP.md`、`AGENTS.md`、`README.md`）建立整体认知，再按 Week 调阅对应源码与文档，输出到 `.scratch/ppt-research/week<N>/`（`SUMMARY.md` / `KEY_POINTS.md` / `QUOTES.md` / `SCREENSHOTS.md`）。
+阶段 PPT 文案由 3 个调研 agent 并行产出（Week 1/2/3 各一），最终汇总为答辩稿。每个 agent 先通读全局文档（`PRD`、`CONTEXT.md`、`docs/PROJECT_STATUS.md`、`docs/DEVELOPMENT_TIMELINE.md`、`docs/三周功能完成清单.md`、`AGENTS.md`、`README.md`）建立整体认知，再按 Week 调阅对应源码与文档，输出到 `.scratch/ppt-research/week<N>/`（`SUMMARY.md` / `KEY_POINTS.md` / `QUOTES.md` / `SCREENSHOTS.md`）。
 
 各 Week 调研侧重：
 

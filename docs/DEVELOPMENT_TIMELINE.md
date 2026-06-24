@@ -18,7 +18,7 @@
 
 | 日期 | 类别 | 完成项 |
 |------|------|--------|
-| Day 1 | 项目初始化 | 初始化 Git 仓库、创建 GitHub 远端、配置 `.claude/skills/`、创建 PRD、ROADMAP、PROJECT_STATUS、HANDOFF、CONTEXT.md |
+| Day 1 | 项目初始化 | 初始化 Git 仓库、创建 GitHub 远端、配置 `.claude/skills/`、创建 PRD、三周计划、PROJECT_STATUS、HANDOFF、CONTEXT.md |
 | Day 2 | 项目骨架 | 创建 `backend/` Flask 目录结构、`frontend/` 目录结构、`.gitignore`、配置 `requirements.txt` |
 | Day 3 | 数据库设计 | 设计 12 张核心数据表、编写 `init_db.sql`、实现 `init_db.py` 初始化脚本、导入基础种子数据 |
 | Day 4 | 用户与账户 | 实现用户注册 / 登录 / 登出 API、前端登录注册页面、Session 登录态管理、个人信息页 |
@@ -147,7 +147,7 @@
 ## 参考文档
 
 - 产品需求：`PRD-civil-service-exam-tracker.md`
-- 初始计划：`docs/ROADMAP.md`
+- 初始计划：`docs/三周功能完成清单.md`
 - 完成状态：`docs/PROJECT_STATUS.md`
 - 使用指南：`docs/PROJECT_GUIDE.md`
 - 协作规范：`CLAUDE.md`、`AGENTS.md`

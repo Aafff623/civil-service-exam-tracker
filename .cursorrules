@@ -20,7 +20,7 @@
 - `frontend/*.html`：页面
 - `frontend/js/*.js`：页面逻辑，`api.js` 集中管理 fetch
 - `frontend/assets/init_db.sql`：唯一种子数据源
-- `docs/`：HANDOFF.md、PROJECT_STATUS.md、ROADMAP.md
+- `docs/`：HANDOFF.md、PROJECT_STATUS.md、三周功能完成清单.md
 - `CONTEXT.md`：领域词汇与业务规则
 - `CLAUDE.md`：项目协作规范
 - `AGENTS.md`：API 路由地图与 Agent 规范
