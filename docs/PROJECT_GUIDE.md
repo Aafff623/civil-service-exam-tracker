@@ -94,6 +94,8 @@ https://visualstudio.microsoft.com/visual-cpp-build-tools/
 
 ### 3.1 获取代码
 
+> 若是**压缩包换机**（不是 git clone），跳过本节、改看 `docs/DEPLOY_FROM_ZIP.md`，再回到 3.2 继续。
+
 ```powershell
 git clone https://github.com/Aafff623/civil-service-exam-tracker.git
 cd civil-service-exam-tracker
@@ -370,6 +372,7 @@ mysql -u root -p civil_service_exam < backup.sql
 | 文档 | 用途 |
 |------|------|
 | `README.md` | 项目首页，快速开始 |
+| `docs/DEPLOY_FROM_ZIP.md` | 压缩包换机启动指南（非 git clone，含 .env / venv 等坑） |
 | `docs/PROJECT_STATUS.md` | 项目完成度跟踪 |
 | `docs/HANDOFF.md` | 会话交接上下文 |
 | `docs/ROADMAP.md` | 三周线性开发计划 |
