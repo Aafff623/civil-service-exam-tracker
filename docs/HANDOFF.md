@@ -5,7 +5,14 @@
 ## 最近一次更新
 
 - **时间**：2026-06-24
-- **会话动作**：使用 readme-polish skill 重写 README.md（新增环境准备、开机运行、换机实测检查清单、维护规范）；更新 CLAUDE.md 到最终状态；创建 `.cursorrules`；补全 `.gitignore` 忽略会话产物目录。
+- **会话动作**：
+  - 使用 readme-polish skill 重写 README.md（新增环境准备、开机运行、换机实测检查清单、维护规范）
+  - 更新 CLAUDE.md 到最终状态
+  - 创建 `.cursorrules`
+  - 补全 `.gitignore` 忽略会话产物目录
+  - 新增 `docs/PROJECT_GUIDE.md` 详细项目使用指南
+  - 新增 `docs/DEVELOPMENT_TIMELINE.md` 梳理三周开发进度
+  - 更新 `docs/ROADMAP.md` 全部任务标记为完成
 - **执行者**：Claude Fable 5
 
 ## 上一次更新
