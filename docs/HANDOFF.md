@@ -6,13 +6,14 @@
 
 - **时间**：2026-06-24
 - **会话动作**：
-  - 使用 readme-polish skill 重写 README.md（新增环境准备、开机运行、换机实测检查清单、维护规范）
+  - 使用 readme-polish skill 重写 README.md
   - 更新 CLAUDE.md 到最终状态
   - 创建 `.cursorrules`
-  - 补全 `.gitignore` 忽略会话产物目录
+  - 补全 `.gitignore`
   - 新增 `docs/PROJECT_GUIDE.md` 详细项目使用指南
   - 新增 `docs/DEVELOPMENT_TIMELINE.md` 梳理三周开发进度
   - 更新 `docs/ROADMAP.md` 全部任务标记为完成
+  - 新增 `docs/PPT_RESEARCH_PLAN.md`，为 Week 1/2/3 PPT 调研分配任务和资料来源
 - **执行者**：Claude Fable 5
 
 ## 上一次更新
