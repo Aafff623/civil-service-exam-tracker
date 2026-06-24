@@ -6,16 +6,18 @@
 
 - **时间**：2026-06-24
 - **会话动作**：
-  - 重新明确需求：共需 **3 个独立 PPT**，分别对应 Week 1 / Week 2 / Week 3 阶段汇报
-  - 每个 PPT 只呈现到该 Week 为止已完成内容，未完成的在「后续计划」中说明
-  - 改为 **纯文字排版**，不嵌入系统截图 / 模块图
-  - 使用 `python-pptx` 直接生成原生可编辑 PPTX，避免兼容版中文渲染成方框的问题
-  - 生成文件：
+  - 生成最终总览答辩 PPT：`docs/ppt/公务员考试学习跟踪系统答辩.pptx`（18 页）
+  - 总览 PPT 覆盖项目背景、Week 1/2/3 全部内容、最终成果与 Q&A
+  - 在对应 slide 预留系统截图 / 架构图 / ER 图位置（蓝色虚线占位框）
+  - 占位位置包括：架构图、ER 图、登录页/资源库、题库、计划、统计、推荐、答疑、Dashboard、最终成果缩略图
+  - 使用 `python-pptx` 直接生成，中文编码正确，无文字溢出
+  - 新增生成脚本：`.scratch/generate_final_ppt.py`
+  - 当前 PPT 资产清单：
     - `docs/ppt/Week1_公务员考试学习跟踪系统_阶段汇报.pptx`（10 页）
     - `docs/ppt/Week2_公务员考试学习跟踪系统_阶段汇报.pptx`（12 页）
     - `docs/ppt/Week3_公务员考试学习跟踪系统_答辩.pptx`（14 页）
-  - 生成脚本：`.scratch/generate_weekly_ppts.py`
-  - 更新 `docs/PPT_PRODUCTION_PLAN.md`、`docs/PPT_CHECKLIST.md`
+    - `docs/ppt/公务员考试学习跟踪系统答辩.pptx`（18 页，最终答辩稿）
+    - `docs/ppt/screenshots/*.png`（8 张系统截图，未嵌入）
 - **执行者**：Claude Fable 5
 
 ## 上一次更新
