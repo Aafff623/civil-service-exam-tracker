@@ -1,0 +1,67 @@
+# Cursor Rules — 公务员考试学习跟踪系统
+
+## 项目定位
+
+面向大学大一、大二学生的**公务员考试学习跟踪系统**课程设计项目，已进入收尾阶段。
+
+## 技术栈
+
+- 后端：Python 3.10+ + Flask 3.0 + MySQL 8.0+（PyMySQL）
+- 前端：原生 HTML5 + CSS3 + JavaScript（无框架）
+- 架构：前后端分离，RESTful API，Session/Cookie 认证
+- 端口：后端 5001，前端 8080
+
+## 目录约定
+
+- `backend/app.py`：Flask 应用入口
+- `backend/routes/*.py`：按资源划分的 Blueprint
+- `backend/init_db.py`：数据库初始化（删表重建 + 导入种子）
+- `backend/requirements.txt`：Python 依赖
+- `frontend/*.html`：页面
+- `frontend/js/*.js`：页面逻辑，`api.js` 集中管理 fetch
+- `frontend/assets/init_db.sql`：唯一种子数据源
+- `docs/`：HANDOFF.md、PROJECT_STATUS.md、ROADMAP.md
+- `CONTEXT.md`：领域词汇与业务规则
+- `CLAUDE.md`：项目协作规范
+- `AGENTS.md`：API 路由地图与 Agent 规范
+
+## 核心模块
+
+1. 用户与账户
+2. 考试资源管理
+3. 智能学习计划生成
+4. 题库与练习
+5. 学习进度跟踪
+6. 个性化推荐
+7. 题目解析与答疑
+
+## 编码规范
+
+- 后端：Blueprint 路由、统一响应格式 `{ success, data, message }`、参数化查询防 SQL 注入
+- 前端：`api.js` 集中管理 API_BASE_URL，所有页面引用 `api.js` + `app.js`
+- 数据库：表名复数、下划线分隔，外键 `<table>_id`
+- 提交前：更新 `docs/PROJECT_STATUS.md` 和 `docs/HANDOFF.md`
+
+## 当前状态
+
+- 7 个模块全部实现
+- 题库 200 题、资源 23 条
+- 剩余：答辩机换机实测、集中 Review、可选小优化
+- 不要引入新框架或大规模重构
+
+## 启动命令
+
+```powershell
+cd backend
+python app.py              # 5001
+
+cd ../frontend
+python -m http.server 8080
+```
+
+## 注意事项
+
+- 改题后必须同步更新 `frontend/assets/init_db.sql`，答辩机通过 `git pull` + `python init_db.py` 同步
+- `backend/database.db` 在 `.gitignore` 中，不提交
+- AI 答疑为规则回复，非 LLM
+- 考试时间线部分仍为静态文案
