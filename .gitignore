@@ -37,3 +37,10 @@ Thumbs.db
 cookies.txt
 *.tmp
 backend/_generated_questions.sql
+
+# Agent / MCP / session artifacts
+.playwright-mcp/
+.scratch/typography-audit/
+mcps/
+terminals/
+assets/banner.png
