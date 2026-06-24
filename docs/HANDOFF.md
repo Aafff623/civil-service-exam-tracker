@@ -15,6 +15,12 @@
   - 将 `公务员考试学习跟踪系统答辩.pptx` 复制到 `assets/ppt/`
 - **执行者**：Claude Fable 5
 
+## 补充（同次会话后续）
+
+- 截取 8 张系统运行截图（登录 / Dashboard / 资源 / 题库 / 统计 / 推荐 / 计划 / 个人资料）
+- 将截图嵌入 `assets/ppt/公务员考试学习跟踪系统答辩.pptx`
+- PDF 导出因环境缺少 LibreOffice / PowerPoint COM 未自动完成，需手动另存为 PDF
+
 ## 上一次更新
 
 - **时间**：2026-06-24

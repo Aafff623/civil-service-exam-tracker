@@ -118,8 +118,16 @@
 ## 七、当前状态
 
 - ✅ PPT 初稿已生成（18 页）
-- ⬜ 需补充实际系统运行截图
-- ⬜ 需导出 PDF 备份
+- ✅ 8 张系统运行截图已截取并嵌入 PPT
+  - 登录页 → Slide 03
+  - 资源库 → Slide 06
+  - 题库练习 → Slide 08
+  - 学习计划 → Slide 09
+  - 学习统计 → Slide 10
+  - 学习推荐 → Slide 11
+  - Dashboard → Slide 14
+  - 个人资料 → Slide 17
+- ⬜ 需导出 PDF 备份（当前环境无 LibreOffice / PowerPoint COM，需手动操作）
 - ⬜ 需在答辩机上实测打开效果
 
 
