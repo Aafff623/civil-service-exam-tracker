@@ -6,6 +6,19 @@
 
 - **时间**：2026-06-24
 - **会话动作**：
+  - 新增 `docs/PPT_PRODUCTION_PLAN.md` 与 `docs/PPT_CHECKLIST.md`
+  - 选定 `ppt-master` 模板：`academic_defense`
+  - 初始化 ppt-master 项目：`civil_service_defense_ppt169_20260624`
+  - 汇总 Week 1-3 调研报告为 `SOURCE_ALL.md` 并导入项目
+  - 生成 `design_spec.md` 与 18 页 SVG 幻灯片
+  - 完成 ppt-master 后处理，导出原生可编辑 PPTX
+  - 将 `公务员考试学习跟踪系统答辩.pptx` 复制到 `assets/ppt/`
+- **执行者**：Claude Fable 5
+
+## 上一次更新
+
+- **时间**：2026-06-24
+- **会话动作**：
   - 使用 readme-polish skill 重写 README.md
   - 更新 CLAUDE.md 到最终状态
   - 创建 `.cursorrules`
@@ -15,12 +28,6 @@
   - 更新 `docs/ROADMAP.md` 全部任务标记为完成
   - 新增 `docs/PPT_RESEARCH_PLAN.md`，为 Week 1/2/3 PPT 调研分配任务和资料来源
 - **执行者**：Claude Fable 5
-
-## 上一次更新
-
-- **时间**：2026-06-23
-- **会话动作**：题库种子扩容至 200 题 + 资源关联 + 多选支持 + 换机部署 README
-- **执行者**：Grok Agent
 
 ## 当前上下文
 
