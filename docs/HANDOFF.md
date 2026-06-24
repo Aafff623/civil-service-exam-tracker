@@ -2,7 +2,38 @@
 
 > **用途**：记录当前会话的上下文、已完成工作、待办事项和下一步动作，方便后续继续或交接给其他 agent。
 
-## 最近一次更新（Review 与收尾提交）
+## 最近一次更新（docs 目录精炼整理）
+
+- **时间**：2026-06-24
+- **执行者**：Claude（kimi-for-coding）
+- **主题**：精炼 docs 目录，合并冗余、归档过时、加导航索引
+
+### 本次完成
+
+1. **合并 3 个 PPT 过程文档** → `docs/archive/ppt-production.md`（`PPT_CHECKLIST.md` / `PPT_PRODUCTION_PLAN.md` / `PPT_RESEARCH_PLAN.md` 已 `git rm`，全部唯一信息保留）
+2. **归档过时设计评审**：`git mv docs/frontend-design-review.md` → `docs/archive/`，顶部加历史快照横幅
+3. **新增 `docs/README.md` 文档导航索引**：按用途分类（上手部署 / 进度计划 / 交接 / 规范 / 答辩材料 / 历史归档）
+4. **补 `docs/adr/README.md` 占位**：说明 ADR 目录用途（被 `agents/domain.md`、`agents/module-development-workflow.md` 引用，暂无记录）
+5. **修引用**：`HANDOFF.md` 对 3 个 PPT_*.md 的提及改指 `archive/ppt-production.md`；`PROJECT_GUIDE.md` 第九节文档索引补 `docs/README.md` 一行
+6. 范围严格限定 `docs/`，未触碰 `frontend/` / `backend/` / 根目录文件；`docs/ppt/*.pptx` 与 `frontend/assets/auth.css` 的既有未提交改动未一并提交
+
+### docs/ 最终结构
+
+```
+docs/
+├─ README.md              导航索引（总入口）
+├─ PROJECT_GUIDE.md / DEPLOY_FROM_ZIP.md                    上手与部署
+├─ PROJECT_STATUS.md / ROADMAP.md / DEVELOPMENT_TIMELINE.md  进度与计划
+├─ HANDOFF.md             交接日志
+├─ banner.png             README 横幅
+├─ adr/(README.md) · agents/(4 规范)                        协作规范
+├─ ppt/                   答辩材料（4 pptx + screenshots/）
+└─ archive/               历史归档（ppt-production.md · frontend-design-review.md）
+```
+
+---
+
+## 上一次更新（Review 与收尾提交）
 
 - **时间**：2026-06-24
 - **执行者**：Claude（kimi-for-coding）
@@ -112,7 +143,7 @@
 
 - **时间**：2026-06-24
 - **会话动作**：
-  - 新增 `docs/PPT_PRODUCTION_PLAN.md` 与 `docs/PPT_CHECKLIST.md`
+  - 新增 `docs/PPT_PRODUCTION_PLAN.md` 与 `docs/PPT_CHECKLIST.md`（已于 2026-06-24 合并入 `docs/archive/ppt-production.md`）
   - 选定 `ppt-master` 模板：`academic_defense`
   - 初始化 ppt-master 项目：`civil_service_defense_ppt169_20260624`
   - 汇总 Week 1-3 调研报告为 `SOURCE_ALL.md` 并导入项目
@@ -138,7 +169,7 @@
   - 新增 `docs/PROJECT_GUIDE.md` 详细项目使用指南
   - 新增 `docs/DEVELOPMENT_TIMELINE.md` 梳理三周开发进度
   - 更新 `docs/ROADMAP.md` 全部任务标记为完成
-  - 新增 `docs/PPT_RESEARCH_PLAN.md`，为 Week 1/2/3 PPT 调研分配任务和资料来源
+  - 新增 `docs/PPT_RESEARCH_PLAN.md`，为 Week 1/2/3 PPT 调研分配任务和资料来源（已合并入 `docs/archive/ppt-production.md`）
 - **执行者**：Claude Fable 5
 
 ## 当前上下文

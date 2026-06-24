@@ -27,6 +27,7 @@
 - [x] 文档一致性梳理：`AGENTS.md` / `PRD` 中 SQLite→MySQL 更正、路由地图补全、技术债刷新
 - [x] 代码 Review 通过：判分逻辑三题型 + 多选乱序运行时实测全对；11 路由全部参数化（无 SQLite 残留、无注入）；11 个前端页面均返回 200
 - [x] 删除死代码 `backend/routes/users.py`（从未注册的空壳蓝图，资料功能实由 `/api/auth/me` 提供）
+- [x] 精炼 `docs/` 目录：合并 3 个 PPT 过程文档为 `docs/archive/ppt-production.md`、归档过时 `frontend-design-review.md`、新增 `docs/README.md` 导航索引与 `docs/adr/README.md` 占位
 
 ## 进行中
 

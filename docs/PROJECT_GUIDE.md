@@ -372,6 +372,7 @@ mysql -u root -p civil_service_exam < backup.sql
 | 文档 | 用途 |
 |------|------|
 | `README.md` | 项目首页，快速开始 |
+| `docs/README.md` | 文档导航索引（docs/ 总入口，按用途分类） |
 | `docs/DEPLOY_FROM_ZIP.md` | 压缩包换机启动指南（非 git clone，含 .env / venv 等坑） |
 | `docs/PROJECT_STATUS.md` | 项目完成度跟踪 |
 | `docs/HANDOFF.md` | 会话交接上下文 |
