@@ -168,12 +168,12 @@ async function loadResourceDetail() {
     buildResourceToc(bodyEl, tocNavEl, tocAsideEl, scrollEl);
 }
 
+let resourceDetailBooted = false;
+
 function bootResourceDetail() {
-    if (!document.getElementById('detail-body')) return;
+    if (resourceDetailBooted || !document.getElementById('detail-body')) return;
+    resourceDetailBooted = true;
     loadResourceDetail();
 }
-if (document.body.classList.contains('app-ready')) {
-    bootResourceDetail();
-} else {
-    window.addEventListener('app:ready', bootResourceDetail, { once: true });
-}
+window.addEventListener('app:ready', bootResourceDetail, { once: true });
+bootResourceDetail();

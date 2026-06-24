@@ -83,20 +83,26 @@ function renderRecommendations(items) {
 
     container.innerHTML = items.map((item, i) => {
         const thumbClass = RECO_THUMB_VARIANTS[i % RECO_THUMB_VARIANTS.length];
-        const btnClass = item.type === 'resource' ? 'ghost' : 'primary';
-        const btnText = item.type === 'resource' ? '查看资料' : '去学习';
+        const studyHref = item.subject_id
+            ? `qa.html?subject_id=${item.subject_id}`
+            : (item.type === 'question' ? item.link : 'qa.html');
+        const resourceHref = item.type === 'resource' ? item.link : 'resources.html';
         return `
-            <article class="reco-card">
+            <article class="reco-card surface-spotlight">
                 <div class="reco-thumb ${thumbClass}">${escapeHtml(item.subject_name)}<br/>${escapeHtml(item.subtitle || '')}</div>
                 <div class="reco-body">
                     <h3>${escapeHtml(item.title)}</h3>
                     <p>${escapeHtml(item.reason)}</p>
                     <span class="tag green">匹配度 ${item.match_score}%</span>
                 </div>
-                <a class="btn ${btnClass}" href="${escapeHtml(item.link)}">${btnText}</a>
+                <div class="reco-actions">
+                    <a class="btn ghost small reco-action-resource" href="${escapeHtml(resourceHref)}">查看资料</a>
+                    <a class="btn primary small reco-action-study" href="${escapeHtml(studyHref)}">去学习</a>
+                </div>
             </article>
         `;
     }).join('');
+    initSurfaceSpotlight();
 }
 
 async function initRecommendations() {
@@ -118,12 +124,12 @@ async function initRecommendations() {
     renderRecommendations(data.items || []);
 }
 
+let recommendationsBooted = false;
+
 function bootRecommendations() {
-    if (!document.getElementById('reco-list')) return;
+    if (recommendationsBooted || !document.getElementById('reco-list')) return;
+    recommendationsBooted = true;
     initRecommendations();
 }
-if (document.body.classList.contains('app-ready')) {
-    bootRecommendations();
-} else {
-    window.addEventListener('app:ready', bootRecommendations, { once: true });
-}
+window.addEventListener('app:ready', bootRecommendations, { once: true });
+bootRecommendations();

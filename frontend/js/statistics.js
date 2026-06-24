@@ -36,7 +36,7 @@ function buildLineChartSvg(labels, values, maxVal, unitLabel) {
         return `<text x="8" y="${y + 4}" fill="#7a8aa6" font-size="11">${label}</text>`;
     }).join('');
 
-    return `<svg viewBox="0 0 520 210" width="100%" height="210" role="img">
+    return `<svg viewBox="0 0 520 210" width="100%" role="img" aria-hidden="false">
       <defs><linearGradient id="gline-stats" x1="0" x2="1"><stop stop-color="#0b66ff"/><stop offset="1" stop-color="#5aa8ff"/></linearGradient></defs>
       <g stroke="#e5edf9" stroke-width="1"><line x1="40" y1="30" x2="500" y2="30"/><line x1="40" y1="70" x2="500" y2="70"/><line x1="40" y1="110" x2="500" y2="110"/><line x1="40" y1="150" x2="500" y2="150"/></g>
       <g>${ticks}</g>
@@ -56,12 +56,13 @@ function renderSubjectBars(subjects) {
     }
 
     container.innerHTML = subjects.map(s => {
-        const rate = s.completion_rate || 0;
+        const rate = Math.max(0, s.completion_rate || 0);
         const acc = s.accuracy != null ? ` · 正确率 ${s.accuracy}%` : '';
+        const demoTag = s.is_demo ? ' <span class="tag gray">演示</span>' : '';
         return `
             <div class="bar-row">
-                <span>${escapeHtml(s.subject_name)}</span>
-                <div class="progress"><span style="width:${rate}%"></span></div>
+                <span>${escapeHtml(s.subject_name)}${demoTag}</span>
+                <div class="progress blue"><span style="width:${rate}%"></span></div>
                 <span class="metric-value">${rate}%</span>
             </div>
             <div class="muted" style="font-size:12px;margin:-6px 0 10px 92px;">${s.completed || 0}/${s.total || 0} 项${acc}</div>
@@ -69,14 +70,23 @@ function renderSubjectBars(subjects) {
     }).join('');
 }
 
-function renderCalendar(year, month, checkedDates) {
+function todayIsoLocal() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function renderCalendar(year, month, checkedDates, options = {}) {
     const container = document.getElementById('calendar-grid');
     const title = document.getElementById('calendar-title');
+    const streakBadge = document.getElementById('calendar-streak-badge');
+    const streakHint = document.getElementById('calendar-streak-hint');
     if (!container) return;
 
     if (title) title.textContent = `${year} 年 ${month} 月`;
 
     const checked = new Set(checkedDates || []);
+    const intensityMap = options.intensityMap || {};
+    const today = todayIsoLocal();
     const first = new Date(year, month - 1, 1);
     const daysInMonth = new Date(year, month, 0).getDate();
     let startPad = first.getDay();
@@ -86,16 +96,29 @@ function renderCalendar(year, month, checkedDates) {
         .map(w => `<div class="week">${w}</div>`).join('');
 
     for (let i = 0; i < startPad; i++) {
-        html += '<div></div>';
+        html += '<div class="pad" aria-hidden="true"></div>';
     }
 
     for (let d = 1; d <= daysInMonth; d++) {
         const iso = `${year}-${String(month).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-        const cls = checked.has(iso) ? 'checked' : '';
-        html += `<div class="${cls}">${d}</div>`;
+        const classes = ['day'];
+        if (checked.has(iso)) classes.push('checked');
+        if (iso === today) classes.push('is-today');
+        const level = intensityMap[iso];
+        if (level) classes.push(`heat-${level}`);
+        html += `<div class="${classes.join(' ')}" data-date="${iso}" title="${iso}"><span>${d}</span></div>`;
     }
 
     container.innerHTML = html;
+
+    if (streakBadge && options.streakDays != null) {
+        streakBadge.textContent = `连续 ${options.streakDays} 天`;
+    }
+    if (streakHint && options.streakDays != null) {
+        streakHint.textContent = options.streakDays > 0
+            ? `本月已打卡 ${checked.size} 天，继续保持学习节奏。`
+            : '完成今日任务或练习即可打卡。';
+    }
 }
 
 function renderOverview(overview) {
@@ -133,7 +156,7 @@ async function initStatistics() {
 
     const now = new Date();
     const result = await getProgress({
-        days: 7,
+        days: 31,
         year: now.getFullYear(),
         month: now.getMonth() + 1
     });
@@ -149,12 +172,14 @@ async function initStatistics() {
 
     const studyChart = document.getElementById('study-chart');
     if (studyChart) {
-        const minutes = (data.daily_study_minutes || []).map(d => d.minutes);
-        const labels = (data.daily_study_minutes || []).map(d => d.label);
+        const weekRows = (data.daily_study_minutes || []).slice(-7);
+        const minutes = weekRows.map(d => d.minutes);
+        const labels = weekRows.map(d => d.label);
         studyChart.innerHTML = buildLineChartSvg(labels, minutes, null, 'h');
     }
 
-    renderSubjectBars(data.subject_stats || []);
+    const subjects = data.subject_stats || [];
+    renderSubjectBars(subjects);
 
     const accChart = document.getElementById('accuracy-chart');
     if (accChart) {
@@ -165,15 +190,26 @@ async function initStatistics() {
     }
 
     const cal = data.calendar || {};
-    renderCalendar(cal.year, cal.month, cal.checked_dates);
+    const intensityMap = {};
+    (data.daily_study_minutes || []).forEach(row => {
+        const mins = row.minutes || 0;
+        if (!mins) return;
+        intensityMap[row.date] = mins >= 120 ? 3 : mins >= 60 ? 2 : 1;
+    });
+
+    renderCalendar(cal.year, cal.month, cal.checked_dates, {
+        intensityMap,
+        streakDays: data.overview?.streak_days
+    });
+    initSurfaceSpotlight();
 }
 
+let statisticsBooted = false;
+
 function bootStatistics() {
-    if (!document.getElementById('kpi-hours')) return;
+    if (statisticsBooted || !document.getElementById('kpi-hours')) return;
+    statisticsBooted = true;
     initStatistics();
 }
-if (document.body.classList.contains('app-ready')) {
-    bootStatistics();
-} else {
-    window.addEventListener('app:ready', bootStatistics, { once: true });
-}
+window.addEventListener('app:ready', bootStatistics, { once: true });
+bootStatistics();

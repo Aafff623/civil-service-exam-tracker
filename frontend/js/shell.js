@@ -7,7 +7,12 @@
         'plan.html': 'plan',
         'recommendations.html': 'recommend',
         'statistics.html': 'statistics',
-        'qa.html': 'qa'
+        'qa.html': 'qa',
+        'profile.html': 'qa'
+    };
+
+    const PAGE_EMOJI_EXTRA = {
+        'profile.html': '👤'
     };
 
     const NAV_EMOJI = {
@@ -118,9 +123,50 @@
         document.querySelectorAll('.topbar .icon-btn').forEach(el => el.remove());
     }
 
+    function ensureTopbarUser() {
+        const page = (location.pathname.split('/').pop() || '').toLowerCase();
+        const onProfile = page === 'profile.html';
+
+        document.querySelectorAll('.top-actions').forEach(actions => {
+            if (actions.querySelector('.topbar-user')) return;
+            const logout = actions.querySelector('#logout-btn');
+            const isDetailTopbar = !!actions.closest('.resource-detail-topbar');
+
+            const chip = document.createElement('div');
+            chip.className = 'topbar-user' + (onProfile ? ' is-current' : '');
+            if (!isDetailTopbar) chip.id = 'topbar-user';
+            chip.innerHTML = `
+                <span class="topbar-user-avatar" data-avatar aria-hidden="true">U</span>
+                <span class="topbar-user-meta">
+                    <strong class="topbar-user-name" data-topbar-username>—</strong>
+                    <small class="topbar-user-role" data-topbar-role>学习者</small>
+                </span>`;
+
+            let mount = chip;
+            if (!onProfile) {
+                const link = document.createElement('a');
+                link.className = 'topbar-user-link';
+                link.href = 'profile.html';
+                link.title = '查看个人信息';
+                link.setAttribute('aria-label', '查看个人信息');
+                link.appendChild(chip);
+                mount = link;
+            }
+
+            const profileMain = actions.querySelector('.topbar-profile-main');
+            if (profileMain) {
+                profileMain.insertBefore(mount, profileMain.firstChild);
+            } else {
+                const anchor = actions.querySelector('.topbar-welcome') || logout;
+                if (anchor) actions.insertBefore(mount, anchor);
+                else actions.appendChild(mount);
+            }
+        });
+    }
+
     function decoratePageTitle() {
         const page = (location.pathname.split('/').pop() || 'dashboard.html').toLowerCase();
-        const emoji = PAGE_EMOJI[page];
+        const emoji = PAGE_EMOJI[page] || PAGE_EMOJI_EXTRA[page];
         const title = document.querySelector('.page-title');
         if (!emoji || !title || title.querySelector('.page-emoji')) return;
         title.insertAdjacentHTML('afterbegin', `<span class="page-emoji" aria-hidden="true">${emoji}</span>`);
@@ -198,6 +244,7 @@
         upgradeSidebarFooter();
         removeTitleBadges();
         trimTopbar();
+        ensureTopbarUser();
         decoratePageTitle();
         decorateKpiLabels();
         decorateHeadings();

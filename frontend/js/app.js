@@ -21,7 +21,8 @@ const NAV_PAGES = {
     'plan.html': 'plan.html',
     'recommendations.html': 'recommendations.html',
     'statistics.html': 'statistics.html',
-    'qa.html': 'qa.html'
+    'qa.html': 'qa.html',
+    'profile.html': 'profile.html'
 };
 
 const ASYNC_MODULE_PAGES = new Set([
@@ -31,7 +32,8 @@ const ASYNC_MODULE_PAGES = new Set([
     'plan.html',
     'recommendations.html',
     'statistics.html',
-    'qa.html'
+    'qa.html',
+    'profile.html'
 ]);
 
 (function bootPageVeilEarly() {
@@ -55,6 +57,12 @@ function syncSidebarMeta(user) {
     });
     document.querySelectorAll('[data-avatar]').forEach(el => {
         el.textContent = user.username.charAt(0).toUpperCase();
+    });
+    document.querySelectorAll('[data-topbar-username]').forEach(el => {
+        el.textContent = user.username;
+    });
+    document.querySelectorAll('[data-topbar-role]').forEach(el => {
+        el.textContent = user.role === 'admin' ? '管理员' : '学习者';
     });
 }
 
@@ -111,8 +119,13 @@ async function initApp() {
 
     syncNavActive();
     initPageTransitions();
-    window.dispatchEvent(new Event('app:ready'));
+    initSurfaceSpotlight();
+    initMobileNav();
     scheduleModuleReadyFallback();
+    // Defer so page modules (dashboard.js, plan.js, …) register listeners first
+    setTimeout(() => {
+        window.dispatchEvent(new Event('app:ready'));
+    }, 0);
 
     const meResult = await getMe();
     if (!meResult.ok || !meResult.data.success) {
@@ -123,6 +136,13 @@ async function initApp() {
     const user = meResult.data.data;
     currentUser = user;
     syncSidebarMeta(user);
+
+    const now = new Date();
+    const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    const todayLabel = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日 ${weekdays[now.getDay()]}`;
+    document.querySelectorAll('[data-today]').forEach(el => {
+        el.textContent = todayLabel;
+    });
 
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn && !logoutBtn.dataset.bound) {
@@ -429,7 +449,7 @@ function renderResourceList() {
         const dateStr = item.created_at ? String(item.created_at).slice(0, 10) : '';
         const selected = resourceBatchSelected.has(String(item.id));
         return `
-            <article class="resource-card${selected ? ' is-selected' : ''}" data-resource-id="${item.id}" tabindex="0" role="button">
+            <article class="resource-card surface-spotlight${selected ? ' is-selected' : ''}" data-resource-id="${item.id}" tabindex="0" role="button">
                 ${resourceBatchMode ? `<span class="resource-batch-check${selected ? ' is-checked' : ''}" aria-hidden="true"></span>` : ''}
                 ${resourceThumbHtml(item)}
                 <div>
@@ -487,6 +507,8 @@ function renderResourceList() {
             }
         });
     });
+
+    initSurfaceSpotlight();
 }
 
 if (document.querySelector('.app')) {

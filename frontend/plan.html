@@ -84,15 +84,19 @@
   <p id="plan-summary">正在加载计划...</p>
   <div class="grid grid-3" id="plan-phases"></div>
 </section>
-<section class="card hidden" style="margin-top:18px;" id="plan-upcoming">
-  <div class="card-title"><h2>未来 7 天任务预览</h2><small>生成后即时更新</small></div>
-  <div class="plan-upcoming-list" id="plan-upcoming-list"></div>
-</section>
-<section class="card" style="margin-top:18px;">
-  <div class="card-title"><h2>本周学习安排</h2><small>可标记完成</small></div>
-  <table class="table"><thead><tr><th>日期</th><th>上午</th><th>下午</th><th>晚上 / 操作</th></tr></thead>
-    <tbody id="plan-week-body"><tr><td colspan="4" class="muted">加载中...</td></tr></tbody>
-  </table>
+<section class="grid grid-2 plan-schedule-row" style="margin-top:18px;">
+  <div class="card" id="plan-upcoming">
+    <div class="card-title"><h2>未来 7 天任务预览</h2><small>生成后即时更新</small></div>
+    <div class="plan-upcoming-list" id="plan-upcoming-list"></div>
+  </div>
+  <div class="card" id="plan-week">
+    <div class="card-title"><h2>本周学习安排</h2><small>可标记完成</small></div>
+    <div class="plan-week-scroll">
+      <table class="table"><thead><tr><th>日期</th><th>上午</th><th>下午</th><th>晚上 / 操作</th></tr></thead>
+        <tbody id="plan-week-body"><tr><td colspan="4" class="muted">加载中...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
 </section>
 
       <p class="footer-note">学习计划数据来自后端 API，重新生成将覆盖当前计划。</p>

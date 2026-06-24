@@ -11,7 +11,7 @@
     <aside class="sidebar">
       <a class="logo" href="dashboard.html" aria-label="返回总览">
         <span class="logo-mark"><img src="assets/brand-mark.svg" width="36" height="36" alt="" /></span>
-        <span class="logo-text"><strong>备考跟踪</strong><span>学习进度管理</span></span>
+        <span class="logo-text"><strong>公务员考试学习跟踪系统</strong><span>学习进度管理</span></span>
       </a>
       <nav class="nav"><a class="active" href="dashboard.html"><span class="nav-icon">⌂</span><span>首页</span></a>
 <a class="" href="resources.html"><span class="nav-icon">▣</span><span>考试与资源</span></a>
@@ -22,18 +22,27 @@
       <div class="sidebar-footer">备考有迹可循<br/>计划 · 进度 · 练习</div>
     </aside>
     <main class="main">
-      <header class="topbar">
-        <div>
+      <header class="topbar topbar-dashboard">
+        <div class="topbar-intro">
           <div class="breadcrumb">备考跟踪 / 学习工作台</div>
           <h1 class="page-title">学习总览</h1>
-          <div class="muted" style="margin-top:8px; font-size:14px;">今日任务、学习时长、完成率、弱项提醒与考试倒计时。</div>
+          <p class="topbar-lead">今日任务、学习时长、完成率、弱项提醒与考试倒计时。</p>
         </div>
-        <div class="top-actions">
-          <button class="btn ghost" id="logout-btn" title="退出登录">退出</button>
+        <div class="top-actions top-actions-dashboard">
+          <div class="topbar-profile">
+            <div class="topbar-profile-main">
+              <div class="topbar-welcome">
+                <p class="topbar-greeting">你好，<span data-username>同学</span><span class="topbar-wave" aria-hidden="true">👋</span></p>
+                <p class="topbar-greeting-sub">按计划推进，保持每日学习节奏。</p>
+                <time class="topbar-greeting-date" data-today></time>
+              </div>
+            </div>
+          </div>
+          <button class="btn ghost small" id="logout-btn" title="退出登录">退出</button>
         </div>
       </header>
       
-<section class="grid grid-4">
+<section class="kpi-strip grid grid-4">
   <div class="kpi"><div class="kpi-label">今日学习任务</div><div class="kpi-value" id="kpi-tasks">—</div><div class="kpi-sub">来自今日学习计划</div></div>
   <div class="kpi"><div class="kpi-label">学习时长</div><div class="kpi-value" id="kpi-hours">—</div><div class="kpi-sub">今日累计</div></div>
   <div class="kpi"><div class="kpi-label">完成率</div><div class="kpi-value" id="kpi-rate">—</div><div class="kpi-sub">今日任务完成率</div></div>
@@ -41,19 +50,12 @@
 </section>
 <section class="grid grid-3" style="margin-top:18px;">
   <div class="card span-2">
-    <div class="welcome-head">
-      <img class="welcome-mascot" src="assets/images/mascot-welcome.png" alt="" width="48" height="48" loading="lazy" />
-      <div class="welcome-copy">
-        <div class="card-title welcome-title"><h2>你好，<span data-username>同学</span></h2><small data-today></small></div>
-        <p class="muted welcome-sub">按计划推进，保持每日学习节奏。</p>
-      </div>
-    </div>
-    <div class="grid grid-2" style="margin-top:18px;">
+    <div class="grid grid-2">
       <div class="card soft">
         <div class="card-title"><h3>今日任务清单</h3><a class="link" href="plan.html">查看计划</a></div>
         <div class="task-list" id="dashboard-tasks"><p class="muted">加载中...</p></div>
       </div>
-      <div class="card soft weak-panel">
+      <div class="card soft weak-panel surface-spotlight">
         <div class="card-title"><h3>弱项提醒</h3><span class="tag red" id="dashboard-weak-badge">分析中</span></div>
         <div class="weak-summary" id="dashboard-weak-summary"></div>
         <div class="bar-list" id="dashboard-weak-bars"><p class="muted">加载中...</p></div>
@@ -62,7 +64,7 @@
       </div>
     </div>
   </div>
-  <div class="card countdown-card">
+  <div class="card countdown-card surface-spotlight">
     <div class="card-title"><h2>考试倒计时</h2><span class="tag blue" id="dashboard-exam-type-tag">—</span></div>
     <div class="countdown-hero">
       <div class="countdown"><div class="num" id="dashboard-countdown-days">—</div></div>
@@ -87,7 +89,7 @@
     </div>
   </div>
 </section>
-<section class="grid grid-2" style="margin-top:18px;">
+<section class="grid grid-2 grid-align-start" style="margin-top:18px;">
   <div class="card">
     <div class="card-title"><h2>学习热力图</h2><small>近 26 周</small></div>
     <div id="dashboard-heatmap"><p class="state-loading">加载中...</p></div>
@@ -95,14 +97,7 @@
   </div>
   <div class="card">
     <div class="card-title"><h2>考试时间线</h2><a class="link" href="resources.html">查看考试信息</a></div>
-    <div class="timeline">
-      <div class="timeline-row"><span class="timeline-date">2026-10-14</span><span class="timeline-dot">招考公告发布</span></div>
-      <div class="timeline-row"><span class="timeline-date">2026-10-15</span><span class="timeline-dot">网上报名开始</span></div>
-      <div class="timeline-row"><span class="timeline-date">2026-10-24</span><span class="timeline-dot">报名截止 · 缴费</span></div>
-      <div class="timeline-row"><span class="timeline-date">2026-11-01</span><span class="timeline-dot">打印准考证</span></div>
-      <div class="timeline-row"><span class="timeline-date">2026-11-29</span><span class="timeline-dot">公共科目笔试</span></div>
-      <div class="timeline-row"><span class="timeline-date">2027-01-15</span><span class="timeline-dot">成绩查询（预计）</span></div>
-    </div>
+    <div class="exam-timeline" id="exam-timeline" aria-label="国考时间线"></div>
   </div>
 </section>
 

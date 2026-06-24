@@ -3,6 +3,67 @@ function todayIso() {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
+const EXAM_TIMELINE = [
+    { date: '2026-10-14', label: '招考公告发布' },
+    { date: '2026-10-15', label: '网上报名开始' },
+    { date: '2026-10-24', label: '报名截止 · 缴费' },
+    { date: '2026-11-01', label: '打印准考证' },
+    { date: '2026-11-29', label: '公共科目笔试' },
+    { date: '2027-01-15', label: '成绩查询（预计）' }
+];
+
+function renderExamTimeline() {
+    const el = document.getElementById('exam-timeline');
+    if (!el) return;
+
+    const today = todayIso();
+    const todayLabel = today.slice(5).replace('-', '/');
+    const nodes = [];
+
+    EXAM_TIMELINE.forEach((item, index) => {
+        if (today < item.date && (index === 0 || EXAM_TIMELINE[index - 1].date < today)) {
+            nodes.push({
+                kind: 'today',
+                date: today,
+                label: '今天 · 备考进行中',
+                state: 'is-today'
+            });
+        }
+
+        let state = 'is-upcoming';
+        if (item.date < today) state = 'is-past';
+        else if (item.date === today) state = 'is-today';
+
+        nodes.push({ kind: 'event', ...item, state });
+    });
+
+    if (!nodes.some(n => n.date === today)) {
+        const insertAt = nodes.findIndex(n => n.kind === 'event' && n.date > today);
+        const todayNode = {
+            kind: 'today',
+            date: today,
+            label: '今天 · 备考进行中',
+            state: 'is-today'
+        };
+        if (insertAt === -1) nodes.push(todayNode);
+        else nodes.splice(insertAt, 0, todayNode);
+    }
+
+    el.innerHTML = nodes.map(node => {
+        const monthDay = node.date.slice(5).replace('-', '/');
+        const isToday = node.state === 'is-today';
+        return `
+            <div class="exam-timeline-item ${node.state}" data-timeline-kind="${node.kind}">
+                <span class="exam-timeline-marker" aria-hidden="true"></span>
+                <div class="exam-timeline-body">
+                    <time class="exam-timeline-date" datetime="${escapeHtml(node.date)}">${escapeHtml(isToday ? `今日 ${todayLabel}` : monthDay)}</time>
+                    <p class="exam-timeline-label">${escapeHtml(node.label)}</p>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
 function daysUntil(dateStr) {
     if (!dateStr) return null;
     const target = new Date(dateStr + 'T00:00:00');
@@ -340,51 +401,60 @@ async function initDashboard() {
     setKpiSkeleton();
     const today = todayIso();
 
-    const [progressRes, planItemsRes, goalRes, recoRes] = await Promise.all([
-        getProgress({ days: 182 }),
-        getPlanItems({ date: today }),
-        getPlanGoal(),
-        getRecommendations()
-    ]);
+    try {
+        const [progressRes, planItemsRes, goalRes, recoRes] = await Promise.all([
+            getProgress({ days: 182 }),
+            getPlanItems({ date: today }),
+            getPlanGoal(),
+            getRecommendations()
+        ]);
 
-    const todayItems = planItemsRes.ok && planItemsRes.data.success
-        ? (planItemsRes.data.data.items || []) : [];
-    bindTodayTaskList();
-    renderTodayTasks(todayItems);
+        const todayItems = planItemsRes.ok && planItemsRes.data.success
+            ? (planItemsRes.data.data.items || []) : [];
+        bindTodayTaskList();
+        renderTodayTasks(todayItems);
 
-    let planRate = 0;
-    if (progressRes.ok && progressRes.data.success) {
-        const data = progressRes.data.data;
-        const o = data.overview;
-        planRate = o.plan_completion_rate || 0;
+        let planRate = 0;
+        if (progressRes.ok && progressRes.data.success) {
+            const data = progressRes.data.data;
+            const o = data.overview;
+            planRate = o.plan_completion_rate || 0;
 
-        const kpiHours = document.getElementById('kpi-hours');
-        const kpiStreak = document.getElementById('kpi-streak');
+            const kpiHours = document.getElementById('kpi-hours');
+            const kpiStreak = document.getElementById('kpi-streak');
 
-        const todayMinutes = (data.daily_study_minutes || []).find(d => d.date === today);
-        const hoursToday = todayMinutes ? (todayMinutes.minutes / 60).toFixed(1) : '0';
+            const todayMinutes = (data.daily_study_minutes || []).find(d => d.date === today);
+            const hoursToday = todayMinutes ? (todayMinutes.minutes / 60).toFixed(1) : '0';
 
-        if (kpiHours) kpiHours.innerHTML = `${hoursToday} <small>h</small>`;
-        if (kpiStreak) kpiStreak.innerHTML = `${o.streak_days}<small>天</small>`;
+            if (kpiHours) kpiHours.innerHTML = `${hoursToday} <small>h</small>`;
+            if (kpiStreak) kpiStreak.innerHTML = `${o.streak_days}<small>天</small>`;
 
-        renderHeatmap(data.daily_study_minutes || []);
-    }
+            renderHeatmap(data.daily_study_minutes || []);
+        }
 
-    if (recoRes.ok && recoRes.data.success) {
-        renderWeakBars(recoRes.data.data.weak_subjects || []);
-    }
+        if (recoRes.ok && recoRes.data.success) {
+            renderWeakBars(recoRes.data.data.weak_subjects || []);
+        }
 
-    if (goalRes.ok && goalRes.data.success && goalRes.data.data) {
-        renderCountdown(goalRes.data.data, planRate);
+        if (goalRes.ok && goalRes.data.success && goalRes.data.data) {
+            renderCountdown(goalRes.data.data, planRate);
+        }
+    } catch (err) {
+        console.error('initDashboard failed', err);
+        showToast('仪表盘数据加载失败，请刷新重试', 'error');
+    } finally {
+        notifyModuleReady();
     }
 }
+
+let dashboardBooted = false;
 
 function bootDashboard() {
-    if (!document.getElementById('dashboard-tasks')) return;
-    initDashboard();
+    if (dashboardBooted || !document.getElementById('dashboard-tasks')) return;
+    dashboardBooted = true;
+    renderExamTimeline();
+    void initDashboard();
 }
-if (document.body.classList.contains('app-ready')) {
-    bootDashboard();
-} else {
-    window.addEventListener('app:ready', bootDashboard, { once: true });
-}
+
+window.addEventListener('app:ready', bootDashboard, { once: true });
+bootDashboard();

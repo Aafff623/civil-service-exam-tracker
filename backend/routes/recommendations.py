@@ -106,6 +106,7 @@ def list_recommendations():
                 'subtitle': resource['type'],
                 'reason': reason,
                 'match_score': score,
+                'subject_id': subject_id,
                 'subject_name': weak['subject_name'],
                 'link': 'resources.html'
             })
@@ -130,6 +131,7 @@ def list_recommendations():
                 'subtitle': question['type'],
                 'reason': reason,
                 'match_score': max(score - 2, 70),
+                'subject_id': subject_id,
                 'subject_name': weak['subject_name'],
                 'link': 'qa.html'
             })
@@ -153,6 +155,7 @@ def list_recommendations():
                 'subtitle': resource['type'],
                 'reason': reason,
                 'match_score': 88 - i * 3,
+                'subject_id': resource.get('subject_id'),
                 'subject_name': '通用',
                 'link': 'resources.html'
             })
