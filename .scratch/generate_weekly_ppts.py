@@ -18,12 +18,12 @@ import os
 # ---------------------------------------------------------------------------
 SLIDE_WIDTH = Inches(13.333)   # 16:9
 SLIDE_HEIGHT = Inches(7.5)
-HEADER_H = Inches(0.97)        # 70px ~ 0.97in
-FOOTER_H = Inches(0.42)        # 30px
+HEADER_H = Inches(0.72)        # 52px
+FOOTER_H = Inches(0.28)        # 20px
 MARGIN_L = Inches(0.56)        # 40px
 MARGIN_R = Inches(0.56)
-MARGIN_T = HEADER_H + Inches(0.28)
-MARGIN_B = SLIDE_HEIGHT - FOOTER_H - Inches(0.14)
+MARGIN_T = HEADER_H + Inches(0.16)
+MARGIN_B = SLIDE_HEIGHT - FOOTER_H - Inches(0.10)
 
 COLORS = {
     'bg': RGBColor(0xFF, 0xFF, 0xFF),
@@ -96,16 +96,18 @@ def add_header(slide, title, section=''):
     p = tf.paragraphs[0]
     p.text = title
     p.font.name = FONT
-    p.font.size = Pt(24)
+    p.font.size = Pt(20)
     p.font.bold = True
     p.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
 
 def add_footer(slide, page_num, total):
     """Add footer with page number."""
+    footer_y = SLIDE_HEIGHT - FOOTER_H
+
     # Footer line
     line = slide.shapes.add_shape(
-        MSO_SHAPE.RECTANGLE, MARGIN_L, SLIDE_HEIGHT - FOOTER_H - Inches(0.08),
+        MSO_SHAPE.RECTANGLE, MARGIN_L, footer_y + Inches(0.04),
         SLIDE_WIDTH - MARGIN_L - MARGIN_R, Pt(1)
     )
     line.fill.solid()
@@ -114,14 +116,14 @@ def add_footer(slide, page_num, total):
 
     # Page number
     box = slide.shapes.add_textbox(
-        SLIDE_WIDTH - MARGIN_R - Inches(0.8), SLIDE_HEIGHT - FOOTER_H + Inches(0.02),
-        Inches(0.8), Inches(0.3)
+        SLIDE_WIDTH - MARGIN_R - Inches(0.8), footer_y + Inches(0.07),
+        Inches(0.8), Inches(0.18)
     )
     tf = box.text_frame
     p = tf.paragraphs[0]
     p.text = f'{page_num} / {total}'
     p.font.name = FONT
-    p.font.size = Pt(12)
+    p.font.size = Pt(11)
     p.font.color.rgb = COLORS['text_tertiary']
     p.alignment = PP_ALIGN.RIGHT
 
@@ -146,7 +148,7 @@ def add_text_box(slide, left, top, width, height, text, font_size=18, bold=False
     return box
 
 
-def add_bullet_list(slide, left, top, width, height, items, font_size=18,
+def add_bullet_list(slide, left, top, width, height, items, font_size=16,
                     color=None, bullet_color=None):
     """Add bullet list."""
     if color is None:
@@ -164,8 +166,8 @@ def add_bullet_list(slide, left, top, width, height, items, font_size=18,
         p.font.name = FONT
         p.font.size = Pt(font_size)
         p.font.color.rgb = color
-        p.space_after = Pt(10)
-        p.line_spacing = 1.3
+        p.space_after = Pt(4)
+        p.line_spacing = 1.10
         p.level = 0
     return box
 
@@ -207,30 +209,30 @@ def add_card(slide, left, top, width, height, title, items=None, font_size=16):
     p = tf.paragraphs[0]
     p.text = title
     p.font.name = FONT
-    p.font.size = Pt(font_size + 2)
+    p.font.size = Pt(font_size + 1)
     p.font.bold = True
     p.font.color.rgb = COLORS['header']
-    p.space_after = Pt(8)
+    p.space_after = Pt(4)
 
     if items:
         for item in items:
             p = tf.add_paragraph()
             p.text = f'• {item}'
             p.font.name = FONT
-            p.font.size = Pt(font_size)
+            p.font.size = Pt(font_size - 1)
             p.font.color.rgb = COLORS['text']
-            p.space_after = Pt(4)
-            p.line_spacing = 1.25
+            p.space_after = Pt(2)
+            p.line_spacing = 1.12
     return shape
 
 
 def add_kpi_cards(slide, kpis):
     """Add KPI cards in a row. kpis: list of (label, value, unit)."""
     n = len(kpis)
-    gap = Inches(0.25)
+    gap = Inches(0.20)
     card_w = (SLIDE_WIDTH - MARGIN_L - MARGIN_R - gap * (n - 1)) / n
-    card_h = Inches(1.6)
-    top = MARGIN_T + Inches(0.4)
+    card_h = Inches(1.25)
+    top = MARGIN_T + Inches(0.25)
 
     for i, (label, value, unit) in enumerate(kpis):
         left = MARGIN_L + i * (card_w + gap)
@@ -248,24 +250,24 @@ def add_kpi_cards(slide, kpis):
         p = tf.paragraphs[0]
         p.text = value
         p.font.name = FONT
-        p.font.size = Pt(36)
+        p.font.size = Pt(30)
         p.font.bold = True
         p.font.color.rgb = COLORS['accent_blue']
         p.alignment = PP_ALIGN.CENTER
-        p.space_after = Pt(4)
+        p.space_after = Pt(2)
 
         p = tf.add_paragraph()
         p.text = unit
         p.font.name = FONT
-        p.font.size = Pt(14)
+        p.font.size = Pt(11)
         p.font.color.rgb = COLORS['text_secondary']
         p.alignment = PP_ALIGN.CENTER
-        p.space_after = Pt(8)
+        p.space_after = Pt(4)
 
         p = tf.add_paragraph()
         p.text = label
         p.font.name = FONT
-        p.font.size = Pt(14)
+        p.font.size = Pt(11)
         p.font.color.rgb = COLORS['text']
         p.alignment = PP_ALIGN.CENTER
 
@@ -288,91 +290,98 @@ def slide_cover(slide, title, subtitle, info, section=''):
                      section, font_size=16, bold=True,
                      color=RGBColor(0xFF, 0xFF, 0xFF), align=PP_ALIGN.CENTER)
 
-    add_text_box(slide, MARGIN_L, Inches(1.2), SLIDE_WIDTH - MARGIN_L - MARGIN_R, Inches(1.0),
-                 title, font_size=48, bold=True, color=RGBColor(0xFF, 0xFF, 0xFF), align=PP_ALIGN.CENTER)
-    add_text_box(slide, MARGIN_L, Inches(2.4), SLIDE_WIDTH - MARGIN_L - MARGIN_R, Inches(0.6),
-                 subtitle, font_size=24, color=RGBColor(0xE8, 0xF4, 0xFC), align=PP_ALIGN.CENTER)
+    add_text_box(slide, MARGIN_L, Inches(1.1), SLIDE_WIDTH - MARGIN_L - MARGIN_R, Inches(1.0),
+                 title, font_size=44, bold=True, color=RGBColor(0xFF, 0xFF, 0xFF), align=PP_ALIGN.CENTER)
+    add_text_box(slide, MARGIN_L, Inches(2.2), SLIDE_WIDTH - MARGIN_L - MARGIN_R, Inches(0.6),
+                 subtitle, font_size=21, color=RGBColor(0xE8, 0xF4, 0xFC), align=PP_ALIGN.CENTER)
 
     # Decorative line
     line = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE,
-        (SLIDE_WIDTH - Inches(4.0)) / 2, Inches(3.5), Inches(4.0), Pt(2))
+        (SLIDE_WIDTH - Inches(4.0)) / 2, Inches(3.2), Inches(4.0), Pt(2))
     line.fill.solid()
     line.fill.fore_color.rgb = COLORS['accent_blue']
     line.line.fill.background()
 
     circle = slide.shapes.add_shape(MSO_SHAPE.OVAL,
-        (SLIDE_WIDTH - Inches(0.12)) / 2, Inches(3.5) - Inches(0.05), Inches(0.12), Inches(0.12))
+        (SLIDE_WIDTH - Inches(0.12)) / 2, Inches(3.2) - Inches(0.05), Inches(0.12), Inches(0.12))
     circle.fill.solid()
     circle.fill.fore_color.rgb = COLORS['accent_blue']
     circle.line.fill.background()
 
     # Info block
-    add_text_box(slide, MARGIN_L, Inches(4.2), SLIDE_WIDTH - MARGIN_L - MARGIN_R, Inches(2.0),
-                 '\n'.join(info), font_size=20, color=COLORS['text_secondary'],
-                 align=PP_ALIGN.CENTER, line_spacing=1.5)
+    add_text_box(slide, MARGIN_L, Inches(3.8), SLIDE_WIDTH - MARGIN_L - MARGIN_R, Inches(2.0),
+                 '\n'.join(info), font_size=17, color=COLORS['text_secondary'],
+                 align=PP_ALIGN.CENTER, line_spacing=1.25)
 
 
 def slide_toc(slide, items, section=''):
-    """Table of contents slide."""
+    """Table of contents slide, two-column layout."""
     add_header(slide, '汇报提纲', section)
-    add_text_box(slide, MARGIN_L, MARGIN_T, Inches(2.5), Inches(0.6),
-                 '目录', font_size=32, bold=True, color=COLORS['header'])
+    add_text_box(slide, MARGIN_L, MARGIN_T, Inches(2.5), Inches(0.5),
+                 '目录', font_size=26, bold=True, color=COLORS['header'])
 
-    content_top = MARGIN_T + Inches(0.9)
-    content_h = MARGIN_B - content_top - Inches(0.3)
-    box = slide.shapes.add_textbox(MARGIN_L, content_top,
-        SLIDE_WIDTH - MARGIN_L - MARGIN_R, content_h)
-    tf = box.text_frame
-    tf.word_wrap = True
-    tf.clear()
+    content_top = MARGIN_T + Inches(0.65)
+    content_h = MARGIN_B - content_top - Inches(0.2)
+    col_w = (SLIDE_WIDTH - MARGIN_L - MARGIN_R - Inches(0.35)) / 2
 
-    for i, (num, title, desc) in enumerate(items):
-        p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
-        p.text = f'0{num}    {title}'
-        p.font.name = FONT
-        p.font.size = Pt(22)
-        p.font.bold = True
-        p.font.color.rgb = COLORS['header']
-        p.space_after = Pt(4)
+    mid = (len(items) + 1) // 2
+    left_items = items[:mid]
+    right_items = items[mid:]
 
-        p = tf.add_paragraph()
-        p.text = f'        {desc}'
-        p.font.name = FONT
-        p.font.size = Pt(14)
-        p.font.color.rgb = COLORS['text_secondary']
-        p.space_after = Pt(16)
+    for col_idx, col_items in enumerate([left_items, right_items]):
+        left = MARGIN_L + col_idx * (col_w + Inches(0.35))
+        box = slide.shapes.add_textbox(left, content_top, col_w, content_h)
+        tf = box.text_frame
+        tf.word_wrap = True
+        tf.clear()
+
+        for i, (num, title, desc) in enumerate(col_items):
+            p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
+            p.text = f'0{num}  {title}'
+            p.font.name = FONT
+            p.font.size = Pt(16)
+            p.font.bold = True
+            p.font.color.rgb = COLORS['header']
+            p.space_after = Pt(2)
+
+            p = tf.add_paragraph()
+            p.text = f'     {desc}'
+            p.font.name = FONT
+            p.font.size = Pt(11)
+            p.font.color.rgb = COLORS['text_secondary']
+            p.space_after = Pt(10)
 
 
 def slide_content(slide, title, bullets, section=''):
     """Standard content slide with title and bullets."""
     add_header(slide, title, section)
-    add_bullet_list(slide, MARGIN_L, MARGIN_T + Inches(0.2),
-        SLIDE_WIDTH - MARGIN_L - MARGIN_R, MARGIN_B - MARGIN_T - Inches(0.4),
-        bullets, font_size=20)
+    add_bullet_list(slide, MARGIN_L, MARGIN_T + Inches(0.15),
+        SLIDE_WIDTH - MARGIN_L - MARGIN_R, MARGIN_B - MARGIN_T - Inches(0.3),
+        bullets, font_size=17)
 
 
 def slide_two_column(slide, title, left_title, left_items, right_title, right_items, section=''):
     """Two-column content slide."""
     add_header(slide, title, section)
     col_w = (SLIDE_WIDTH - MARGIN_L - MARGIN_R - Inches(0.4)) / 2
-    add_card(slide, MARGIN_L, MARGIN_T + Inches(0.2), col_w, Inches(0.45),
-             left_title, font_size=18)
-    add_bullet_list(slide, MARGIN_L, MARGIN_T + Inches(0.8), col_w,
-        MARGIN_B - MARGIN_T - Inches(0.8), left_items, font_size=16)
+    add_card(slide, MARGIN_L, MARGIN_T + Inches(0.15), col_w, Inches(0.38),
+             left_title, font_size=15)
+    add_bullet_list(slide, MARGIN_L, MARGIN_T + Inches(0.62), col_w,
+        MARGIN_B - MARGIN_T - Inches(0.7), left_items, font_size=14)
 
-    add_card(slide, MARGIN_L + col_w + Inches(0.4), MARGIN_T + Inches(0.2),
-             col_w, Inches(0.45), right_title, font_size=18)
-    add_bullet_list(slide, MARGIN_L + col_w + Inches(0.4), MARGIN_T + Inches(0.8),
-        col_w, MARGIN_B - MARGIN_T - Inches(0.8), right_items, font_size=16)
+    add_card(slide, MARGIN_L + col_w + Inches(0.4), MARGIN_T + Inches(0.15),
+             col_w, Inches(0.38), right_title, font_size=15)
+    add_bullet_list(slide, MARGIN_L + col_w + Inches(0.4), MARGIN_T + Inches(0.62),
+        col_w, MARGIN_B - MARGIN_T - Inches(0.7), right_items, font_size=14)
 
 
 def slide_kpi(slide, title, kpis, bullets, section=''):
     """Slide with KPI cards on top and bullets below."""
     add_header(slide, title, section)
     add_kpi_cards(slide, kpis)
-    add_bullet_list(slide, MARGIN_L, MARGIN_T + Inches(2.2),
-        SLIDE_WIDTH - MARGIN_L - MARGIN_R, MARGIN_B - MARGIN_T - Inches(2.4),
-        bullets, font_size=18)
+    add_bullet_list(slide, MARGIN_L, MARGIN_T + Inches(1.85),
+        SLIDE_WIDTH - MARGIN_L - MARGIN_R, MARGIN_B - MARGIN_T - Inches(2.0),
+        bullets, font_size=17)
 
 
 def slide_ending(slide, title, subtitle, info, section=''):
@@ -388,14 +397,14 @@ def slide_ending(slide, title, subtitle, info, section=''):
     accent.line.fill.background()
 
     add_text_box(slide, MARGIN_L, Inches(2.4), SLIDE_WIDTH - MARGIN_L - MARGIN_R, Inches(1.0),
-                 title, font_size=48, bold=True, color=RGBColor(0xFF, 0xFF, 0xFF),
+                 title, font_size=44, bold=True, color=RGBColor(0xFF, 0xFF, 0xFF),
                  align=PP_ALIGN.CENTER)
-    add_text_box(slide, MARGIN_L, Inches(3.5), SLIDE_WIDTH - MARGIN_L - MARGIN_R, Inches(0.6),
-                 subtitle, font_size=24, color=RGBColor(0xE8, 0xF4, 0xFC),
+    add_text_box(slide, MARGIN_L, Inches(3.4), SLIDE_WIDTH - MARGIN_L - MARGIN_R, Inches(0.6),
+                 subtitle, font_size=21, color=RGBColor(0xE8, 0xF4, 0xFC),
                  align=PP_ALIGN.CENTER)
-    add_text_box(slide, MARGIN_L, Inches(4.5), SLIDE_WIDTH - MARGIN_L - MARGIN_R, Inches(1.5),
-                 '\n'.join(info), font_size=16, color=RGBColor(0xCC, 0xCC, 0xCC),
-                 align=PP_ALIGN.CENTER, line_spacing=1.5)
+    add_text_box(slide, MARGIN_L, Inches(4.2), SLIDE_WIDTH - MARGIN_L - MARGIN_R, Inches(1.5),
+                 '\n'.join(info), font_size=14, color=RGBColor(0xCC, 0xCC, 0xCC),
+                 align=PP_ALIGN.CENTER, line_spacing=1.25)
 
 
 # ---------------------------------------------------------------------------
@@ -888,7 +897,7 @@ def build_week3():
 # Main
 # ---------------------------------------------------------------------------
 if __name__ == '__main__':
-    out_dir = r'D:\OneDrive\Desktop\课设接单\civil-service-exam-tracker\docs\ppt'
+    out_dir = r'D:\OneDrive\Desktop\课设接单\civil-service-exam-tracker\.scratch\ppt_output'
     os.makedirs(out_dir, exist_ok=True)
 
     ppts = [
@@ -904,3 +913,4 @@ if __name__ == '__main__':
         print(f'Saved: {path}')
 
     print('\nAll 3 PPTs generated successfully.')
+    print('Please close any open PPTX files, then copy from .scratch/ppt_output to docs/ppt.')
