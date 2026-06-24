@@ -22,11 +22,15 @@
 - [x] 题库种子扩容（200 题，科目/题型/资料筛选可演示）
 - [x] 题库与考试资源 `resource_id` 关联 + 多选练习
 - [x] 换机部署说明（根目录 `README.md`）
+- [x] README 重写为 agent-cfo 风格（横幅 + 徽章 + 截图展示 + 折叠快速开始 + API 表 + 路线图），新增 `docs/banner.png`（已推送 `cf419f8`）
+- [x] 登录页单屏优化：去除纵向滚动条，`frontend/assets/auth.css`（未提交）
+- [x] 文档一致性梳理：`AGENTS.md` / `PRD` 中 SQLite→MySQL 更正、路由地图补全、技术债刷新
+- [x] 代码 Review 通过：判分逻辑三题型 + 多选乱序运行时实测全对；11 路由全部参数化（无 SQLite 残留、无注入）；11 个前端页面均返回 200
+- [x] 删除死代码 `backend/routes/users.py`（从未注册的空壳蓝图，资料功能实由 `/api/auth/me` 提供）
 
 ## 进行中
 
 - [ ] 答辩机换机实测（按 README 验收）
-- [ ] 集中 Review 与 Bug 修复（由用户主导）
 
 ## 可选后续优化
 
@@ -34,6 +38,7 @@
 2. AI 答疑接入真实 LLM
 3. emoji 图标替换 SVG
 4. 同步更新 `docs/ROADMAP.md` 勾选状态
+5. 异常路径连接关闭：`register()` / `create_subject()` 的 `except` 分支补 try/finally（Review 标记，演示负载下无感，低优先）
 
 ## 关键决策
 

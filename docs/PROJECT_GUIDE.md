@@ -151,7 +151,8 @@ python init_db.py
 成功后会输出：
 
 ```text
-Database initialized from: frontend/assets/init_db.sql
+Initialized MySQL database: civil_service_exam on localhost:3306
+SQL source: ...\frontend\assets\init_db.sql
 ```
 
 **注意**：`init_db.py` 会**删除并重建**数据库，请确保 `.env` 配置正确，避免误删其他数据库。

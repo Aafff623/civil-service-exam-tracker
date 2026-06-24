@@ -5,7 +5,7 @@
 ## 项目概览
 
 - **名称**：公务员考试学习跟踪系统（课程设计）
-- **技术栈**：Flask + SQLite + 原生 HTML/CSS/JS
+- **技术栈**：Flask + MySQL 8.0+（PyMySQL）+ 原生 HTML/CSS/JS
 - **架构**：前后端分离，RESTful API，Session 认证
 - **后端端口**：5001（本地 5000 被占用）
 - **前端端口**：8080（`python -m http.server`）
@@ -16,12 +16,12 @@
 
 | 操作 | 命令 | 说明 |
 |------|------|------|
-| 初始化数据库 | `cd backend && python init_db.py` | 删除并重建 `database.db`，执行 `init_db.sql` 种子数据 |
+| 初始化数据库 | `cd backend && python init_db.py` | 连接 MySQL，删表重建并执行 `frontend/assets/init_db.sql` 种子数据 |
 | 启动后端 | `cd backend && python app.py` | Flask debug，监听 5001 |
 | 启动前端 | `cd frontend && python -m http.server 8080` | 静态文件服务 |
 | 健康检查 | `GET http://localhost:5001/api/health` | 无需登录 |
 
-**注意**：`backend/database.db` 在 `.gitignore` 中，不提交。改表结构后需重新 `init_db.py`。
+**注意**：运行时数据存于 MySQL 数据库 `civil_service_exam`；改表结构后需重新 `init_db.py`。（`backend/database.db` 为早期 SQLite 遗留文件，已弃用、未提交，列在 `.gitignore` 中。）
 
 ## 文件命名规范
 
@@ -33,7 +33,7 @@
 | URL 前缀 | `/api/<resource>`，复数形式 | `/api/questions`, `/api/answers` |
 | 数据库表 | 小写复数，下划线分隔 | `users`, `plan_items`, `weak_points` |
 | 字段 | 小写下划线；主键 `id`；外键 `<table>_id` | `user_id`, `created_at` |
-| 配置 | `backend/config.py` | `DATABASE`, `SECRET_KEY` |
+| 配置 | `backend/config.py` / `backend/.env` | `MYSQL_HOST/PORT/USER/PASSWORD/DATABASE`, `SECRET_KEY` |
 
 ### 前端
 
@@ -74,14 +74,14 @@
 |-----------|------|------|------|------|
 | `health` | `/api/health` | 否 | `GET /`, `GET ''` | ✅ |
 | `auth` | `/api/auth` | 部分 | `POST /register`, `POST /login`, `POST /logout`, `GET /me` | ✅ |
-| `resources` | `/api/resources` | 是 | `GET /`, `GET /<id>` | ✅ |
-| `subjects` | `/api/subjects` | 是 | `GET /` | ✅ |
+| `resources` | `/api/resources` | 是 | `GET /`, `GET /<id>`, `POST /`, `DELETE /<id>`, `POST /batch-delete` | ✅ |
+| `subjects` | `/api/subjects` | 是 | `GET /`, `POST /` | ✅ |
 | `questions` | `/api/questions` | 是 | `GET /`, `GET /<id>` | ✅ |
 | `answers` | `/api/answers` | 是 | `POST /`, `GET /history` | ✅ |
 | `plans` | `/api/plans` | 是 | `GET/POST /goal`, `GET /`, `POST /generate`, `GET /items`, `PATCH /items/<id>`, `GET /subjects` | ✅ |
 | `progress` | `/api/progress` | 是 | `GET /` | ✅ |
 | `recommendations` | `/api/recommendations` | 是 | `GET /` | ✅ |
-| `goals` | `/api/goals` | — | — | ❌ 待实现 |
+| `goals` | （并入 `/api/plans/goal`） | 是 | 学习目标读写由 `plans` 蓝图提供，无独立蓝图 | ✅ |
 | `comments` | `/api/comments` | 是 | `GET /`, `POST /` | ✅ |
 
 认证方式：Flask Session + Cookie，`login_required` 装饰器（`routes/auth.py`）。
@@ -98,6 +98,8 @@
 | 学习计划 | `plan.html` | `/plans/*` | `api.js` + `app.js` + `plan.js` |
 | 学习推荐 | `recommendations.html` | `/recommendations/` | `api.js` + `app.js` + `recommendations.js` |
 | 学习统计 | `statistics.html` | `/progress/` | `api.js` + `app.js` + `statistics.js` |
+| 资源详情 | `resource-detail.html` | `/resources/<id>`, `/questions/` | `api.js` + `app.js` + `resource-detail.js` |
+| 个人中心 | `profile.html` | `/auth/me` | `api.js` + `app.js` + `profile.js` |
 
 **已接入页面**需引用 `js/api.js` + `js/app.js`（`app.js` 含登录检查和退出按钮）。
 
@@ -123,7 +125,7 @@
 
 开发前先读 `CONTEXT.md`；有架构分歧时写 `docs/adr/`。详见 `docs/agents/domain.md`。
 
-## 当前进度（2026-06-23）
+## 当前进度（2026-06-24）
 
 ### 已完成模块
 
@@ -144,8 +146,7 @@
 ### 已知技术债
 
 - AI 答疑为规则演示；考试时间线仍为静态
-- `docs/ROADMAP.md` 勾选状态滞后
-- 种子题仅 4 道；emoji 图标未替换 SVG
+- emoji 图标未替换 SVG
 - 无 favicon（404 不影响功能）
 
 ## 接续开发检查清单

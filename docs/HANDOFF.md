@@ -2,7 +2,95 @@
 
 > **用途**：记录当前会话的上下文、已完成工作、待办事项和下一步动作，方便后续继续或交接给其他 agent。
 
-## 最近一次更新
+## 最近一次更新（Review 与收尾提交）
+
+- **时间**：2026-06-24
+- **执行者**：Claude（kimi-for-coding）
+- **主题**：集中代码 Review + 收尾提交 + 数据复位
+
+### 本次完成
+
+1. **代码 Review 通过**（重点排 SQLite→MySQL 迁移残留与判分）
+   - 判分逻辑：单选 / 多选 / 判断 + 多选乱序，**运行时端到端实测全部正确**（`normalize_answer` 前后端镜像、A–D 字典序比较）
+   - 11 个后端路由全部参数化 `%s`，**零 SQLite 残留、无注入**（批量删除按 int 强转后拼占位符）
+   - 11 个前端页面均返回 200；`api.js` 全局 `credentials:'include'`
+   - 数据闭环：200 题 = 单字母 186（单选 152 + 判断 34）+ 多选 14，与全仓口径一致
+2. **删除死代码** `backend/routes/users.py`（从未注册的空壳蓝图，资料功能实由 `/api/auth/me` 提供）
+3. **提交并推送**：5 个文档维护文件 + `users.py` 删除（两个原子提交）
+4. **复位 root 演示数据**：实测往 root 写入的 7 条答题记录已用 `init_db.py` 清除，root 回到种子基线（`total_answers=19 / accuracy=78.9 / completed=54`）
+
+### Review 标记的低优先项（未处理，已记入 `PROJECT_STATUS.md` 可选后续）
+
+- 异常路径连接泄漏：`register()` / `create_subject()` 的 `except` 分支未 `conn.close()`（演示负载无感）
+- CORS `origins=["*"]` + credentials（Flask-CORS 回显 origin，本地正常）
+- 计划生成对超长考期无上限（正常日期无影响）
+
+### 仍待办
+
+- **答辩机换机实测**：按 `README.md` / `PROJECT_GUIDE.md` 在另一台机走 clone → `.env` → `init_db.py` → 双端口
+- `frontend/assets/auth.css`（登录页单屏优化）仍按用户要求**不提交**，留作工作区改动
+
+---
+
+## 上一次更新（README 风格化 / 登录页 / 文档维护）
+
+- **时间**：2026-06-24
+- **执行者**：Claude（kimi-for-coding）
+- **会话主题**：README 风格化、登录页单屏优化、全仓文档一致性维护
+
+### 本次完成
+
+1. **README 重写为 `agent-cfo` 风格**（参照 `D:\OneDrive\Desktop\threetwoa\my-competition\agent-cfo`）
+   - 居中头部 + 标语 + 暗色徽章 + 导航行 + 「为什么需要」+ 功能表 + 截图展示网格 + 折叠快速开始 + 架构图 + API 表 + 路线图 + 文档索引 + Star History
+   - 新增项目横幅 `docs/banner.png`（1600×640，用户提供）
+   - 截图展示复用 `docs/ppt/screenshots/*.png`（8 张真实截图）
+   - **已提交并推送：`cf419f8`**（`origin/master`，仅含 `README.md` + `docs/banner.png`）
+
+2. **登录页单屏优化** — `frontend/assets/auth.css`（**未提交**，用户明确说登录页改动「不需要 commit」）
+   - 根因：`body` 与 `.auth-page` 用 `min-height:100vh`，左侧品牌栏内容超出视口 → 整页纵向滚动条
+   - 修复：锁定为 `height:100dvh` + `overflow:hidden`；flex 子项 `min-height:0`；收紧竖向节奏；`@media (max-height:860px)` 隐藏评价语、`≤700px` 隐藏能力标签/页脚；表单栏 `overflow-y:auto` 兜底
+   - 同套样式 `register.html` 一并受益
+
+3. **全仓文档一致性维护**（**均未提交**）
+   - `AGENTS.md`：技术栈 **SQLite→MySQL 8.0+（PyMySQL）**；`init_db` 描述改为 MySQL 删表重建；配置键改 `MYSQL_*`；路由地图补全（resources 的 POST/DELETE/batch-delete、subjects 的 POST）；`goals` 行标注「并入 `/api/plans/goal`」；页面地图补 `resource-detail.html`、`profile.html`；技术债刷新（删除「种子题仅 4 道」「ROADMAP 滞后」）；日期 2026-06-24
+   - `PRD-...md`：3 处 SQLite→MySQL，并保留「初稿 SQLite 后迁移」一句说明（保住答辩叙事）
+   - `docs/PROJECT_GUIDE.md`：`init_db.py` 输出样例改为真实输出
+   - `docs/PROJECT_STATUS.md`：已完成清单补本次 3 项
+
+### 已核对一致的数据事实（全仓口径统一）
+
+- **题库 200 题**：单选 152 / 多选 14 / 判断 34（源：`frontend/assets/init_db.sql` 第 245–445 行）
+- **资源 23 条**、**科目 7 个**、**账号 4 个**（`root`=admin，`testuser1-3`=user，密码均 `123456`，scrypt 哈希）
+- **12 张表**：subjects/users/goals/resources/questions/answers/plans/plan_items/progress/weak_points/recommendations/comments
+- 栈确认为 **Flask 3.0 + MySQL 8.0/PyMySQL + 原生前端**；`recommendations` 表无种子（运行时规则生成）
+
+### 当前运行状态（本会话后台进程，转交后可能需重启）
+
+- 后端 Flask：`http://localhost:5001`（PID 26012），`/api/health` 返回 ok
+- 前端静态站：`http://localhost:8080`（PID 42696），`login.html` 200
+- 重启命令见下方「换机运行（摘要）」或 `docs/PROJECT_GUIDE.md`
+
+### Git 状态（交接时）
+
+- 分支 `master` 与 `origin/master` 齐平；最后推送 `cf419f8`
+- **工作区未提交改动**（待下一个 agent / 用户决定是否提交）：
+  - `frontend/assets/auth.css`（登录页，用户说不 commit）
+  - `AGENTS.md` · `PRD-civil-service-exam-tracker.md` · `docs/PROJECT_GUIDE.md` · `docs/PROJECT_STATUS.md` · `docs/HANDOFF.md`（本次文档维护）
+  - `docs/ppt/...答辩.pptx`：**会话开始前就已修改，非本次所做**，未处理，勿误认为本次产物
+- 未跟踪的本地文件（`.gitignore` 内，勿提交）：`backend/database.db`（SQLite 遗留，弃用）、`cookies.txt`、`backend/cookies.txt`
+
+### 下一步建议（按优先级）
+
+1. **确认提交策略**：文档维护那批是否提交？（auth.css 用户已表态不提交）
+2. **答辩机换机实测**：按 `README.md` / `PROJECT_GUIDE.md` 在另一台机走 clone → `.env` → `init_db.py` → 双端口
+3. **集中 Review**：用户主导排 UI/API 边角 bug
+4. 可选：AI 答疑接真实 LLM、考试时间线接资源 API、emoji→SVG、favicon
+
+> 注：项目根目录 `CLAUDE.md` 已核对，状态描述（栈/端口/200 题/剩余工作）准确，本次未改。
+
+---
+
+## 上一次更新
 
 - **时间**：2026-06-24
 - **会话动作**：
