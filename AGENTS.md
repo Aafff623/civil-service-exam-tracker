@@ -1,5 +1,7 @@
 # AGENTS.md — Agent Team 规范
 
+> **Output Style**：`humanizer-output-style` skill — 统一语气与去 AI 味。详见 `skills/humanizer-output-style/SKILL.md` 与 `docs/agents/voice.md`。
+
 > 本文件供 Cursor / Claude Code / 其他 Agent 接续开发时阅读。与 `CLAUDE.md` 互补：`CLAUDE.md` 是项目概览，`AGENTS.md` 是协作规范与路由地图。
 
 ## 项目概览
@@ -16,7 +18,7 @@
 
 | 操作 | 命令 | 说明 |
 |------|------|------|
-| 初始化数据库 | `cd backend && python init_db.py` | 连接 MySQL，删表重建并执行 `frontend/assets/init_db.sql` 种子数据 |
+| 初始化数据库 | `cd backend && python init_db.py` | 连接 MySQL，删表重建并执行 `db/seed/init_db.sql` 种子数据 |
 | 启动后端 | `cd backend && python app.py` | Flask debug，监听 5001 |
 | 启动前端 | `cd frontend && python -m http.server 8080` | 静态文件服务 |
 | 健康检查 | `GET http://localhost:5001/api/health` | 无需登录 |
@@ -41,7 +43,6 @@
 |------|------|------|
 | 页面 HTML | 与功能同名，放 `frontend/` 根目录 | `dashboard.html`, `qa.html` |
 | 全局样式 | `frontend/assets/styles.css` | **主样式文件**（GPT 资产集成后） |
-| 演示脚本 | `frontend/assets/app.js` | 静态演示交互（日期、demo 按钮） |
 | API 封装 | `frontend/js/api.js` | 所有 `fetch` 调用，`API_BASE_URL = http://localhost:5001/api` |
 | 页面逻辑 | `frontend/js/<page>.js` 或 `app.js` | `qa.js`, `auth.js` |
 | 设计系统 | `design-system/公务员考试学习跟踪系统/MASTER.md` | ui-ux-pro-max 生成的设计 Token |
@@ -52,8 +53,7 @@
 |------|------|------|
 | 功能 Issue | `.scratch/<feature-slug>/issues/<NN>-<slug>.md` | 从 `01` 编号 |
 | 功能 PRD | `.scratch/<feature-slug>/PRD.md` | 可选 |
-| 交接文档 | `docs/HANDOFF.md` | 每次会话结束更新 |
-| 进度跟踪 | `docs/PROJECT_STATUS.md` | 每完成一模块更新 |
+| 关键决策 | `docs/adr/` | 架构与技术选型 ADR（替代原 HANDOFF / PROJECT_STATUS 的决策记录）|
 | 架构决策 | `docs/adr/` | 非平凡决策时新增 ADR |
 
 ### API 响应格式（统一）
@@ -90,7 +90,7 @@
 
 | 页面 | 路径 | API 接入 | 脚本引用 |
 |------|------|----------|----------|
-| 项目总览 | `index.html` | 无 | `assets/app.js` |
+| 项目总览 | `index.html` | mock fallback | `js/shell.js` + `js/mock-api.js` + `js/api.js` + `js/app.js` |
 | 首页/仪表盘 | `dashboard.html` | `/auth/me` + 计划/进度/推荐 | `api.js` + `app.js` + `dashboard.js` |
 | 登录/注册 | `login.html`, `register.html` | `/auth/*` | `api.js` + `auth.js` |
 | 资源库 | `resources.html` | `/resources/`, `/subjects/` | `api.js` + `app.js` |
@@ -105,7 +105,7 @@
 
 **遗留文件**（旧版，当前主流程不用）：`frontend/css/style.css`, `frontend/js/resources.js`。
 
-**资产副本**：`frontend/assets/*.html` 是 GPT 原型原始副本，链接仍指向 `overview.html` / `index.html`，**以 `frontend/` 根目录页面为准**。
+**已归档原型**：早期 GPT 静态原型（`index/overview/plan/qa/recommendations/resources/statistics.html` + `app.js`）已归档至 `assets/backup/原型v0/`，仅作历史参考。当前页面以 `frontend/` 根目录为准。
 
 ## Agent 工作流
 
@@ -113,7 +113,7 @@
 
 1. **Before**：在 `.scratch/<module>/issues/` 建 Issue，写清 Goal + Acceptance criteria + API 契约
 2. **During**：TDD 或至少 API 手动验证；只用 `CONTEXT.md` 领域词汇；手术式改动
-3. **After**：更新 `PROJECT_STATUS.md` + `HANDOFF.md`；一模块一 commit（Conventional Commits）；推送 GitHub
+3. **After**：有架构决策时写入 `docs/adr/`；一模块一 commit（Conventional Commits）；推送 GitHub
 
 ### Triage 标签
 
@@ -153,8 +153,7 @@
 
 接手新会话时：
 
-- [ ] 读 `docs/HANDOFF.md`（最新上下文）
-- [ ] 读 `docs/PROJECT_STATUS.md`（完成度）
+- [ ] 读 `docs/adr/`（关键决策）+ `docs/glossary/terms.md`（术语）
 - [ ] 读 `CONTEXT.md`（领域词汇）
 - [ ] 确认 `backend` 5001 + `frontend` 8080 可访问
 - [ ] 选定下一模块，在 `.scratch/` 建 Issue 后再写代码

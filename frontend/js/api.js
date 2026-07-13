@@ -1,6 +1,10 @@
 const API_BASE_URL = 'http://localhost:5001/api';
 
 async function apiRequest(endpoint, options = {}) {
+    if (typeof isMockMode === 'function' && isMockMode()) {
+        return mockApiRequest(endpoint, options);
+    }
+
     const url = `${API_BASE_URL}${endpoint}`;
     const config = {
         credentials: 'include',
@@ -18,8 +22,18 @@ async function apiRequest(endpoint, options = {}) {
     try {
         const response = await fetch(url, config);
         const data = await response.json();
+
+        if (!response.ok && response.status >= 500 && typeof mockApiRequest === 'function') {
+            console.warn('Backend error, falling back to mock data:', endpoint);
+            return mockApiRequest(endpoint, options);
+        }
+
         return { ok: response.ok, status: response.status, data };
     } catch (error) {
+        if (typeof mockApiRequest === 'function') {
+            console.warn('Network error, falling back to mock data:', endpoint, error.message);
+            return mockApiRequest(endpoint, options);
+        }
         return { ok: false, status: 0, data: { message: error.message } };
     }
 }

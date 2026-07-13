@@ -82,8 +82,12 @@ async function initProfile() {
         ]);
 
         if (!meRes.ok || !meRes.data.success) {
-            window.location.replace('login.html');
-            return;
+            if (typeof isMockMode === 'function' && isMockMode()) {
+                // Mock mode provides a user; continue.
+            } else {
+                window.location.replace('login.html');
+                return;
+            }
         }
 
         const user = meRes.data.data;

@@ -31,6 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (result.ok && result.data.success) {
                 localStorage.setItem('user', JSON.stringify(result.data.data));
+                if (typeof setMockCurrentUser === 'function') {
+                    setMockCurrentUser(result.data.data);
+                }
                 showToast('登录成功', 'success');
                 setTimeout(() => { window.location.href = 'dashboard.html'; }, 400);
             } else {

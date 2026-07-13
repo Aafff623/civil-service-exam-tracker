@@ -129,8 +129,12 @@ async function initApp() {
 
     const meResult = await getMe();
     if (!meResult.ok || !meResult.data.success) {
-        window.location.replace('login.html');
-        return;
+        if (typeof isMockMode === 'function' && isMockMode()) {
+            // Mock mode should always provide a user; continue if something is off.
+        } else {
+            window.location.replace('login.html');
+            return;
+        }
     }
 
     const user = meResult.data.data;

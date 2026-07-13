@@ -37,9 +37,15 @@ def submit_answer():
         conn.close()
         return jsonify({"success": False, "message": "Question not found"}), 404
 
-    correct_answer = normalize_answer(question['correct_answer'].strip())
-    selected_answer = normalize_answer(selected_answer)
-    is_correct = 1 if selected_answer == correct_answer else 0
+    correct_answer_raw = question['correct_answer'].strip()
+    if question['type'] == '判断':
+        selected_answer = '正确' if selected_answer.upper() == 'A' else ('错误' if selected_answer.upper() == 'B' else selected_answer)
+        is_correct = 1 if selected_answer == correct_answer_raw else 0
+        correct_answer = correct_answer_raw
+    else:
+        correct_answer = normalize_answer(correct_answer_raw)
+        selected_answer = normalize_answer(selected_answer)
+        is_correct = 1 if selected_answer == correct_answer else 0
 
     cursor.execute("""
         INSERT INTO answers (user_id, question_id, selected_answer, is_correct)

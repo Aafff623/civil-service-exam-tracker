@@ -17,8 +17,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Check auth
     const meResult = await getMe();
     if (!meResult.ok || !meResult.data.success) {
-        window.location.href = 'login.html';
-        return;
+        if (typeof isMockMode === 'function' && isMockMode()) {
+            // Mock mode provides a user; continue.
+        } else {
+            window.location.href = 'login.html';
+            return;
+        }
     }
 
     // Load subjects for filter

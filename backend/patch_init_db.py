@@ -1,7 +1,7 @@
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SQL_PATH = ROOT / 'frontend' / 'assets' / 'init_db.sql'
+SQL_PATH = ROOT / 'db' / 'seed' / 'init_db.sql'
 GEN_PATH = ROOT / 'backend' / '_generated_questions.sql'
 
 text = SQL_PATH.read_text(encoding='utf-8')

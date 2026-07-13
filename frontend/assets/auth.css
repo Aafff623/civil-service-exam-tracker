@@ -1,12 +1,17 @@
 body:has(.auth-page) {
   background: var(--color-primary);
   font-family: var(--font-body);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
 }
 
 .auth-page {
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
   display: grid;
   grid-template-columns: minmax(0, 1fr) clamp(380px, 42vw, 480px);
+  overflow: hidden;
 }
 
 /* —— Brand panel —— */
@@ -15,10 +20,11 @@ body:has(.auth-page) {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: clamp(32px, 5vw, 56px) clamp(32px, 6vw, 72px);
+  padding: clamp(24px, 4vh, 48px) clamp(32px, 6vw, 72px);
   background: var(--color-primary);
   color: var(--color-on-primary);
   overflow: hidden;
+  min-height: 0;
 }
 
 .auth-brand::before {
@@ -60,13 +66,13 @@ body:has(.auth-page) {
 
 .auth-quotes {
   display: grid;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 10px;
+  margin-top: 14px;
 }
 
 .auth-quote {
   margin: 0;
-  padding: 14px 16px;
+  padding: 11px 14px;
   border-radius: 6px;
   background: rgba(15, 23, 42, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -140,12 +146,13 @@ body:has(.auth-page) {
   flex-direction: column;
   justify-content: center;
   max-width: 460px;
-  padding: 40px 0;
+  padding: 12px 0;
+  min-height: 0;
 }
 
 .auth-copy-panel {
   position: relative;
-  padding: 36px 32px 32px;
+  padding: 28px 28px 26px;
   border-radius: 4px;
   background: rgba(15, 23, 42, 0.86);
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -165,7 +172,7 @@ body:has(.auth-page) {
 }
 
 .auth-eyebrow {
-  margin: 0 0 22px;
+  margin: 0 0 14px;
   padding-left: 14px;
   font-family: var(--font-heading);
   font-size: 10px;
@@ -199,11 +206,11 @@ body:has(.auth-page) {
 }
 
 .auth-lead {
-  margin: 22px 0 0;
+  margin: 16px 0 0;
   padding-left: 14px;
   font-size: 14px;
   font-weight: 400;
-  line-height: 1.85;
+  line-height: 1.7;
   letter-spacing: 0.03em;
   color: #cbd5e1;
   max-width: 340px;
@@ -214,8 +221,8 @@ body:has(.auth-page) {
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 0;
-  margin-top: 28px;
-  padding: 16px 14px 0;
+  margin-top: 16px;
+  padding: 12px 14px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -269,10 +276,12 @@ body:has(.auth-page) {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: clamp(32px, 5vw, 56px) clamp(28px, 4vw, 48px);
+  padding: clamp(24px, 4vh, 48px) clamp(28px, 4vw, 48px);
   background: var(--color-background);
   border-left: 1px solid var(--color-border);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .auth-grid-line {
@@ -561,4 +570,15 @@ body:has(.auth-page) {
   .auth-card .btn.primary {
     transition: none;
   }
+}
+
+/* —— Lock to one screen: shed decorative blocks as viewport height shrinks —— */
+@media (max-height: 860px) {
+  .auth-quotes { display: none; }
+}
+
+@media (max-height: 700px) {
+  .auth-meta { display: none; }
+  .auth-brand-foot { display: none; }
+  .auth-copy-panel { padding: 22px 24px 22px; }
 }

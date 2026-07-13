@@ -18,7 +18,7 @@ def load_sql_statements(path):
 
 def init_db():
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    sql_path = os.path.join(base_dir, '..', 'frontend', 'assets', 'init_db.sql')
+    sql_path = os.path.join(base_dir, '..', 'db', 'seed', 'init_db.sql')
 
     conn = get_mysql_connection()
     cursor = conn.cursor()

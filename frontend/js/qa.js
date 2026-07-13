@@ -10,6 +10,13 @@ function normalizeAnswer(value = '') {
     return letters.join('');
 }
 
+function formatJudgeAnswer(value = '') {
+    const letter = String(value).toUpperCase();
+    if (letter === 'A') return '正确';
+    if (letter === 'B') return '错误';
+    return value;
+}
+
 function isMultiSelectQuestion(q) {
     return q?.type === '多选';
 }
@@ -169,12 +176,21 @@ function renderResourceLink(q) {
     `;
 }
 
-function renderQuestion() {
-    const container = document.getElementById('question-detail');
-    const q = questionsCache[currentQuestionIndex];
-    currentQuestion = q;
+function buildOptionsHtml(q) {
+    // 判断题统一渲染为「正确 / 错误」选项
+    if (q?.type === '判断') {
+        return [
+            { letter: 'A', text: '正确' },
+            { letter: 'B', text: '错误' }
+        ].map(({ letter, text }) => `
+            <label class="option" data-option="${letter}">
+                <span class="option-letter">${letter}</span>
+                <span>${escapeHtml(text)}</span>
+            </label>
+        `).join('');
+    }
 
-    const optionsHtml = (q.options || []).map((opt, idx) => {
+    return (q.options || []).map((opt, idx) => {
         const letter = String.fromCharCode(65 + idx);
         const text = opt.replace(/^[A-D]\.\s*/, '');
         return `
@@ -184,6 +200,14 @@ function renderQuestion() {
             </label>
         `;
     }).join('');
+}
+
+function renderQuestion() {
+    const container = document.getElementById('question-detail');
+    const q = questionsCache[currentQuestionIndex];
+    currentQuestion = q;
+
+    const optionsHtml = buildOptionsHtml(q);
 
     const multiHint = isMultiSelectQuestion(q)
         ? '<p class="muted" style="margin:0 0 12px;font-size:13px;">本题为多选题，可选择多个选项后提交。</p>'
@@ -287,6 +311,10 @@ async function submitCurrentAnswer() {
     const selectedLetters = new Set(selectedAnswer.split(''));
     const correctLetters = new Set(normalizedCorrect.split(''));
 
+    const displayCorrect = q?.type === '判断'
+        ? formatJudgeAnswer(normalizedCorrect || data.correct_answer)
+        : (normalizedCorrect || data.correct_answer);
+
     card.querySelectorAll('[data-option]').forEach(label => {
         const letter = label.getAttribute('data-option');
         if (correctLetters.has(letter)) {
@@ -308,7 +336,7 @@ async function submitCurrentAnswer() {
                     ? '<span class="tag green">回答正确</span>'
                     : `<span class="tag red">回答错误</span> 你的答案：${escapeHtml(selectedAnswer)}`
                 }
-                <br/>正确答案：<span class="tag green">${escapeHtml(normalizedCorrect || data.correct_answer)}</span>
+                <br/>正确答案：<span class="tag green">${escapeHtml(displayCorrect)}</span>
             </div>
             <div class="analysis-box">
                 <span class="analysis-label">答题技巧</span>${escapeHtml(data.tips || '暂无技巧')}

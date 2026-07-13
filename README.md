@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/banner.png" alt="公务员考试学习跟踪系统 Banner" width="100%">
+  <img src="assets/images/readme/banner.png" alt="公务员考试学习跟踪系统 Banner" width="100%">
 </p>
 
 <p align="center">
@@ -87,23 +87,41 @@
 
 | | | |
 |:---:|:---:|:---:|
-| [![登录](docs/ppt/screenshots/login.png)](docs/ppt/screenshots/login.png)<br><br>**登录 / 注册**<br>Session 鉴权 · 品牌化登录页 | [![考试资源](docs/ppt/screenshots/resources.png)](docs/ppt/screenshots/resources.png)<br><br>**考试资源**<br>23 条资源 · 科目 / 类型筛选 | [![学习计划](docs/ppt/screenshots/plan.png)](docs/ppt/screenshots/plan.png)<br><br>**学习计划**<br>按周期与弱项生成每日任务 |
-| [![题库练习](docs/ppt/screenshots/qa.png)](docs/ppt/screenshots/qa.png)<br><br>**题库练习**<br>200 题 · 单选 / 多选 / 判断 | [![学习统计](docs/ppt/screenshots/statistics.png)](docs/ppt/screenshots/statistics.png)<br><br>**学习统计**<br>完成率 · 正确率 · 弱项识别 | [![个性化推荐](docs/ppt/screenshots/recommendations.png)](docs/ppt/screenshots/recommendations.png)<br><br>**个性化推荐**<br>针对最弱科目推荐资源与题目 |
-| [![个人中心](docs/ppt/screenshots/profile.png)](docs/ppt/screenshots/profile.png)<br><br>**个人中心**<br>个人信息与学习目标 | [![学习仪表盘](docs/ppt/screenshots/dashboard.png)](docs/ppt/screenshots/dashboard.png)<br><br>**学习仪表盘**<br>目标、进度、答疑数据总览 | |
+| [![登录](assets/theme/ppt/screenshots/login.png)](assets/theme/ppt/screenshots/login.png)<br><br>**登录 / 注册**<br>Session 鉴权 · 品牌化登录页 | [![考试资源](assets/theme/ppt/screenshots/resources.png)](assets/theme/ppt/screenshots/resources.png)<br><br>**考试资源**<br>23 条资源 · 科目 / 类型筛选 | [![学习计划](assets/theme/ppt/screenshots/plan.png)](assets/theme/ppt/screenshots/plan.png)<br><br>**学习计划**<br>按周期与弱项生成每日任务 |
+| [![题库练习](assets/theme/ppt/screenshots/qa.png)](assets/theme/ppt/screenshots/qa.png)<br><br>**题库练习**<br>200 题 · 单选 / 多选 / 判断 | [![学习统计](assets/theme/ppt/screenshots/statistics.png)](assets/theme/ppt/screenshots/statistics.png)<br><br>**学习统计**<br>完成率 · 正确率 · 弱项识别 | [![个性化推荐](assets/theme/ppt/screenshots/recommendations.png)](assets/theme/ppt/screenshots/recommendations.png)<br><br>**个性化推荐**<br>针对最弱科目推荐资源与题目 |
+| [![个人中心](assets/theme/ppt/screenshots/profile.png)](assets/theme/ppt/screenshots/profile.png)<br><br>**个人中心**<br>个人信息与学习目标 | [![学习仪表盘](assets/theme/ppt/screenshots/dashboard.png)](assets/theme/ppt/screenshots/dashboard.png)<br><br>**学习仪表盘**<br>目标、进度、答疑数据总览 | |
 
 ### 答辩材料
 
 | 材料 | 路径 |
 |---|---|
-| 答辩 PPT | [`docs/ppt/公务员考试学习跟踪系统答辩.pptx`](docs/ppt/公务员考试学习跟踪系统答辩.pptx) |
-| 阶段汇报（Week 1 / 2 / 3） | [`docs/ppt/`](docs/ppt/) |
-| 开发时间线 | [`docs/DEVELOPMENT_TIMELINE.md`](docs/DEVELOPMENT_TIMELINE.md) |
+| 答辩 PPT | [`assets/theme/ppt/公务员考试学习跟踪系统答辩.pptx`](assets/theme/ppt/公务员考试学习跟踪系统答辩.pptx) |
+| 阶段汇报（Week 1 / 2 / 3） | [`assets/theme/ppt/`](assets/theme/ppt/) |
+| 关键决策 | [`docs/adr/0001-key-decisions.md`](docs/adr/0001-key-decisions.md) |
 
 ---
 
 ## 快速开始
 
-### 前置环境
+### 方式一：无数据库一键演示（推荐答辩/换机）
+
+如果目标机器没有 MySQL，或只需要快速演示前端交互，可直接使用 **Mock 模式**：
+
+```powershell
+# Windows 双击运行
+quickstart-mock.bat
+
+# 或手动启动前端静态服务
+cd frontend
+python -m http.server 8080
+```
+
+打开浏览器访问 http://localhost:8080/login.html?mock=1，账号 `root / 123456`。  
+无需安装 MySQL、无需启动 Flask，前端 Mock fallback 覆盖全部页面与核心交互（资源浏览、计划打卡、题库练习、统计、推荐等）。
+
+### 方式二：完整前后端启动
+
+#### 前置环境
 
 | 组件 | 版本建议 | 备注 |
 |------|----------|------|
@@ -114,7 +132,7 @@
 
 > 依赖均为纯 Python 包（Flask、PyMySQL 等），通常**不需要** C++ Build Tools。
 
-### 三步跑起来
+#### 三步跑起来
 
 ```powershell
 # 1. 获取代码
@@ -131,7 +149,7 @@ python -m pip install -r requirements.txt
 python init_db.py
 ```
 
-### 开机运行（两个终端）
+#### 开机运行（两个终端）
 
 ```powershell
 # 终端 A — 后端（端口 5001）
@@ -153,7 +171,16 @@ python -m http.server 8080
 <details>
 <summary>答辩机换机实测检查清单</summary>
 
-在另一台电脑上按顺序验证：
+#### Mock 模式快速验证（无 MySQL）
+
+- [ ] 双击 `quickstart-mock.bat` 启动前端，自动打开浏览器
+- [ ] 访问 `http://localhost:8080/login.html?mock=1` 能打开登录页
+- [ ] 用 `root / 123456` 登录，进入 dashboard
+- [ ] 题库与练习页：分别筛选「单选 / 多选 / 判断」均有题目
+- [ ] 判断题选项显示为「正确 / 错误」，提交后可正常判分
+- [ ] 完成计划任务、查看统计、浏览推荐页无报错
+
+#### 完整环境验证（含 MySQL + Flask）
 
 - [ ] 安装 Python 3.10+、MySQL 8.0+、Git
 - [ ] `git clone` 本项目
@@ -175,12 +202,12 @@ python -m http.server 8080
 |------|------|------|
 | 重置数据库 | `cd backend && python init_db.py` | 清空数据并重新导入种子 |
 | 审计题库分布 | `cd backend && python _audit_questions.py` | 查看各科目题型数量 |
-| 从 HTML 重新生成题目 SQL | `cd backend && python seed_questions_from_html.py && python patch_init_db.py` | 更新 `frontend/assets/init_db.sql` |
-| 改题后同步到答辩机 | `git add frontend/assets/init_db.sql && git commit && git push` | 答辩机 `git pull` 后重新 `init_db.py` |
+| 从 HTML 重新生成题目 SQL | `cd backend && python seed_questions_from_html.py && python patch_init_db.py` | 更新 `db/seed/init_db.sql` |
+| 改题后同步到答辩机 | `git add db/seed/init_db.sql && git commit && git push` | 答辩机 `git pull` 后重新 `init_db.py` |
 
 **重要提醒：**
 
-- 演示数据的唯一数据源是 `frontend/assets/init_db.sql`，**不要**拷贝本机 MySQL 数据文件到另一台电脑
+- 演示数据的唯一数据源是 `db/seed/init_db.sql`，**不要**拷贝本机 MySQL 数据文件到另一台电脑
 - 后端 `backend/database.db` 已在 `.gitignore`，不会提交
 - 修改表结构后必须重新执行 `init_db.py`
 
@@ -196,7 +223,7 @@ A：未执行 `python init_db.py`，或 `.env` 连错库。登录后看 `GET /ap
 A：确认后端在 5001 运行；`frontend/js/api.js` 中 `API_BASE_URL` 为 `http://localhost:5001/api`。
 
 **Q：改题目后另一台机没更新？**
-A：需提交并推送 `frontend/assets/init_db.sql`，另一台 `git pull` 后重新 `init_db.py`。
+A：需提交并推送 `db/seed/init_db.sql`，另一台 `git pull` 后重新 `init_db.py`。
 
 **Q：需要 SQLite 吗？**
 A：不需要。当前栈为 **MySQL + PyMySQL**。
@@ -321,13 +348,11 @@ curl.exe -b cookies.txt http://localhost:5001/api/questions
 | [`CONTEXT.md`](CONTEXT.md) | 领域词汇与业务规则 |
 | [`CLAUDE.md`](CLAUDE.md) | 项目协作规范 |
 | [`AGENTS.md`](AGENTS.md) | Agent 协作与 API 路由地图 |
-| [`docs/PROJECT_STATUS.md`](docs/PROJECT_STATUS.md) | 项目状态与关键决策 |
-| [`docs/HANDOFF.md`](docs/HANDOFF.md) | 交接记录 |
-| [`docs/三周功能完成清单.md`](docs/三周功能完成清单.md) | 三周功能完成清单 |
-| [`docs/PROJECT_GUIDE.md`](docs/PROJECT_GUIDE.md) | 项目指南 |
-| [`docs/ppt/`](docs/ppt/) | 阶段汇报与答辩 PPT |
+| [`docs/adr/0001-key-decisions.md`](docs/adr/0001-key-decisions.md) | 关键技术与流程决策（MySQL / 规则推荐 / mock）|
+| [`docs/glossary/terms.md`](docs/glossary/terms.md) | 术语速查（中英对照）|
+| [`assets/theme/ppt/`](assets/theme/ppt/) | 阶段汇报与答辩 PPT |
 
-**文档纪律：** `README.md` 为项目入口；`docs/` 放文字文档与 PPT；演示数据以 `frontend/assets/init_db.sql` 为唯一数据源；API 事实以 `backend/routes/*.py` 与 `backend/models.py` 为准。
+**文档纪律：** `README.md` 为项目入口；`docs/` 放文字文档与 PPT；演示数据以 `db/seed/init_db.sql` 为唯一数据源；API 事实以 `backend/routes/*.py` 与 `backend/models.py` 为准。
 
 ---
 

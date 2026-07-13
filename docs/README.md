@@ -1,47 +1,41 @@
 # 文档索引 — 公务员考试学习跟踪系统
 
-> `docs/` 目录的总入口。按用途分类，告诉你「想做某件事先看哪份」。
-> 项目根目录另有 `README.md`（项目首页）、`PRD-civil-service-exam-tracker.md`（需求）、`CONTEXT.md`（领域词汇）、`AGENTS.md`（API 路由地图）、`CLAUDE.md`（协作规范）。
+> `docs/` 的总入口。按用途分类，告诉你「想做某件事先看哪份」。
+> 根目录另有 `README.md`（项目首页 + 快速开始）、`PRD-civil-service-exam-tracker.md`（需求）、`CONTEXT.md`（领域词汇）、`LANGUAGES.md`（语言与命名）、`AGENTS.md`（API 路由地图）、`CLAUDE.md`（协作规范）。
 
 ---
 
-## 🚀 上手与部署
+## 决策与术语
 
 | 文档 | 什么时候看 |
 |------|-----------|
-| [PROJECT_GUIDE.md](PROJECT_GUIDE.md) | **主手册**：环境准备、git clone 部署、启动运行、维护、故障排查、备份 |
-| [DEPLOY_FROM_ZIP.md](DEPLOY_FROM_ZIP.md) | **压缩包换机**（不是 git clone）：解压后的最短启动路径与换机踩坑 |
+| [adr/0001-key-decisions.md](adr/0001-key-decisions.md) | 关键技术与流程决策：为什么用 MySQL / 规则推荐 / 原生前端 / mock |
+| [glossary/terms.md](glossary/terms.md) | 术语速查（中英对照，详情见根 `CONTEXT.md`）|
 
-## 📊 进度与计划
-
-| 文档 | 什么时候看 |
-|------|-----------|
-| [PROJECT_STATUS.md](PROJECT_STATUS.md) | 完成度看板：已完成清单、进行中、可选优化、关键决策 |
-| [三周功能完成清单.md](三周功能完成清单.md) | 三周计划：各周主要任务、完成内容、阶段交付物 |
-| [DEVELOPMENT_TIMELINE.md](DEVELOPMENT_TIMELINE.md) | 三周实际开发进度，以及与计划的对应关系（含 PPT 关键数据） |
-
-## 🤝 交接
+## 协作规范
 
 | 文档 | 什么时候看 |
 |------|-----------|
-| [HANDOFF.md](HANDOFF.md) | 会话交接日志：历次会话做了什么、当前状态、下一步建议 |
+| [agents/](agents/) | Agent 工作流：domain · issue-tracker · triage-labels · module-development-workflow · workflow · deliver · archive · voice |
+| [adr/](adr/) | 架构决策记录，目前为空；非平凡决策在此建档 |
 
-## 📐 协作规范
-
-| 文档 | 什么时候看 |
-|------|-----------|
-| [agents/](agents/) | Agent 协作规范：领域词汇、Issue tracker、模块开发流程、triage 标签 |
-| [adr/](adr/) | 架构决策记录（ADR），目前为空，有重大决策时在此建档 |
-
-## 🎤 答辩材料
+## 答辩材料
 
 | 内容 | 路径 |
 |------|------|
-| 成品 PPT | [ppt/](ppt/)：Week 1/2/3 阶段汇报 + 18 页最终答辩稿 + `screenshots/` 8 张系统截图 |
+| 成品 PPT | [`../assets/theme/ppt/`](../assets/theme/ppt/)：Week 1/2/3 阶段汇报 + 最终答辩稿 + `screenshots/` 8 张系统截图 |
 
-## 🗄️ 历史归档（仅供参考，不再维护）
+## 术语与知识（骨架，按需填充）
+
+| 目录 | 用途 |
+|------|------|
+| [glossary/](glossary/) | 术语速查（`terms.md`）|
+| [commit-history/](commit-history/) | commit 攒批说明（骨架）|
+| [output/](output/) | 业务 theme 产物骨架：`report/` · `prd/` · `handoff/` |
+
+## 历史归档（仅供参考，不再维护）
 
 | 文档 | 说明 |
 |------|------|
-| [archive/ppt-production.md](archive/ppt-production.md) | PPT 制作存档（合并自原 3 份 PPT 过程文档） |
+| [archive/ppt-production.md](archive/ppt-production.md) | PPT 制作存档（合并自原 3 份过程文档） |
 | [archive/frontend-design-review.md](archive/frontend-design-review.md) | 前端设计评审（写于 5 页阶段，已部分过时） |

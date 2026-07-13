@@ -99,8 +99,7 @@ Go through the issue file's acceptance criteria one by one. If anything is missi
 
 Update these files:
 
-- `docs/PROJECT_STATUS.md`: mark the module as completed
-- `docs/HANDOFF.md`: record what was done and the next step
+- `README.md` § 路线图: update project status if the module changes project-level state (no separate handoff doc)
 - `.scratch/<module-slug>/issues/*.md`: update status to `closed`
 - `docs/adr/`: create an ADR if the module involved a non-trivial architectural decision
 
@@ -123,7 +122,7 @@ Then push to GitHub.
 
 ### 5. Handoff
 
-Ensure `docs/HANDOFF.md` answers:
+Ensure the module issue's outcome notes (in `.scratch/<module>/issues/<NN>-*.md`) answer:
 - What was completed in this module?
 - Are there any known issues or shortcuts?
 - What is the next module to work on?
@@ -139,6 +138,5 @@ Use this checklist before declaring a module done:
 - [ ] Frontend page implemented and manually checked
 - [ ] Database operations verified
 - [ ] Error handling in place
-- [ ] `docs/PROJECT_STATUS.md` updated
-- [ ] `docs/HANDOFF.md` updated
+- [ ] module issue outcome notes updated (what done + next step)
 - [ ] Commit pushed to GitHub
