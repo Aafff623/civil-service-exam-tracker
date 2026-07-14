@@ -87,9 +87,9 @@
 
 | | | |
 |:---:|:---:|:---:|
-| [![登录](assets/theme/ppt/screenshots/login.png)](assets/theme/ppt/screenshots/login.png)<br><br>**登录 / 注册**<br>Session 鉴权 · 品牌化登录页 | [![考试资源](assets/theme/ppt/screenshots/resources.png)](assets/theme/ppt/screenshots/resources.png)<br><br>**考试资源**<br>23 条资源 · 科目 / 类型筛选 | [![学习计划](assets/theme/ppt/screenshots/plan.png)](assets/theme/ppt/screenshots/plan.png)<br><br>**学习计划**<br>按周期与弱项生成每日任务 |
-| [![题库练习](assets/theme/ppt/screenshots/qa.png)](assets/theme/ppt/screenshots/qa.png)<br><br>**题库练习**<br>200 题 · 单选 / 多选 / 判断 | [![学习统计](assets/theme/ppt/screenshots/statistics.png)](assets/theme/ppt/screenshots/statistics.png)<br><br>**学习统计**<br>完成率 · 正确率 · 弱项识别 | [![个性化推荐](assets/theme/ppt/screenshots/recommendations.png)](assets/theme/ppt/screenshots/recommendations.png)<br><br>**个性化推荐**<br>针对最弱科目推荐资源与题目 |
-| [![个人中心](assets/theme/ppt/screenshots/profile.png)](assets/theme/ppt/screenshots/profile.png)<br><br>**个人中心**<br>个人信息与学习目标 | [![学习仪表盘](assets/theme/ppt/screenshots/dashboard.png)](assets/theme/ppt/screenshots/dashboard.png)<br><br>**学习仪表盘**<br>目标、进度、答疑数据总览 | |
+| [![登录](assets/images/showcase/showcase-login.png)](assets/images/showcase/showcase-login.png)<br><br>**登录 / 注册**<br>Session 鉴权 · 品牌化登录页 | [![考试资源](assets/images/showcase/showcase-resources.png)](assets/images/showcase/showcase-resources.png)<br><br>**考试资源**<br>23 条资源 · 科目 / 类型筛选 | [![学习计划](assets/images/showcase/showcase-plan.png)](assets/images/showcase/showcase-plan.png)<br><br>**学习计划**<br>按周期与弱项生成每日任务 |
+| [![题库练习](assets/images/showcase/showcase-qa.png)](assets/images/showcase/showcase-qa.png)<br><br>**题库练习**<br>200 题 · 单选 / 多选 / 判断 | [![学习统计](assets/images/showcase/showcase-statistics.png)](assets/images/showcase/showcase-statistics.png)<br><br>**学习统计**<br>完成率 · 正确率 · 弱项识别 | [![个性化推荐](assets/images/showcase/showcase-recommendations.png)](assets/images/showcase/showcase-recommendations.png)<br><br>**个性化推荐**<br>针对最弱科目推荐资源与题目 |
+| [![个人中心](assets/images/showcase/showcase-profile.png)](assets/images/showcase/showcase-profile.png)<br><br>**个人中心**<br>个人信息与学习目标 | [![学习仪表盘](assets/images/showcase/showcase-dashboard.png)](assets/images/showcase/showcase-dashboard.png)<br><br>**学习仪表盘**<br>目标、进度、答疑数据总览 | |
 
 ### 答辩材料
 
